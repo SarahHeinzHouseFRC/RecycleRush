@@ -9,9 +9,9 @@ SHARP's code and assets for the 2015 FIRST Robotics Competition game, Recycle Ru
 
 The master branch contains the resources that would be used if we were to compete in a competition today. The code that is included may not necessarily be complete but the functions available are tested and working.
 
-### Testing
+### Development
 
-The Testing branch is responsible for holding the current development code. Very little or no testing has been done on the code included in it and as such it should not be used in a competitive environment. If the code located in the Testing branch has been confirmed to be working in a valid test environment, a Pull Request should be submitted to update the master branch to the current Testing state. Edward Jones (frc3260@gmail.com) should be the only one approving Pull Requests and merges.
+The Development branch, as the name suggests, is responsible for holding the current development code. All commits should be pushed to this branch for approval. Very little or no testing has been done on the code included in it and as such it should not be used in a competitive environment. If the code located in the Development branch has been confirmed to be working in a valid test environment, a Pull Request should be submitted to update the master branch to the current Testing state. Edward Jones (frc3260@gmail.com) should be the only one approving Pull Requests and merges.
 
 ### Deprecated
 
