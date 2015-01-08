@@ -48,7 +48,7 @@ public class Pneumatics extends Subsystem
     {
         if (Robot.isReal())
         {
-            return (compressor.getPressureSwitchValue() ? compressor.getPressureSwitchValue() : MAX_PRESSURE <= pressureSensor.getVoltage());
+            return (compressor.getPressureSwitchValue() ? MAX_PRESSURE <= pressureSensor.getVoltage() : true);
         }
         else
         {
