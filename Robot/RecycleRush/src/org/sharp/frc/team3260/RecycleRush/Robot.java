@@ -6,8 +6,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.commands.DriveAndShootAutonomous;
-import org.sharp.frc.team3260.RecycleRush.commands.DriveForward;
+import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.subsystems.*;
 
 /**
@@ -25,8 +24,6 @@ public class Robot extends IterativeRobot
     public static OI oi;
 
     public static DriveTrain drivetrain;
-    public static Collector collector;
-    public static Shooter shooter;
     public static Pneumatics pneumatics;
     public static Pivot pivot;
 
@@ -39,13 +36,9 @@ public class Robot extends IterativeRobot
     {
         // Initialize the subsystems
         drivetrain = new DriveTrain();
-        collector = new Collector();
-        shooter = new Shooter();
         pneumatics = new Pneumatics();
         pivot = new Pivot();
         SmartDashboard.putData(drivetrain);
-        SmartDashboard.putData(collector);
-        SmartDashboard.putData(shooter);
         SmartDashboard.putData(pneumatics);
         SmartDashboard.putData(pivot);
 
@@ -58,11 +51,8 @@ public class Robot extends IterativeRobot
 
         // instantiate the command used for the autonomous period
         autoChooser = new SendableChooser();
-        autoChooser.addDefault("Drive and Shoot", new DriveAndShootAutonomous());
         autoChooser.addObject("Drive Forward", new DriveForward());
         SmartDashboard.putData("Auto Mode", autoChooser);
-
-        pneumatics.start(); // Pressurize the pneumatics.
     }
 
     public void autonomousInit()
@@ -105,7 +95,6 @@ public class Robot extends IterativeRobot
 
     public void disabledInit()
     {
-        Robot.shooter.unlatch();
     }
 
     // This function is called periodically while disabled

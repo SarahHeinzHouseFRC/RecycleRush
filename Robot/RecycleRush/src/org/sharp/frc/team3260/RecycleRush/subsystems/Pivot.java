@@ -15,12 +15,6 @@ import org.sharp.frc.team3260.RecycleRush.Robot;
  */
 public class Pivot extends PIDSubsystem
 {
-    // Constants for some useful angles
-    public static final double COLLECT = 105;
-    public static final double LOW_GOAL = 90;
-    public static final double SHOOT = 45;
-    public static final double SHOOT_NEAR = 30;
-
     // Subsystem devices
     private DigitalInput upperLimitSwitch;
     private DigitalInput lowerLimitSwitch;

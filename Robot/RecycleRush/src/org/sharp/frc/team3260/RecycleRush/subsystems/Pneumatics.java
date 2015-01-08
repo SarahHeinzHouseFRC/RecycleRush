@@ -14,7 +14,7 @@ import org.sharp.frc.team3260.RecycleRush.Robot;
  */
 public class Pneumatics extends Subsystem
 {
-    AnalogInput pressureSensor;
+	AnalogInput pressureSensor;
     Compressor compressor;
 
     private static final double MAX_PRESSURE = 2.55;
@@ -38,16 +38,9 @@ public class Pneumatics extends Subsystem
     }
 
     /**
-     * Start the compressor going. The compressor automatically starts and stops as it goes above and below maximum pressure.
-     */
-    public void start()
-    {
-        if (Robot.isReal())
-        {
-            compressor.start();
-        }
-    }
-
+     *. The compressor now  automatically starts and stops if you create a solenoid.
+     */
+    
     /**
      * @return Whether or not the system is fully pressurized.
      */
@@ -55,7 +48,7 @@ public class Pneumatics extends Subsystem
     {
         if (Robot.isReal())
         {
-            return MAX_PRESSURE <= pressureSensor.getVoltage();
+            return (compressor.getPressureSwitchValue() ? compressor.getPressureSwitchValue() : MAX_PRESSURE <= pressureSensor.getVoltage());
         }
         else
         {

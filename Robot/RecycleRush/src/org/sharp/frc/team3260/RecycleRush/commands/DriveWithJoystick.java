@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 
 /**
- * This command allows PS3 joystick to drive the robot. It is always running
+ * This command allows a gamepad to drive the robot. It is always running
  * except when interrupted by another command.
  */
 public class DriveWithJoystick extends Command
