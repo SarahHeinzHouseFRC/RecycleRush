@@ -1,6 +1,6 @@
 package org.sharp.frc.team3260.RecycleRush.joystick;
 
-import com.sun.squawk.util.MathUtils;
+import java.lang.Math;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -64,17 +64,17 @@ public class XBoxGamepad
 
 	public double getJoystickLeftMagnitude()
 	{
-		return Math.sqrt(MathUtils.pow(getJoystickLeftX(), 2) + MathUtils.pow(-getJoystickLeftY(), 2));
+		return Math.sqrt(Math.pow(getJoystickLeftX(), 2) + Math.pow(-getJoystickLeftY(), 2));
 	}
 
 	public double getJoystickRightMagnitude()
 	{
-		return Math.sqrt(MathUtils.pow(getJoystickRightX(), 2) + MathUtils.pow(getJoystickRightY(), 2));
+		return Math.sqrt(Math.pow(getJoystickRightX(), 2) + Math.pow(getJoystickRightY(), 2));
 	}
 
 	public double getJoystickLeftDirectionRadians()
 	{
-		return MathUtils.atan2(getJoystickLeftX(), getJoystickLeftY());
+		return Math.atan2(getJoystickLeftX(), getJoystickLeftY());
 	}
 
 	public double getJoystickLeftDirectionDegrees()
@@ -84,7 +84,7 @@ public class XBoxGamepad
 
 	public double getJoystickRightDirectionRadians()
 	{
-		return MathUtils.atan2(getJoystickRightX(), -getJoystickRightY());
+		return Math.atan2(getJoystickRightX(), -getJoystickRightY());
 	}
 
 	public double getJoystickRightDirectionDegrees()
@@ -283,17 +283,17 @@ public class XBoxGamepad
 
 	public double getFilteredJoystickLeftMagnitude(int FILTER_TYPE)
 	{
-		return Math.sqrt(MathUtils.pow(getFilteredAxis(JS_LEFT_X, FILTER_TYPE), 2) + MathUtils.pow(getFilteredAxis(JS_LEFT_Y, FILTER_TYPE), 2));
+		return Math.sqrt(Math.pow(getFilteredAxis(JS_LEFT_X, FILTER_TYPE), 2) + Math.pow(getFilteredAxis(JS_LEFT_Y, FILTER_TYPE), 2));
 	}
 
 	public double getFilteredJoystickRightMagnitude(int FILTER_TYPE)
 	{
-		return Math.sqrt(MathUtils.pow(getFilteredAxis(JS_RIGHT_X, FILTER_TYPE), 2) + MathUtils.pow(getFilteredAxis(JS_RIGHT_Y, FILTER_TYPE), 2));
+		return Math.sqrt(Math.pow(getFilteredAxis(JS_RIGHT_X, FILTER_TYPE), 2) + Math.pow(getFilteredAxis(JS_RIGHT_Y, FILTER_TYPE), 2));
 	}
 
 	public double getFilteredJoystickLeftDirectionRadians(int FILTER_TYPE)
 	{
-		return MathUtils.atan2(getFilteredAxis(JS_LEFT_X, FILTER_TYPE), -getFilteredAxis(JS_LEFT_Y, FILTER_TYPE));
+		return Math.atan2(getFilteredAxis(JS_LEFT_X, FILTER_TYPE), -getFilteredAxis(JS_LEFT_Y, FILTER_TYPE));
 	}
 
 	public double getFilteredJoystickLeftDirectionDegrees(int FILTER_TYPE)
@@ -303,7 +303,7 @@ public class XBoxGamepad
 
 	public double getFilteredJoystickRightDirectionRadians(int FILTER_TYPE)
 	{
-		return MathUtils.atan2(getFilteredAxis(JS_RIGHT_X, FILTER_TYPE), -getFilteredAxis(JS_RIGHT_Y, FILTER_TYPE));
+		return Math.atan2(getFilteredAxis(JS_RIGHT_X, FILTER_TYPE), -getFilteredAxis(JS_RIGHT_Y, FILTER_TYPE));
 	}
 
 	public double getFilteredJoystickRightDirectionDegrees(int FILTER_TYPE)
