@@ -1,11 +1,8 @@
 package org.sharp.frc.team3260.RecycleRush;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.commands.*;
-import org.sharp.frc.team3260.RecycleRush.subsystems.*;
-import org.sharp.frc.team3260.RecycleRush.triggers.DoubleButton;
+import org.sharp.frc.team3260.RecycleRush.commands.DriveForward;
 
 /**
  * The operator interface of the robot, it has been simplified from the real
@@ -14,19 +11,19 @@ import org.sharp.frc.team3260.RecycleRush.triggers.DoubleButton;
  */
 public class OI
 {
-    public Joystick joystick;
+	public Joystick joystick;
 
-    public OI()
-    {
-        joystick = new Joystick(0);
+	public OI()
+	{
+		joystick = new Joystick(0);
 
-        // SmartDashboard Buttons
-        SmartDashboard.putData("Drive Forward", new DriveForward(2.25));
-        SmartDashboard.putData("Drive Backward", new DriveForward(-2.25));
-    }
+		// SmartDashboard Buttons
+		SmartDashboard.putData("Drive Forward", new DriveForward(2.25));
+		SmartDashboard.putData("Drive Backward", new DriveForward(-2.25));
+	}
 
-    public Joystick getJoystick()
-    {
-        return joystick;
-    }
+	public Joystick getJoystick()
+	{
+		return joystick;
+	}
 }

@@ -14,40 +14,40 @@ import org.sharp.frc.team3260.RecycleRush.Robot;
  */
 public class SetPivotSetpoint extends Command
 {
-    private double setpoint;
+	private double setpoint;
 
-    public SetPivotSetpoint(double setpoint)
-    {
-        this.setpoint = setpoint;
-        requires(Robot.pivot);
-    }
+	public SetPivotSetpoint(double setpoint)
+	{
+		this.setpoint = setpoint;
+		requires(Robot.pivot);
+	}
 
-    // Called just before this Command runs the first time
-    protected void initialize()
-    {
-        Robot.pivot.enable();
-        Robot.pivot.setSetpoint(setpoint);
-    }
+	// Called just before this Command runs the first time
+	protected void initialize()
+	{
+		Robot.pivot.enable();
+		Robot.pivot.setSetpoint(setpoint);
+	}
 
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute()
-    {
-    }
+	// Called repeatedly when this Command is scheduled to run
+	protected void execute()
+	{
+	}
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished()
-    {
-        return Robot.pivot.onTarget();
-    }
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished()
+	{
+		return Robot.pivot.onTarget();
+	}
 
-    // Called once after isFinished returns true
-    protected void end()
-    {
-    }
+	// Called once after isFinished returns true
+	protected void end()
+	{
+	}
 
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted()
-    {
-    }
+	// Called when another command which requires one or more of the same
+	// subsystems is scheduled to run
+	protected void interrupted()
+	{
+	}
 }
