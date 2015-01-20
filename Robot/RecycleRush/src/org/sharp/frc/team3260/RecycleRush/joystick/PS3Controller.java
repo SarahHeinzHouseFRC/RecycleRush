@@ -5,10 +5,8 @@ import edu.wpi.first.wpilibj.Joystick;
 /**
  * @author Eddie
  */
-public class PS3Controller
+public class PS3Controller extends Joystick
 {
-	private final Joystick gamepad;
-
 	private static final int JS_LEFT_X = 1,
 			JS_LEFT_Y = 2,
 			JS_RIGHT_X = 4,
@@ -36,27 +34,27 @@ public class PS3Controller
 
 	public PS3Controller(int id)
 	{
-		gamepad = new Joystick(id);
+		super(id);
 	}
 
 	public double getJoystickLeftX()
 	{
-		return gamepad.getRawAxis(JS_LEFT_X);
+		return getRawAxis(JS_LEFT_X);
 	}
 
 	public double getJoystickLeftY()
 	{
-		return -gamepad.getRawAxis(JS_LEFT_Y);
+		return -getRawAxis(JS_LEFT_Y);
 	}
 
 	public double getJoystickRightX()
 	{
-		return gamepad.getRawAxis(JS_RIGHT_X);
+		return getRawAxis(JS_RIGHT_X);
 	}
 
 	public double getJoystickRightY()
 	{
-		return -gamepad.getRawAxis(JS_RIGHT_Y);
+		return -getRawAxis(JS_RIGHT_Y);
 	}
 
 	public double getJoystickLeftMagnitude()
@@ -91,15 +89,15 @@ public class PS3Controller
 
 	public double getDPadX()
 	{
-		return gamepad.getRawAxis(DPAD_X);
+		return getRawAxis(DPAD_X);
 	}
 
 	public double getDPadY()
 	{
-		if(gamepad.getRawButton(BTN_DPAD_UP))
+		if(getRawButton(BTN_DPAD_UP))
 		{
 			return 1.0;
-		} else if(gamepad.getRawButton(BTN_DPAD_DOWN))
+		} else if(getRawButton(BTN_DPAD_DOWN))
 		{
 			return -1.0;
 		}
@@ -109,62 +107,62 @@ public class PS3Controller
 
 	public boolean getButtonLeftBumper()
 	{
-		return gamepad.getRawButton(BTN_LEFT_BUMPER);
+		return getRawButton(BTN_LEFT_BUMPER);
 	}
 
 	public boolean getButtonRightBumper()
 	{
-		return gamepad.getRawButton(BTN_RIGHT_BUMPER);
+		return getRawButton(BTN_RIGHT_BUMPER);
 	}
 
 	public boolean getButtonLeftJoystick()
 	{
-		return gamepad.getRawButton(BTN_JS_LEFT);
+		return getRawButton(BTN_JS_LEFT);
 	}
 
 	public boolean getButtonRightJoystick()
 	{
-		return gamepad.getRawButton(BTN_JS_RIGHT);
+		return getRawButton(BTN_JS_RIGHT);
 	}
 
 	public boolean getButtonX()
 	{
-		return gamepad.getRawButton(BTN_X);
+		return getRawButton(BTN_X);
 	}
 
 	public boolean getButtonCircle()
 	{
-		return gamepad.getRawButton(BTN_CIRCLE);
+		return getRawButton(BTN_CIRCLE);
 	}
 
 	public boolean getButtonSquare()
 	{
-		return gamepad.getRawButton(BTN_SQUARE);
+		return getRawButton(BTN_SQUARE);
 	}
 
 	public boolean getButtonTriangle()
 	{
-		return gamepad.getRawButton(BTN_TRIANGLE);
+		return getRawButton(BTN_TRIANGLE);
 	}
 
 	public boolean getButtonStart()
 	{
-		return gamepad.getRawButton(BTN_START);
+		return getRawButton(BTN_START);
 	}
 
 	public boolean getButtonSelect()
 	{
-		return gamepad.getRawButton(BTN_SELECT);
+		return getRawButton(BTN_SELECT);
 	}
 
 	public boolean getButtonPS()
 	{
-		return gamepad.getRawButton(BTN_PS);
+		return getRawButton(BTN_PS);
 	}
 
 	public double getTriggerValue()
 	{
-		return -gamepad.getRawAxis(JS_TRIGGERS);
+		return -getRawAxis(JS_TRIGGERS);
 	}
 
 	public boolean getRightTrigger()
