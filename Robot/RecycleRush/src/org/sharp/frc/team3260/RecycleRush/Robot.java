@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.commands.DriveForward;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
-import org.sharp.frc.team3260.RecycleRush.subsystems.Pivot;
-import org.sharp.frc.team3260.RecycleRush.subsystems.Pneumatics;
 
 public class Robot extends IterativeRobot
 {
@@ -17,8 +15,6 @@ public class Robot extends IterativeRobot
 	public static OI oi;
 
 	public static DriveTrain drivetrain;
-	public static Pneumatics pneumatics;
-	public static Pivot pivot;
 
 	public SendableChooser autoChooser;
 
@@ -26,11 +22,8 @@ public class Robot extends IterativeRobot
 	{
 		// Initialize the subsystems
 		drivetrain = new DriveTrain();
-		pneumatics = new Pneumatics();
-		pivot = new Pivot();
+
 		SmartDashboard.putData(drivetrain);
-		SmartDashboard.putData(pneumatics);
-		SmartDashboard.putData(pivot);
 
 		oi = new OI();
 
@@ -93,7 +86,5 @@ public class Robot extends IterativeRobot
 	 */
 	private void log()
 	{
-		Robot.pneumatics.writePressure();
-		SmartDashboard.putNumber("Pivot Pot Value", Robot.pivot.getAngle());
 	}
 }

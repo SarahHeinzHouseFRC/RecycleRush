@@ -21,7 +21,6 @@ public class DriveTrain extends Subsystem
 	private Encoder frontLeftEncoder, frontRightEncoder, backLeftEncoder, backRightEncoder;
 
 	private IMUAdvanced imu;
-	private SerialPort serialPort;
 
 	private GIANTDINOSAUR giantdinosaur;
 
@@ -32,8 +31,6 @@ public class DriveTrain extends Subsystem
 		backLeft = new CANTalon(2);
 		backRight = new CANTalon(3);
 
-		// Configure the RobotDrive to reflect the fact that all our motors are
-		// wired backwards and our drivers sensitivity preferences.
 		drive = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
 		drive.setSafetyEnabled(true);
 		drive.setExpiration(0.1);
@@ -42,7 +39,6 @@ public class DriveTrain extends Subsystem
 		drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
 		drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
 
-		// Configure encoders
 		frontLeftEncoder = new Encoder(1, 2, true, EncodingType.k4X);
 		frontRightEncoder = new Encoder(3, 4, true, EncodingType.k4X);
 		backLeftEncoder = new Encoder(5, 6, true, EncodingType.k4X);
@@ -61,11 +57,18 @@ public class DriveTrain extends Subsystem
 		LiveWindow.addSensor("DriveTrain", "Back Left Encoder", backLeftEncoder);
 		LiveWindow.addSensor("DriveTrain", "Back Right Encoder", backRightEncoder);
 
-		serialPort = new SerialPort(57600, SerialPort.Port.kOnboard);
+		try
+		{
+			SerialPort serialPort = new SerialPort(57600, SerialPort.Port.kOnboard);
 
-		byte updateRateHz = 50;
+			byte updateRateHz = 50;
 
-		imu = new IMUAdvanced(serialPort, updateRateHz);
+			imu = new IMUAdvanced(serialPort, updateRateHz);
+		}
+		catch(Exception ex)
+		{
+			imu = null;
+		}
 
 		if(imu != null)
 		{
