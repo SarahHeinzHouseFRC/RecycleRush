@@ -97,7 +97,8 @@ public class PS3Controller extends Joystick
 		if(getRawButton(BTN_DPAD_UP))
 		{
 			return 1.0;
-		} else if(getRawButton(BTN_DPAD_DOWN))
+		}
+		else if(getRawButton(BTN_DPAD_DOWN))
 		{
 			return -1.0;
 		}

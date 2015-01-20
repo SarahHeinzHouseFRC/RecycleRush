@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.sharp.frc.team3260.RecycleRush.GIANTDINOSAUR;
 import org.sharp.frc.team3260.RecycleRush.commands.DriveWithJoystick;
 
 /**
@@ -21,8 +20,6 @@ public class DriveTrain extends Subsystem
 	private Encoder frontLeftEncoder, frontRightEncoder, backLeftEncoder, backRightEncoder;
 
 	private IMUAdvanced imu;
-
-	private GIANTDINOSAUR giantdinosaur;
 
 	public DriveTrain()
 	{

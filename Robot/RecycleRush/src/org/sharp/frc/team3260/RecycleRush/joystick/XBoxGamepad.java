@@ -98,7 +98,8 @@ public class XBoxGamepad extends Joystick
 				if(axisValue > 0)
 				{
 					return (axisValue * axisValue);
-				} else
+				}
+				else
 				{
 					return -(axisValue * axisValue);
 				}
