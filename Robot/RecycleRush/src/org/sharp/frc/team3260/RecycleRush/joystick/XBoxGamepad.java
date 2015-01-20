@@ -1,6 +1,5 @@
 package org.sharp.frc.team3260.RecycleRush.joystick;
 
-import java.lang.Math;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
