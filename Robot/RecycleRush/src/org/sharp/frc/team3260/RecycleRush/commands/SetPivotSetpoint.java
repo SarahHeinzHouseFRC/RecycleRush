@@ -19,14 +19,14 @@ public class SetPivotSetpoint extends Command
 	public SetPivotSetpoint(double setpoint)
 	{
 		this.setpoint = setpoint;
-		requires(Robot.pivot);
+		//requires(Robot.pivot);
 	}
 
 	// Called just before this Command runs the first time
 	protected void initialize()
 	{
-		Robot.pivot.enable();
-		Robot.pivot.setSetpoint(setpoint);
+		//Robot.pivot.enable();
+		//Robot.pivot.setSetpoint(setpoint);
 	}
 
 	// Called repeatedly when this Command is scheduled to run
@@ -37,7 +37,7 @@ public class SetPivotSetpoint extends Command
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished()
 	{
-		return Robot.pivot.onTarget();
+		return true; //Robot.pivot.onTarget();
 	}
 
 	// Called once after isFinished returns true

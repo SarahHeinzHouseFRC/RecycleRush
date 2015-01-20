@@ -1,7 +1,8 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.sharp.frc.team3260.RecycleRush.Robot;
+
+import org.sharp.frc.team3260.RecycleRush.subsystems.Pneumatics;;
 
 /**
  * Wait until the pneumatics are fully pressurized. This command does nothing
@@ -12,7 +13,7 @@ public class WaitForPressure extends Command
 
 	public WaitForPressure()
 	{
-		requires(Robot.pneumatics);
+	//requires(Pneumatics.compressor);
 	}
 
 	// Called just before this Command runs the first time
@@ -28,7 +29,7 @@ public class WaitForPressure extends Command
 	// Make this return true when this Command no longer needs to run execute()
 	protected boolean isFinished()
 	{
-		return Robot.pneumatics.isPressurized();
+		return !Pneumatics.compressor.getPressureSwitchValue();
 	}
 
 	// Called once after isFinished returns true
