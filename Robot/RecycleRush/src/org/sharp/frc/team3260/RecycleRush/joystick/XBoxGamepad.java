@@ -6,10 +6,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * @author Eddie
  */
-public class XBoxGamepad
+public class XBoxGamepad extends Joystick
 {
-	private final Joystick gamepad;
-
 	public static final int JS_LEFT_X = 1,
 			JS_LEFT_Y = 2,
 			JS_RIGHT_X = 4,
@@ -38,27 +36,27 @@ public class XBoxGamepad
 
 	public XBoxGamepad(int id)
 	{
-		gamepad = new Joystick(id);
+		super(id);
 	}
 
 	public double getJoystickLeftX()
 	{
-		return gamepad.getRawAxis(JS_LEFT_X);
+		return getRawAxis(JS_LEFT_X);
 	}
 
 	public double getJoystickLeftY()
 	{
-		return -gamepad.getRawAxis(JS_LEFT_Y);
+		return -getRawAxis(JS_LEFT_Y);
 	}
 
 	public double getJoystickRightX()
 	{
-		return gamepad.getRawAxis(JS_RIGHT_X);
+		return getRawAxis(JS_RIGHT_X);
 	}
 
 	public double getJoystickRightY()
 	{
-		return -gamepad.getRawAxis(JS_RIGHT_Y);
+		return -getRawAxis(JS_RIGHT_Y);
 	}
 
 	public double getJoystickLeftMagnitude()
@@ -121,67 +119,67 @@ public class XBoxGamepad
 
 	public double getDPadX()
 	{
-		return gamepad.getRawAxis(DPAD_X);
+		return getRawAxis(DPAD_X);
 	}
 
 	public double getDPadY()
 	{
-		return gamepad.getRawAxis(DPAD_Y);
+		return getRawAxis(DPAD_Y);
 	}
 
 	public boolean getButtonLeftBumper()
 	{
-		return gamepad.getRawButton(BTN_LEFT_BUMPER);
+		return getRawButton(BTN_LEFT_BUMPER);
 	}
 
 	public boolean getButtonRightBumper()
 	{
-		return gamepad.getRawButton(BTN_RIGHT_BUMPER);
+		return getRawButton(BTN_RIGHT_BUMPER);
 	}
 
 	public boolean getButtonLeftJoystick()
 	{
-		return gamepad.getRawButton(BTN_JS_LEFT);
+		return getRawButton(BTN_JS_LEFT);
 	}
 
 	public boolean getButtonRightJoystick()
 	{
-		return gamepad.getRawButton(BTN_JS_RIGHT);
+		return getRawButton(BTN_JS_RIGHT);
 	}
 
 	public boolean getButtonA()
 	{
-		return gamepad.getRawButton(BTN_A);
+		return getRawButton(BTN_A);
 	}
 
 	public boolean getButtonB()
 	{
-		return gamepad.getRawButton(BTN_B);
+		return getRawButton(BTN_B);
 	}
 
 	public boolean getButtonX()
 	{
-		return gamepad.getRawButton(BTN_X);
+		return getRawButton(BTN_X);
 	}
 
 	public boolean getButtonY()
 	{
-		return gamepad.getRawButton(BTN_Y);
+		return getRawButton(BTN_Y);
 	}
 
 	public boolean getButtonStart()
 	{
-		return gamepad.getRawButton(BTN_START);
+		return getRawButton(BTN_START);
 	}
 
 	public boolean getButtonSelect()
 	{
-		return gamepad.getRawButton(BTN_SELECT);
+		return getRawButton(BTN_SELECT);
 	}
 
 	public double getTriggerValue()
 	{
-		return -gamepad.getRawAxis(JS_TRIGGERS);
+		return -getRawAxis(JS_TRIGGERS);
 	}
 
 	public boolean getRightTrigger()
@@ -206,32 +204,32 @@ public class XBoxGamepad
 
 	public void logAxes()
 	{
-		SmartDashboard.putNumber("GamePad Axis 1", gamepad.getRawAxis(1));
-		SmartDashboard.putNumber("GamePad Axis 2", gamepad.getRawAxis(2));
-		SmartDashboard.putNumber("GamePad Axis 3", gamepad.getRawAxis(3));
-		SmartDashboard.putNumber("GamePad Axis 4", gamepad.getRawAxis(4));
-		SmartDashboard.putNumber("GamePad Axis 5", gamepad.getRawAxis(5));
-		SmartDashboard.putNumber("GamePad Axis 6", gamepad.getRawAxis(6));
-		SmartDashboard.putNumber("GamePad Axis 7", gamepad.getRawAxis(7));
-		SmartDashboard.putNumber("GamePad Axis 8", gamepad.getRawAxis(8));
-		SmartDashboard.putNumber("GamePad Axis 9", gamepad.getRawAxis(9));
-		SmartDashboard.putNumber("GamePad Axis 10", gamepad.getRawAxis(10));
-		SmartDashboard.putNumber("GamePad Axis 11", gamepad.getRawAxis(11));
-		SmartDashboard.putNumber("GamePad Axis 12", gamepad.getRawAxis(12));
+		SmartDashboard.putNumber("GamePad Axis 1", getRawAxis(1));
+		SmartDashboard.putNumber("GamePad Axis 2", getRawAxis(2));
+		SmartDashboard.putNumber("GamePad Axis 3", getRawAxis(3));
+		SmartDashboard.putNumber("GamePad Axis 4", getRawAxis(4));
+		SmartDashboard.putNumber("GamePad Axis 5", getRawAxis(5));
+		SmartDashboard.putNumber("GamePad Axis 6", getRawAxis(6));
+		SmartDashboard.putNumber("GamePad Axis 7", getRawAxis(7));
+		SmartDashboard.putNumber("GamePad Axis 8", getRawAxis(8));
+		SmartDashboard.putNumber("GamePad Axis 9", getRawAxis(9));
+		SmartDashboard.putNumber("GamePad Axis 10", getRawAxis(10));
+		SmartDashboard.putNumber("GamePad Axis 11", getRawAxis(11));
+		SmartDashboard.putNumber("GamePad Axis 12", getRawAxis(12));
 	}
 
 	public void logButtons()
 	{
-		SmartDashboard.putBoolean("GamePad Button 1", gamepad.getRawButton(1));
-		SmartDashboard.putBoolean("GamePad Button 2", gamepad.getRawButton(1));
-		SmartDashboard.putBoolean("GamePad Button 3", gamepad.getRawButton(1));
-		SmartDashboard.putBoolean("GamePad Button 4", gamepad.getRawButton(1));
-		SmartDashboard.putBoolean("GamePad Button 5", gamepad.getRawButton(1));
-		SmartDashboard.putBoolean("GamePad Button 6", gamepad.getRawButton(1));
-		SmartDashboard.putBoolean("GamePad Button 7", gamepad.getRawButton(1));
-		SmartDashboard.putBoolean("GamePad Button 8", gamepad.getRawButton(1));
-		SmartDashboard.putBoolean("GamePad Button 9", gamepad.getRawButton(1));
-		SmartDashboard.putBoolean("GamePad Button 10", gamepad.getRawButton(1));
+		SmartDashboard.putBoolean("GamePad Button 1", getRawButton(1));
+		SmartDashboard.putBoolean("GamePad Button 2", getRawButton(1));
+		SmartDashboard.putBoolean("GamePad Button 3", getRawButton(1));
+		SmartDashboard.putBoolean("GamePad Button 4", getRawButton(1));
+		SmartDashboard.putBoolean("GamePad Button 5", getRawButton(1));
+		SmartDashboard.putBoolean("GamePad Button 6", getRawButton(1));
+		SmartDashboard.putBoolean("GamePad Button 7", getRawButton(1));
+		SmartDashboard.putBoolean("GamePad Button 8", getRawButton(1));
+		SmartDashboard.putBoolean("GamePad Button 9", getRawButton(1));
+		SmartDashboard.putBoolean("GamePad Button 10", getRawButton(1));
 	}
 
 	public double getFilteredAxis(int axis, int FILTER_TYPE)
