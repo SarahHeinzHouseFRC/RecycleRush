@@ -6,15 +6,10 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import org.sharp.frc.team3260.RecycleRush.commands.DriveWithJoystick;
+import org.sharp.frc.team3260.RecycleRush.commands.SHARPDrive;
 
-/**
- * The DriveTrain subsystem controls the robot's chassis and reads in
- * information about it's speed and position.
- */
 public class DriveTrain extends Subsystem
 {
-	// Subsystem devices
 	private CANTalon frontLeft, frontRight, backLeft, backRight;
 	private RobotDrive drive;
 	private Encoder frontLeftEncoder, frontRightEncoder, backLeftEncoder, backRightEncoder;
@@ -79,7 +74,7 @@ public class DriveTrain extends Subsystem
 	 */
 	public void initDefaultCommand()
 	{
-		setDefaultCommand(new DriveWithJoystick());
+		setDefaultCommand(new SHARPDrive());
 	}
 
 	/**
@@ -97,6 +92,11 @@ public class DriveTrain extends Subsystem
 	public void tankDrive(double leftAxis, double rightAxis)
 	{
 		drive.tankDrive(leftAxis, rightAxis);
+	}
+
+	public void fieldCentricMecanumDrive(double forward, double strafe, double rotate)
+	{
+		// TODO: Driving
 	}
 
 	/**

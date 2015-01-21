@@ -27,7 +27,7 @@ public class DriveForward extends Command
 
 	public DriveForward(double dist, double maxSpeed)
 	{
-		requires(Robot.drivetrain);
+		requires(Robot.getDrivetrain());
 		distance = dist;
 		driveForwardSpeed = maxSpeed;
 	}
@@ -43,11 +43,11 @@ public class DriveForward extends Command
 		//	error = (distance - Robot.drivetrain.getRightEncoder().getDistance());
 		if(driveForwardSpeed * KP * error >= driveForwardSpeed)
 		{
-			Robot.drivetrain.tankDrive(driveForwardSpeed, driveForwardSpeed);
+			Robot.getDrivetrain().tankDrive(driveForwardSpeed, driveForwardSpeed);
 		}
 		else
 		{
-			Robot.drivetrain.tankDrive(driveForwardSpeed * KP * error, driveForwardSpeed * KP * error);
+			Robot.getDrivetrain().tankDrive(driveForwardSpeed * KP * error, driveForwardSpeed * KP * error);
 		}
 	}
 
@@ -58,7 +58,7 @@ public class DriveForward extends Command
 
 	protected void end()
 	{
-		Robot.drivetrain.stop();
+		Robot.getDrivetrain().stop();
 	}
 
 	protected void interrupted()

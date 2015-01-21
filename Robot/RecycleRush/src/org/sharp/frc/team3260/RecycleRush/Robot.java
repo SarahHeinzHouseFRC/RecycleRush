@@ -11,23 +11,21 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
 public class Robot extends IterativeRobot
 {
-	Command autonomousCommand;
-	public static OI oi;
+	private Command autonomousCommand;
+	private static OI oi;
 
-	public static DriveTrain drivetrain;
+	private static DriveTrain drivetrain;
 
-	public SendableChooser autoChooser;
+	private SendableChooser autoChooser;
 
 	public void robotInit()
 	{
-		// Initialize the subsystems
 		drivetrain = new DriveTrain();
 
 		SmartDashboard.putData(drivetrain);
 
 		oi = new OI();
 
-		// instantiate the command used for the autonomous period
 		autoChooser = new SendableChooser();
 		autoChooser.addObject("Drive Forward", new DriveForward());
 		SmartDashboard.putData("Auto Mode", autoChooser);
@@ -48,24 +46,18 @@ public class Robot extends IterativeRobot
 
 	public void teleopInit()
 	{
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
 		if(autonomousCommand != null)
 		{
 			autonomousCommand.cancel();
 		}
 	}
 
-	// This function is called periodically during operator control
 	public void teleopPeriodic()
 	{
 		Scheduler.getInstance().run();
 		log();
 	}
 
-	// This function called periodically during test mode
 	public void testPeriodic()
 	{
 		LiveWindow.run();
@@ -79,6 +71,11 @@ public class Robot extends IterativeRobot
 	public void disabledPeriodic()
 	{
 		log();
+	}
+
+	public static DriveTrain getDrivetrain()
+	{
+		return drivetrain;
 	}
 
 	/**
