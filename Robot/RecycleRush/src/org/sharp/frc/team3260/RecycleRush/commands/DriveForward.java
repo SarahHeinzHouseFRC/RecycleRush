@@ -13,7 +13,7 @@ public class DriveForward extends Command
 	private double distance;
 	private double error;
 	private final double TOLERANCE = .1;
-	private final double KP = -1.0 / 5.0;
+	private final double kP = -1.0 / 5.0;
 
 	public DriveForward()
 	{
@@ -40,14 +40,14 @@ public class DriveForward extends Command
 
 	protected void execute()
 	{
-		//	error = (distance - Robot.drivetrain.getRightEncoder().getDistance());
-		if(driveForwardSpeed * KP * error >= driveForwardSpeed)
+		error = 0; // (distance - Robot.drivetrain.getRightEncoder().getDistance());
+		if(driveForwardSpeed * kP * error >= driveForwardSpeed)
 		{
 			Robot.getDrivetrain().tankDrive(driveForwardSpeed, driveForwardSpeed);
 		}
 		else
 		{
-			Robot.getDrivetrain().tankDrive(driveForwardSpeed * KP * error, driveForwardSpeed * KP * error);
+			Robot.getDrivetrain().tankDrive(driveForwardSpeed * kP * error, driveForwardSpeed * kP * error);
 		}
 	}
 
