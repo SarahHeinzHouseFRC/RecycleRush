@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.commands.DriveForward;
+import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyro;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
 public class Robot extends IterativeRobot
@@ -29,6 +30,8 @@ public class Robot extends IterativeRobot
 		autoChooser = new SendableChooser();
 		autoChooser.addObject("Drive Forward", new DriveForward());
 		SmartDashboard.putData("Auto Mode", autoChooser);
+
+		SmartDashboard.putData("Zero Gyro", new ZeroGyro());
 	}
 
 	public void autonomousInit()

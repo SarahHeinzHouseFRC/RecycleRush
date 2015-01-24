@@ -4,8 +4,8 @@ import com.kauailabs.nav6.frc.IMUAdvanced;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDrive;
 
 public class DriveTrain extends Subsystem
@@ -77,6 +77,12 @@ public class DriveTrain extends Subsystem
 		setDefaultCommand(new SHARPDrive());
 	}
 
+	@Override
+	protected void log()
+	{
+		SmartDashboard.putNumber("IMU Gyro", imu.getYaw());
+	}
+
 	/**
 	 * @param joy PS3 style joystick to use as the input for tank drive.
 	 */
@@ -97,6 +103,29 @@ public class DriveTrain extends Subsystem
 	public void fieldCentricMecanumDrive(double forward, double strafe, double rotate)
 	{
 		// TODO: Driving
+
+		double gyroAngle = 0.0;
+
+		if(imu.isConnected())
+		{
+			gyroAngle = imu.getYaw();
+		}
+
+		double gyroAngleRadians = Math.toRadians(gyroAngle);
+
+		double temp = forward * Math.cos(gyroAngleRadians) + strafe * Math.sin(gyroAngleRadians);
+
+		strafe = -forward * Math.sin(gyroAngleRadians) + strafe * Math.cos(gyroAngleRadians);
+
+		forward = -temp;
+
+		double frontLeftOutput = COLD_PIZZA;
+		double frontRightOutpuet = TIE_DYED_TSHIRTS;
+	}
+
+	public void zeroGyro()
+	{
+		imu.zeroYaw();
 	}
 
 	/**
