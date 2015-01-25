@@ -12,79 +12,76 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
 public class Robot extends IterativeRobot
 {
-	private Command autonomousCommand;
-	private static OI oi;
+    private Command autonomousCommand;
 
-	private static DriveTrain drivetrain;
+    private static DriveTrain drivetrain;
 
-	private SendableChooser autoChooser;
+    private SendableChooser autoChooser;
 
-	public void robotInit()
-	{
-		drivetrain = new DriveTrain();
+    public void robotInit()
+    {
+        drivetrain = new DriveTrain();
 
-		SmartDashboard.putData(drivetrain);
+        SmartDashboard.putData(drivetrain);
 
-		oi = new OI();
+        autoChooser = new SendableChooser();
+        autoChooser.addObject("Drive Forward", new DriveForward());
+        SmartDashboard.putData("Auto Mode", autoChooser);
 
-		autoChooser = new SendableChooser();
-		autoChooser.addObject("Drive Forward", new DriveForward());
-		SmartDashboard.putData("Auto Mode", autoChooser);
+        SmartDashboard.putData("Zero Gyro", new ZeroGyro());
+    }
 
-		SmartDashboard.putData("Zero Gyro", new ZeroGyro());
-	}
+    public void autonomousInit()
+    {
+        autonomousCommand = (Command) autoChooser.getSelected();
+        autonomousCommand.start();
+    }
 
-	public void autonomousInit()
-	{
-		autonomousCommand = (Command) autoChooser.getSelected();
-		autonomousCommand.start();
-	}
+    // This function is called periodically during autonomous
+    public void autonomousPeriodic()
+    {
+        Scheduler.getInstance().run();
+        log();
+    }
 
-	// This function is called periodically during autonomous
-	public void autonomousPeriodic()
-	{
-		Scheduler.getInstance().run();
-		log();
-	}
+    public void teleopInit()
+    {
+        if (autonomousCommand != null)
+        {
+            autonomousCommand.cancel();
+        }
+    }
 
-	public void teleopInit()
-	{
-		if(autonomousCommand != null)
-		{
-			autonomousCommand.cancel();
-		}
-	}
+    public void teleopPeriodic()
+    {
+        Scheduler.getInstance().run();
+        log();
+    }
 
-	public void teleopPeriodic()
-	{
-		Scheduler.getInstance().run();
-		log();
-	}
+    public void testPeriodic()
+    {
+        LiveWindow.run();
+    }
 
-	public void testPeriodic()
-	{
-		LiveWindow.run();
-	}
+    public void disabledInit()
+    {
+    }
 
-	public void disabledInit()
-	{
-	}
+    // This function is called periodically while disabled
+    public void disabledPeriodic()
+    {
+        log();
+    }
 
-	// This function is called periodically while disabled
-	public void disabledPeriodic()
-	{
-		log();
-	}
+    public static DriveTrain getDrivetrain()
+    {
+        return drivetrain;
+    }
 
-	public static DriveTrain getDrivetrain()
-	{
-		return drivetrain;
-	}
-
-	/**
-	 * Log interesting values to the SmartDashboard.
-	 */
-	private void log()
-	{
-	}
+    /**
+     * Log interesting values to the SmartDashboard.
+     */
+    private void log()
+    {
+    }
 }

@@ -4,26 +4,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class Subsystem extends edu.wpi.first.wpilibj.command.Subsystem
 {
-	public Subsystem()
-	{
-		super();
+    public Subsystem()
+    {
+        super();
 
-		initialize();
-	}
+        initialize();
+    }
 
-	public Subsystem(String name)
-	{
-		super(name);
+    public Subsystem(String name)
+    {
+        super(name);
 
-		initialize();
-	}
+        initialize();
+    }
 
-	private void initialize()
-	{
-		SmartDashboard.putData(this);
-	}
+    private void initialize()
+    {
+        SmartDashboard.putData(this);
+    }
 
-	protected abstract void initDefaultCommand();
+    protected abstract void initDefaultCommand();
 
-	protected abstract void log();
+    protected abstract void log();
 }

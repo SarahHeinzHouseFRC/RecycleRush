@@ -5,31 +5,31 @@ import org.sharp.frc.team3260.RecycleRush.Robot;
 
 public class ZeroGyro extends Command
 {
-	@Override
-	protected void initialize()
-	{
-		requires(Robot.getDrivetrain());
-	}
+    @Override
+    protected void initialize()
+    {
+        requires(Robot.getDrivetrain());
+    }
 
-	@Override
-	protected void execute()
-	{
-		Robot.getDrivetrain().zeroGyro();
-	}
+    @Override
+    protected void execute()
+    {
+        Robot.getDrivetrain().zeroGyro();
+    }
 
-	@Override
-	protected boolean isFinished()
-	{
-		return true;
-	}
+    @Override
+    protected boolean isFinished()
+    {
+        return true;
+    }
 
-	@Override
-	protected void end()
-	{
-	}
+    @Override
+    protected void end()
+    {
+    }
 
-	@Override
-	protected void interrupted()
-	{
-	}
+    @Override
+    protected void interrupted()
+    {
+    }
 }

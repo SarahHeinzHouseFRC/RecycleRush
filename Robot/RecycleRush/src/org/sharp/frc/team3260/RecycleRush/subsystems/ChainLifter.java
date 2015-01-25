@@ -10,15 +10,15 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 public class ChainLifter extends Subsystem
 {
 
-	@Override
-	protected void initDefaultCommand()
-	{
+    @Override
+    protected void initDefaultCommand()
+    {
 
-	}
+    }
 
-	@Override
-	protected void log()
-	{
+    @Override
+    protected void log()
+    {
 
-	}
+    }
 }

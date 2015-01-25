@@ -9,60 +9,60 @@ import org.sharp.frc.team3260.RecycleRush.Robot;
  */
 public class DriveForward extends Command
 {
-	private double driveForwardSpeed;
-	private double distance;
-	private double error;
-	private final double TOLERANCE = .1;
-	private final double kP = -1.0 / 5.0;
+    private double driveForwardSpeed;
+    private double distance;
+    private double error;
+    private final double TOLERANCE = .1;
+    private final double kP = -1.0 / 5.0;
 
-	public DriveForward()
-	{
-		this(10, 0.5);
-	}
+    public DriveForward()
+    {
+        this(10, 0.5);
+    }
 
-	public DriveForward(double dist)
-	{
-		this(dist, 0.5);
-	}
+    public DriveForward(double dist)
+    {
+        this(dist, 0.5);
+    }
 
-	public DriveForward(double dist, double maxSpeed)
-	{
-		requires(Robot.getDrivetrain());
-		distance = dist;
-		driveForwardSpeed = maxSpeed;
-	}
+    public DriveForward(double dist, double maxSpeed)
+    {
+        requires(Robot.getDrivetrain());
+        distance = dist;
+        driveForwardSpeed = maxSpeed;
+    }
 
-	protected void initialize()
-	{
-		//	Robot.drivetrain.getRightEncoder().reset();
-		setTimeout(2);
-	}
+    protected void initialize()
+    {
+        //	Robot.drivetrain.getRightEncoder().reset();
+        setTimeout(2);
+    }
 
-	protected void execute()
-	{
-		error = 0; // (distance - Robot.drivetrain.getRightEncoder().getDistance());
-		if(driveForwardSpeed * kP * error >= driveForwardSpeed)
-		{
-			Robot.getDrivetrain().tankDrive(driveForwardSpeed, driveForwardSpeed);
-		}
-		else
-		{
-			Robot.getDrivetrain().tankDrive(driveForwardSpeed * kP * error, driveForwardSpeed * kP * error);
-		}
-	}
+    protected void execute()
+    {
+        error = 0; // (distance - Robot.drivetrain.getRightEncoder().getDistance());
+        if (driveForwardSpeed * kP * error >= driveForwardSpeed)
+        {
+            Robot.getDrivetrain().tankDrive(driveForwardSpeed, driveForwardSpeed);
+        }
+        else
+        {
+            Robot.getDrivetrain().tankDrive(driveForwardSpeed * kP * error, driveForwardSpeed * kP * error);
+        }
+    }
 
-	protected boolean isFinished()
-	{
-		return (Math.abs(error) <= TOLERANCE) || isTimedOut();
-	}
+    protected boolean isFinished()
+    {
+        return (Math.abs(error) <= TOLERANCE) || isTimedOut();
+    }
 
-	protected void end()
-	{
-		Robot.getDrivetrain().stop();
-	}
+    protected void end()
+    {
+        Robot.getDrivetrain().stop();
+    }
 
-	protected void interrupted()
-	{
-		end();
-	}
+    protected void interrupted()
+    {
+        end();
+    }
 }
