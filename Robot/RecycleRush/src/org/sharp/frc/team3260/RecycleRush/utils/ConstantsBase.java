@@ -25,8 +25,8 @@ public abstract class ConstantsBase
                 String[] line = Util.split(lines[i], "=");
                 if (line.length != 2)
                 {
-                    System.out.println("Error: invalid constants file line: " +
-                            (lines[i].length() == 0 ? "(empty line)" : lines[i]));
+                    System.out.println("Error: invalid constants file line: " + (lines[i].length() == 0 ? "(empty line)" : lines[i]));
+
                     continue;
                 }
 

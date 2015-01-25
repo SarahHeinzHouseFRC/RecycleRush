@@ -272,7 +272,7 @@ public class DriveTrain extends Subsystem
      * gyro correction is turned off.
      *
      * @param rotationSpeed
-     * @return
+     * @return rotationSpeed
      */
     private double getRotationPID(double rotationSpeed)
     {

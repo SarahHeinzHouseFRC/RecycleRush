@@ -8,13 +8,8 @@ import org.sharp.frc.team3260.RecycleRush.Robot;
 
 public class FieldCentricMecanumDriveCommand extends Command
 {
-
-    /**
-     * The joystick z-axis value below which the robot will not rotate. this is
-     * to prevent accidental small twists of the joystick from affecting its
-     * trajectory.
-     */
     public double ROTATION_DEADBAND = 0.2;
+
     /**
      * The maximum speed that the robot is allowed to rotate at. The joystick
      * value is scaled down to this value.
@@ -80,28 +75,16 @@ public class FieldCentricMecanumDriveCommand extends Command
         );
     }
 
-    /**
-     * This command never ends on its own but it could be interrupted, for
-     * example if we reverted back to our failsafe driving mode.
-     *
-     * @return false
-     */
     protected boolean isFinished()
     {
         return false;
     }
 
-    /**
-     * Stops the drive motors.
-     */
     protected void end()
     {
         Robot.getDrivetrain().stop();
     }
 
-    /**
-     * Stops the drive motors.
-     */
     protected void interrupted()
     {
         end();

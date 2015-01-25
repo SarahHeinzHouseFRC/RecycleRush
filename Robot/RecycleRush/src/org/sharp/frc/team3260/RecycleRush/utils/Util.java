@@ -8,12 +8,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
-/**
- * Contains basic functions that are used often.
- *
- * @author richard@team254.com (Richard Lin)
- * @author brandon.gonzalez.451@gmail.com (Brandon Gonzalez)
- */
 public class Util
 {
     // Prevent this class from being instantiated.
@@ -83,6 +77,7 @@ public class Util
         try
         {
             double d = Double.parseDouble(str);
+
             return true;
         }
         catch (NumberFormatException e)
@@ -145,10 +140,11 @@ public class Util
         {
             return 1.0;
         }
-        if (num < -1.0)
+        else if (num < -1.0)
         {
             return -1.0;
         }
+
         return num;
     }
 
@@ -179,9 +175,9 @@ public class Util
     public static void normalize(double wheelSpeeds[])
     {
         double maxMagnitude = Math.abs(wheelSpeeds[0]);
-        int i;
-        // Loops through each number to find the beggest absolute value.
-        for (i = 1; i < wheelSpeeds.length; i++)
+
+        // Loops through each number to find the biggest absolute value.
+        for (int i = 1; i < wheelSpeeds.length; i++)
         {
             double temp = Math.abs(wheelSpeeds[i]);
             if (maxMagnitude < temp)
@@ -189,11 +185,12 @@ public class Util
                 maxMagnitude = temp;
             }
         }
+
         // If the maximum is greater than 1.0, reduce all the values down
         // proportionally so the maximum becomes 1.0.
         if (maxMagnitude > 1.0)
         {
-            for (i = 0; i < wheelSpeeds.length; i++)
+            for (int i = 0; i < wheelSpeeds.length; i++)
             {
                 wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
             }

@@ -7,6 +7,9 @@ public class Constants extends ConstantsBase
     public static final Constant mainGamepadPort = new Constant("mainGamepadPort", 1);
     public static final Constant unimportantPersonsGamepadPort = new Constant("unimportantPersonsGamepadPort", 2);
 
+    public static final Constant gripperSolenoidForwardChannel = new Constant("gripperSolenoidForwardChannel", 0);
+    public static final Constant gripperSolenoidReverseChannel = new Constant("gripperSolenoidReverseChannel", 0);
+
     static
     {
         readConstantsFromFile();
