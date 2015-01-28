@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
@@ -29,22 +30,25 @@ public class DriveTrain extends Subsystem
 
     protected double ROTATION_DEADBAND = 0.05;
 
+    protected double rotationTarget = 0.0;
+    protected boolean rotatingToTarget = false;
+
     protected PIDController rotationController;
 
     public DriveTrain()
     {
-        frontLeft = new CANTalon(0);
-        frontRight = new CANTalon(1);
-        backLeft = new CANTalon(2);
-        backRight = new CANTalon(3);
+        frontLeft = new CANTalon(Constants.driveFrontLeftPort.getInt());
+        frontRight = new CANTalon(Constants.driveFrontRightPort.getInt());
+        backLeft = new CANTalon(Constants.driveBackLeftPort.getInt());
+        backRight = new CANTalon(Constants.driveBackRightPort.getInt());
 
         drive = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
         drive.setSafetyEnabled(true);
         drive.setExpiration(0.1);
-        drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, true);
-        drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, true);
-        drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, true);
-        drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, true);
+        drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, Constants.driveFrontLeftInverted.getInt() == 1);
+        drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, Constants.driveBackLeftInverted.getInt() == 1);
+        drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, Constants.driveFrontRightInverted.getInt() == 1);
+        drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, Constants.driveBackRightInverted.getInt() == 1);
 
         frontLeftEncoder = new Encoder(1, 2, true, EncodingType.k4X);
         frontRightEncoder = new Encoder(3, 4, true, EncodingType.k4X);
@@ -306,6 +310,16 @@ public class DriveTrain extends Subsystem
         }
         // Unless told otherwise, return the rate that was passed in.
         return rotationSpeed;
+    }
+
+    public void setRotationTarget(double rotationTarget)
+    {
+        this.rotationTarget = rotationTarget;
+    }
+
+    public void setRotatingToTarget(boolean rotatingToTarget)
+    {
+        this.rotatingToTarget = rotatingToTarget;
     }
 
     public IMUAdvanced getIMU()

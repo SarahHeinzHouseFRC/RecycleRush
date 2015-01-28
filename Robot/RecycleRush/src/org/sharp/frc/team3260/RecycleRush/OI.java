@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.joystick.XBoxGamepad;
-
+import org.sharp.frc.team3260.RecycleRush.joystick.triggers.AxisButton;
 
 public class OI
 {
@@ -16,8 +16,8 @@ public class OI
 
     public Button manipulatorGamepadA = new JoystickButton(manipulatorGamepad, XBoxGamepad.BTN_A),
             manipulatorGamepadB = new JoystickButton(manipulatorGamepad, XBoxGamepad.BTN_B),
-            manipulatorGamepadX = new JoystickButton(manipulatorGamepad, XBoxGamepad.BTN_X),
-            manipulatorGamepadY = new JoystickButton(manipulatorGamepad, XBoxGamepad.BTN_Y);
+            manipulatorGamepadLeftTrigger = new AxisButton(manipulatorGamepad, XBoxGamepad.JS_TRIGGERS, 0.5),
+            manipulatorGamepadRightTrigger = new AxisButton(manipulatorGamepad, XBoxGamepad.JS_TRIGGERS, -0.5);
 
     public OI()
     {
@@ -30,15 +30,17 @@ public class OI
         manipulatorGamepadA.whileHeld(new AidanvatorUpCommand());
         manipulatorGamepadB.whileHeld(new AidanvatorDownCommand());
 
-        manipulatorGamepadX.whenReleased(new CloseGripperCommand());
-        manipulatorGamepadY.whenReleased(new OpenGripperCommand());
+        manipulatorGamepadLeftTrigger.whenReleased(new CloseGripperCommand());
+        manipulatorGamepadRightTrigger.whenReleased(new OpenGripperCommand());
+
+        instance = this;
     }
 
     public static OI getInstance()
     {
         if (instance == null)
         {
-            instance = new OI();
+            return new OI();
         }
 
         return instance;
