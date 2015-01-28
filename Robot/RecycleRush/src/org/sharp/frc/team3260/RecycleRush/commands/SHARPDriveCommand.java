@@ -3,7 +3,7 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.Robot;
-import org.sharp.frc.team3260.RecycleRush.utils.MathUtils;
+import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 /**
  * @author Eddie
@@ -98,7 +98,7 @@ public class SHARPDriveCommand extends Command
             {
                 double alpha = 0.1;
 
-                quickStopAccumulator = (1 - alpha) * quickStopAccumulator + alpha * MathUtils.limit(wheel, 1.0) * 5;
+                quickStopAccumulator = (1 - alpha) * quickStopAccumulator + alpha * Util.limit(wheel, 1.0) * 5;
             }
 
             overPower = 1.0;

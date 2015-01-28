@@ -196,4 +196,9 @@ public class Util
             }
         }
     }
+
+    public static double limit(double val, double limit)
+    {
+        return (Math.abs(val) < Math.abs(limit)) ? val : (val < 0 ? -limit : limit);
+    }
 }

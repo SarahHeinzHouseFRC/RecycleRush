@@ -17,7 +17,7 @@ public class XBoxGamepad extends Joystick
     private static final int DPAD_X = 6,
             DPAD_Y = 8;
 
-    private static final int BTN_A = 1,
+    public static final int BTN_A = 1,
             BTN_B = 2,
             BTN_X = 3,
             BTN_Y = 4,
