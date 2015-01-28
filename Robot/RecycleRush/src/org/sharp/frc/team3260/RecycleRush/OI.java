@@ -1,7 +1,8 @@
 package org.sharp.frc.team3260.RecycleRush;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.commands.DriveForward;
+import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.joystick.XBoxGamepad;
 
 /**
@@ -14,14 +15,15 @@ public class OI
     private static OI instance;
 
     public XBoxGamepad mainGamepad;
+    public XBoxGamepad manipulatorGamepad;
 
     public OI()
     {
-        mainGamepad = new XBoxGamepad(Constants.mainGamepadPort.getInt());
+        mainGamepad = new XBoxGamepad(Constants.mainGamepadID.getInt());
+        manipulatorGamepad = new XBoxGamepad(Constants.manipulatorGamepadID.getInt());
 
-        // SmartDashboard Buttons
-        SmartDashboard.putData("Drive Forward", new DriveForward(2.25));
-        SmartDashboard.putData("Drive Backward", new DriveForward(-2.25));
+        SmartDashboard.putData("SHARPDrive", new SHARPDriveCommand());
+        SmartDashboard.putData("Field Centric Mecanum Drive", new FieldCentricMecanumDriveCommand());
     }
 
     public static OI getInstance()
@@ -37,5 +39,10 @@ public class OI
     public XBoxGamepad getMainGamepad()
     {
         return mainGamepad;
+    }
+
+    public XBoxGamepad getManipulatorGamepad()
+    {
+        return manipulatorGamepad;
     }
 }

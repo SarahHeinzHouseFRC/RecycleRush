@@ -8,13 +8,13 @@ import org.sharp.frc.team3260.RecycleRush.utils.MathUtils;
 /**
  * @author Eddie
  */
-public class SHARPDrive extends Command
+public class SHARPDriveCommand extends Command
 {
     private double oldWheel = 0.0;
 
     private double quickStopAccumulator;
 
-    public SHARPDrive()
+    public SHARPDriveCommand()
     {
         requires(Robot.getDrivetrain());
     }

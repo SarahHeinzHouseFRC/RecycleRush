@@ -62,16 +62,8 @@ public class FieldCentricMecanumDriveCommand extends Command
         SmartDashboard.putNumber("Joystick Y", y);
         SmartDashboard.putNumber("Joystick Rotation", z);
         SmartDashboard.putNumber("Scaled Rotation", scaledZ);
-        // Actually drive the robot using the joystick values for x and y and
-        // the scaled z value. The inversions are necessary because of the way
-        // the rest of the code is set. We shouldn't touch them until we have
-        // time to go through and make sure we can fix all the unnecessary
-        // inversions.
-        Robot.getDrivetrain().mecanumDrive_Cartesian(
-                x,
-                -y,
-                scaledZ,
-                Robot.getDrivetrain().getIMU().getYaw()
+
+        Robot.getDrivetrain().mecanumDrive_Cartesian(x, -y, scaledZ, Robot.getDrivetrain().getIMU().getYaw()
         );
     }
 
