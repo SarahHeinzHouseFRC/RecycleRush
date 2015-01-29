@@ -34,13 +34,15 @@ public class DriveForwardCommand extends Command
 
     protected void initialize()
     {
-        //	Robot.drivetrain.getRightEncoder().reset();
+        Robot.getDrivetrain().resetEncoders();
+
         setTimeout(2);
     }
 
     protected void execute()
     {
-        error = 0; // (distance - Robot.drivetrain.getRightEncoder().getDistance());
+        error = (distance - Robot.getDrivetrain().getAverageEncoderDistance());
+
         if (driveForwardSpeed * kP * error >= driveForwardSpeed)
         {
             Robot.getDrivetrain().tankDrive(driveForwardSpeed, driveForwardSpeed);

@@ -201,4 +201,22 @@ public class Util
     {
         return (Math.abs(val) < Math.abs(limit)) ? val : (val < 0 ? -limit : limit);
     }
+
+    /**
+     * Returns the arithmetic mean of the array.
+     *
+     * @param vals values to find average of
+     * @return the mean value
+     */
+    public static double mean(double[] vals)
+    {
+        double sum = 0;
+
+        for (int x = 0; x < vals.length; x++)
+        {
+            sum += vals[x];
+        }
+
+        return sum / (double) vals.length;
+    }
 }

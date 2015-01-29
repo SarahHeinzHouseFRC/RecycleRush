@@ -7,13 +7,13 @@ public class AidanvatorHoldPositionCommand extends Command
 {
     public AidanvatorHoldPositionCommand()
     {
-        requires(Robot.getAidanvator());
+        requires(Robot.getElevator());
     }
 
     @Override
     protected void initialize()
     {
-        Robot.getAidanvator().stop();
+        Robot.getElevator().stop();
     }
 
     @Override

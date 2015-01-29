@@ -315,6 +315,8 @@ public class DriveTrain extends Subsystem
     public void setRotationTarget(double rotationTarget)
     {
         this.rotationTarget = rotationTarget;
+
+        rotationController.setSetpoint(rotationTarget);
     }
 
     public void setRotatingToTarget(boolean rotatingToTarget)
@@ -330,5 +332,18 @@ public class DriveTrain extends Subsystem
     public PIDSource getIMUPIDSource()
     {
         return imu;
+    }
+
+    public void resetEncoders()
+    {
+        frontLeftEncoder.reset();
+        frontRightEncoder.reset();
+        backLeftEncoder.reset();
+        backRightEncoder.reset();
+    }
+
+    public double getAverageEncoderDistance()
+    {
+        return Util.mean(new double[]{frontLeftEncoder.getDistance(), frontRightEncoder.getDistance(), backRightEncoder.getDistance(), backRightEncoder.getDistance()});
     }
 }

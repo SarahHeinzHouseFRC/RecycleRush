@@ -7,7 +7,7 @@ public class AidanvatorDownCommand extends Command
 {
     public AidanvatorDownCommand()
     {
-        requires(Robot.getAidanvator());
+        requires(Robot.getElevator());
     }
 
     @Override
@@ -19,7 +19,7 @@ public class AidanvatorDownCommand extends Command
     @Override
     protected void execute()
     {
-        Robot.getAidanvator().up();
+        Robot.getElevator().up();
     }
 
     @Override

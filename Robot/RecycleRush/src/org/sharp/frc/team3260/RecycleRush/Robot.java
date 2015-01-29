@@ -7,9 +7,8 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.commands.DriveForwardCommand;
-import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyroCommand;
-import org.sharp.frc.team3260.RecycleRush.subsystems.Aidanvator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
+import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
 
 public class Robot extends IterativeRobot
@@ -17,7 +16,7 @@ public class Robot extends IterativeRobot
     private Command autonomousCommand;
 
     private static DriveTrain drivetrain;
-    private static Aidanvator aidanvator;
+    private static Elevator elevator;
 
     private static Gripper gripper;
 
@@ -27,12 +26,11 @@ public class Robot extends IterativeRobot
     {
         drivetrain = new DriveTrain();
         gripper = new Gripper();
+        elevator = new Elevator();
 
         autoChooser = new SendableChooser();
         autoChooser.addObject("Drive Forward", new DriveForwardCommand());
         SmartDashboard.putData("Auto Mode", autoChooser);
-
-        SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
     }
 
     public void autonomousInit()
@@ -44,6 +42,7 @@ public class Robot extends IterativeRobot
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
+
         log();
     }
 
@@ -58,6 +57,7 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+
         log();
     }
 
@@ -80,9 +80,9 @@ public class Robot extends IterativeRobot
         return drivetrain;
     }
 
-    public static Aidanvator getAidanvator()
+    public static Elevator getElevator()
     {
-        return aidanvator;
+        return elevator;
     }
 
     public static Gripper getGripper()

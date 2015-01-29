@@ -63,8 +63,7 @@ public class FieldCentricMecanumDriveCommand extends Command
         SmartDashboard.putNumber("Joystick Rotation", z);
         SmartDashboard.putNumber("Scaled Rotation", scaledZ);
 
-        Robot.getDrivetrain().mecanumDrive_Cartesian(x, -y, scaledZ, Robot.getDrivetrain().getIMU().getYaw()
-        );
+        Robot.getDrivetrain().mecanumDrive_Cartesian(x, -y, scaledZ, Robot.getDrivetrain().getIMU().getYaw());
     }
 
     protected boolean isFinished()

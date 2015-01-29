@@ -26,6 +26,7 @@ public class OI
 
         SmartDashboard.putData("SHARPDrive", new SHARPDriveCommand());
         SmartDashboard.putData("Field Centric Mecanum Drive", new FieldCentricMecanumDriveCommand());
+        SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
 
         manipulatorGamepadA.whileHeld(new AidanvatorUpCommand());
         manipulatorGamepadB.whileHeld(new AidanvatorDownCommand());

@@ -10,11 +10,11 @@ import org.sharp.frc.team3260.RecycleRush.Constants;
  * TODO: Aidanvator operator interface
  * TODO: Aidanvator automation commands
  */
-public class Aidanvator extends Subsystem
+public class Elevator extends Subsystem
 {
     private CANTalon aidanvatorCIM;
 
-    public Aidanvator()
+    public Elevator()
     {
         aidanvatorCIM = new CANTalon(Constants.aidanvatorCIM.getInt());
     }
