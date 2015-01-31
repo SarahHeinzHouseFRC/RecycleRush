@@ -3,7 +3,7 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 
-public class Gripper extends Subsystem
+public class Gripper extends SHARPSubsystem
 {
     private DoubleSolenoid gripperSolenoid;
 
@@ -30,5 +30,10 @@ public class Gripper extends Subsystem
     @Override
     protected void log()
     {
+    }
+
+    public static Gripper getInstance()
+    {
+        return (Gripper) instance;
     }
 }

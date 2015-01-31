@@ -1,7 +1,7 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.sharp.frc.team3260.RecycleRush.Robot;
+import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
 /**
  * This command drives the robot over a given distance with simple proportional
@@ -27,29 +27,29 @@ public class DriveForwardCommand extends Command
 
     public DriveForwardCommand(double dist, double maxSpeed)
     {
-        requires(Robot.getDrivetrain());
+        requires(DriveTrain.getInstance());
         distance = dist;
         driveForwardSpeed = maxSpeed;
     }
 
     protected void initialize()
     {
-        Robot.getDrivetrain().resetEncoders();
+        DriveTrain.getInstance().resetEncoders();
 
         setTimeout(2);
     }
 
     protected void execute()
     {
-        error = (distance - Robot.getDrivetrain().getAverageEncoderDistance());
+        error = (distance - DriveTrain.getInstance().getAverageEncoderDistance());
 
         if (driveForwardSpeed * kP * error >= driveForwardSpeed)
         {
-            Robot.getDrivetrain().tankDrive(driveForwardSpeed, driveForwardSpeed);
+            DriveTrain.getInstance().tankDrive(driveForwardSpeed, driveForwardSpeed);
         }
         else
         {
-            Robot.getDrivetrain().tankDrive(driveForwardSpeed * kP * error, driveForwardSpeed * kP * error);
+            DriveTrain.getInstance().tankDrive(driveForwardSpeed * kP * error, driveForwardSpeed * kP * error);
         }
     }
 
@@ -60,7 +60,7 @@ public class DriveForwardCommand extends Command
 
     protected void end()
     {
-        Robot.getDrivetrain().stop();
+        DriveTrain.getInstance().stop();
     }
 
     protected void interrupted()

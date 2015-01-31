@@ -1,26 +1,31 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
+import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 
-public class OpenGripperCommand extends Command
+public class ElevatorDownCommand extends Command
 {
+    public ElevatorDownCommand()
+    {
+        requires(Elevator.getInstance());
+    }
+
     @Override
     protected void initialize()
     {
-        requires(Gripper.getInstance());
+
     }
 
     @Override
     protected void execute()
     {
-        Gripper.getInstance().openGripper();
+        Elevator.getInstance().down();
     }
 
     @Override
     protected boolean isFinished()
     {
-        return true;
+        return false;
     }
 
     @Override

@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.OI;
-import org.sharp.frc.team3260.RecycleRush.Robot;
+import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
 public class FieldCentricMecanumDriveCommand extends Command
 {
@@ -18,7 +18,7 @@ public class FieldCentricMecanumDriveCommand extends Command
 
     public FieldCentricMecanumDriveCommand()
     {
-        requires(Robot.getDrivetrain());
+        requires(DriveTrain.getInstance());
     }
 
     /**
@@ -63,7 +63,7 @@ public class FieldCentricMecanumDriveCommand extends Command
         SmartDashboard.putNumber("Joystick Rotation", z);
         SmartDashboard.putNumber("Scaled Rotation", scaledZ);
 
-        Robot.getDrivetrain().mecanumDrive_Cartesian(x, -y, scaledZ, Robot.getDrivetrain().getIMU().getYaw());
+        DriveTrain.getInstance().mecanumDrive_Cartesian(x, -y, scaledZ, DriveTrain.getInstance().getIMU().getYaw());
     }
 
     protected boolean isFinished()
@@ -73,7 +73,7 @@ public class FieldCentricMecanumDriveCommand extends Command
 
     protected void end()
     {
-        Robot.getDrivetrain().stop();
+        DriveTrain.getInstance().stop();
     }
 
     protected void interrupted()

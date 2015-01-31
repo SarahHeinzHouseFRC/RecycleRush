@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.commands.DriveForwardCommand;
+import org.sharp.frc.team3260.RecycleRush.subsystems.ChainLifter;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
@@ -15,18 +16,14 @@ public class Robot extends IterativeRobot
 {
     private Command autonomousCommand;
 
-    private static DriveTrain drivetrain;
-    private static Elevator elevator;
-
-    private static Gripper gripper;
-
     private SendableChooser autoChooser;
 
     public void robotInit()
     {
-        drivetrain = new DriveTrain();
-        gripper = new Gripper();
-        elevator = new Elevator();
+        new DriveTrain();
+        new Elevator();
+        new Gripper();
+        new ChainLifter();
 
         autoChooser = new SendableChooser();
         autoChooser.addObject("Drive Forward", new DriveForwardCommand());
@@ -73,21 +70,6 @@ public class Robot extends IterativeRobot
     public void disabledPeriodic()
     {
         log();
-    }
-
-    public static DriveTrain getDrivetrain()
-    {
-        return drivetrain;
-    }
-
-    public static Elevator getElevator()
-    {
-        return elevator;
-    }
-
-    public static Gripper getGripper()
-    {
-        return gripper;
     }
 
     private void log()

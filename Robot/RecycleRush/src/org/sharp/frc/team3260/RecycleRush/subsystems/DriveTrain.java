@@ -7,11 +7,10 @@ import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
-import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
-public class DriveTrain extends Subsystem
+public class DriveTrain extends SHARPSubsystem
 {
     private RobotDrive drive;
     private CANTalon frontLeft, frontRight, backLeft, backRight;
@@ -85,14 +84,7 @@ public class DriveTrain extends Subsystem
         {
             LiveWindow.addSensor("IMU", "Gyro", imu);
 
-            rotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), new PIDOutput()
-            {
-                @Override
-                public void pidWrite(double output)
-                {
-                    rotationControllerOutput = output;
-                }
-            });
+            rotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), output -> rotationControllerOutput = output);
 
             SmartDashboard.putData("Rotation Controller", rotationController);
         }
@@ -169,7 +161,7 @@ public class DriveTrain extends Subsystem
      */
     public void mecanumDrive_Cartesian(double x, double y, double rotation)
     {
-        mecanumDrive_Cartesian(x, y, rotation, Robot.getDrivetrain().getIMU().getYaw() - gyroOffset);
+        mecanumDrive_Cartesian(x, y, rotation, getIMU().getYaw() - gyroOffset);
     }
 
     public void mecanumDrive_Orientation(double x, double y, double angle)
@@ -180,7 +172,7 @@ public class DriveTrain extends Subsystem
             rotationController.enable();
         }
 
-        mecanumDrive_Cartesian0(x, y, rotationControllerOutput, Robot.getDrivetrain().getIMU().getYaw());
+        mecanumDrive_Cartesian0(x, y, rotationControllerOutput, getIMU().getYaw());
     }
 
     /**
@@ -275,7 +267,7 @@ public class DriveTrain extends Subsystem
      * expected rate of rotation. If the rotation rate is above a threshold, the
      * gyro correction is turned off.
      *
-     * @param rotationSpeed
+     * @param rotationSpeed Desired rotation speed
      * @return rotationSpeed
      */
     private double getRotationPID(double rotationSpeed)
@@ -303,7 +295,7 @@ public class DriveTrain extends Subsystem
             // controller and set its setpoint to the current angle.
             if (Math.abs(rotationSpeed) < ROTATION_DEADBAND)
             {
-                gyroOffset = Robot.getDrivetrain().getIMU().getYaw();
+                gyroOffset = getIMU().getYaw();
                 rotationController.setSetpoint(gyroOffset);
                 rotationController.enable();
             }
@@ -345,5 +337,10 @@ public class DriveTrain extends Subsystem
     public double getAverageEncoderDistance()
     {
         return Util.mean(new double[]{frontLeftEncoder.getDistance(), frontRightEncoder.getDistance(), backRightEncoder.getDistance(), backRightEncoder.getDistance()});
+    }
+
+    public static DriveTrain getInstance()
+    {
+        return (DriveTrain) instance;
     }
 }

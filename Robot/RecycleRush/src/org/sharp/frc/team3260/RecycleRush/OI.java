@@ -28,8 +28,8 @@ public class OI
         SmartDashboard.putData("Field Centric Mecanum Drive", new FieldCentricMecanumDriveCommand());
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
 
-        manipulatorGamepadA.whileHeld(new AidanvatorUpCommand());
-        manipulatorGamepadB.whileHeld(new AidanvatorDownCommand());
+        manipulatorGamepadA.whileHeld(new ElevatorUpCommand());
+        manipulatorGamepadB.whileHeld(new ElevatorDownCommand());
 
         manipulatorGamepadLeftTrigger.whenReleased(new CloseGripperCommand());
         manipulatorGamepadRightTrigger.whenReleased(new OpenGripperCommand());

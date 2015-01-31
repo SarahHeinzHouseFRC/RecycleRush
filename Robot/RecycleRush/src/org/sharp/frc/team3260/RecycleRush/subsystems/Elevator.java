@@ -4,39 +4,39 @@ import edu.wpi.first.wpilibj.CANTalon;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 
 /**
- * TODO: Decide whether or not the Aidanvator gripper and Aidanvator should be in the same subsystem
- * TODO: Aidanvator sensors
- * TODO: Aidanvator control methods
- * TODO: Aidanvator operator interface
- * TODO: Aidanvator automation commands
+ * TODO: Decide whether or not the Elevator gripper and Elevator should be in the same subsystem
+ * TODO: Elevator sensors
+ * TODO: Elevator control methods
+ * TODO: Elevator operator interface
+ * TODO: Elevator automation commands
  */
-public class Elevator extends Subsystem
+public class Elevator extends SHARPSubsystem
 {
-    private CANTalon aidanvatorCIM;
+    private CANTalon elevatorCIM;
 
     public Elevator()
     {
-        aidanvatorCIM = new CANTalon(Constants.aidanvatorCIM.getInt());
+        elevatorCIM = new CANTalon(Constants.elevatorCIM.getInt());
     }
 
     public void up()
     {
-        setAidanvator(0.5);
+        setElevator(0.5);
     }
 
     public void down()
     {
-        setAidanvator(-0.5);
+        setElevator(-0.5);
     }
 
     public void stop()
     {
-        setAidanvator(0.0);
+        setElevator(0.0);
     }
 
-    private void setAidanvator(double value)
+    private void setElevator(double value)
     {
-        aidanvatorCIM.set(value);
+        elevatorCIM.set(value);
     }
 
     @Override
@@ -49,5 +49,10 @@ public class Elevator extends Subsystem
     protected void log()
     {
 
+    }
+
+    public static Elevator getInstance()
+    {
+        return (Elevator) instance;
     }
 }

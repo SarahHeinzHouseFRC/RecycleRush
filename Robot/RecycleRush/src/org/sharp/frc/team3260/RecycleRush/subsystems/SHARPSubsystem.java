@@ -1,17 +1,20 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public abstract class Subsystem extends edu.wpi.first.wpilibj.command.Subsystem
+public abstract class SHARPSubsystem extends Subsystem
 {
-    public Subsystem()
+    protected static SHARPSubsystem instance;
+
+    public SHARPSubsystem()
     {
         super();
 
         initialize();
     }
 
-    public Subsystem(String name)
+    public SHARPSubsystem(String name)
     {
         super(name);
 
@@ -21,6 +24,8 @@ public abstract class Subsystem extends edu.wpi.first.wpilibj.command.Subsystem
     private void initialize()
     {
         SmartDashboard.putData(this);
+
+        instance = this;
     }
 
     protected abstract void initDefaultCommand();

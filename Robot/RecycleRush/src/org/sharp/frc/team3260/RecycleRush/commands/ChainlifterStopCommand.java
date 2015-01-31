@@ -1,25 +1,24 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.sharp.frc.team3260.RecycleRush.Robot;
+import org.sharp.frc.team3260.RecycleRush.subsystems.ChainLifter;
 
-public class AidanvatorDownCommand extends Command
+public class ChainlifterStopCommand extends Command
 {
-    public AidanvatorDownCommand()
+    public ChainlifterStopCommand()
     {
-        requires(Robot.getElevator());
+        requires(ChainLifter.getInstance());
     }
 
     @Override
     protected void initialize()
     {
-
+        ChainLifter.getInstance().stop();
     }
 
     @Override
     protected void execute()
     {
-        Robot.getElevator().up();
     }
 
     @Override

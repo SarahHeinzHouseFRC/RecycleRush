@@ -2,7 +2,7 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.sharp.frc.team3260.RecycleRush.OI;
-import org.sharp.frc.team3260.RecycleRush.Robot;
+import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 /**
@@ -16,7 +16,7 @@ public class SHARPDriveCommand extends Command
 
     public SHARPDriveCommand()
     {
-        requires(Robot.getDrivetrain());
+        requires(DriveTrain.getInstance());
     }
 
     protected void initialize()
@@ -151,7 +151,7 @@ public class SHARPDriveCommand extends Command
             rightOutput = 1.0;
         }
 
-        Robot.getDrivetrain().tankDrive(leftOutput, rightOutput);
+        DriveTrain.getInstance().tankDrive(leftOutput, rightOutput);
     }
 
     protected boolean isFinished()

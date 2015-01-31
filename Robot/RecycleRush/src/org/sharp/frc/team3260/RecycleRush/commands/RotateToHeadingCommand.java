@@ -1,7 +1,7 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.sharp.frc.team3260.RecycleRush.Robot;
+import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
 public class RotateToHeadingCommand extends Command
 {
@@ -17,16 +17,16 @@ public class RotateToHeadingCommand extends Command
 
         if (blocking)
         {
-            requires(Robot.getDrivetrain());
+            requires(DriveTrain.getInstance());
         }
     }
 
     @Override
     protected void initialize()
     {
-        Robot.getDrivetrain().setRotatingToTarget(true);
+        DriveTrain.getInstance().setRotatingToTarget(true);
 
-        Robot.getDrivetrain().setRotationTarget(yawTarget);
+        DriveTrain.getInstance().setRotationTarget(yawTarget);
     }
 
     @Override
@@ -34,22 +34,22 @@ public class RotateToHeadingCommand extends Command
     {
         if (blocking)
         {
-            double error = Robot.getDrivetrain().getIMU().getYaw() - yawTarget;
+            double error = DriveTrain.getInstance().getIMU().getYaw() - yawTarget;
 
-            Robot.getDrivetrain().mecanumDrive_Cartesian(0, 0, yawTarget > 0 ? 0.5 : -0.5, Robot.getDrivetrain().getIMU().getYaw());
+            DriveTrain.getInstance().mecanumDrive_Cartesian(0, 0, error > 0 ? 0.5 : -0.5, DriveTrain.getInstance().getIMU().getYaw());
         }
     }
 
     @Override
     protected boolean isFinished()
     {
-        return !blocking || Robot.getDrivetrain().getIMU().getYaw() == yawTarget;
+        return !blocking || DriveTrain.getInstance().getIMU().getYaw() == yawTarget;
     }
 
     @Override
     protected void end()
     {
-        Robot.getDrivetrain().setRotatingToTarget(false);
+        DriveTrain.getInstance().setRotatingToTarget(false);
     }
 
     @Override

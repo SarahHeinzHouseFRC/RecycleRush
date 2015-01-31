@@ -8,6 +8,10 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
+/*
+ * Utilities that we stole from a bunch of random teams
+ * #YOLO
+ */
 public class Util
 {
     // Prevent this class from being instantiated.
