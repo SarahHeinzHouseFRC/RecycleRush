@@ -28,6 +28,7 @@ public class DriveForwardCommand extends Command
     public DriveForwardCommand(double dist, double maxSpeed)
     {
         requires(DriveTrain.getInstance());
+
         distance = dist;
         driveForwardSpeed = maxSpeed;
     }

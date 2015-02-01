@@ -5,8 +5,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public abstract class SHARPSubsystem extends Subsystem
 {
-    protected static SHARPSubsystem instance;
-
     public SHARPSubsystem()
     {
         super();
@@ -24,8 +22,6 @@ public abstract class SHARPSubsystem extends Subsystem
     private void initialize()
     {
         SmartDashboard.putData(this);
-
-        instance = this;
     }
 
     protected abstract void initDefaultCommand();

@@ -2,6 +2,7 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import org.sharp.frc.team3260.RecycleRush.Constants;
+import org.sharp.frc.team3260.RecycleRush.commands.ElevatorHoldPositionCommand;
 
 /**
  * TODO: Decide whether or not the Elevator gripper and Elevator should be in the same subsystem
@@ -12,10 +13,16 @@ import org.sharp.frc.team3260.RecycleRush.Constants;
  */
 public class Elevator extends SHARPSubsystem
 {
+    protected static Elevator instance;
+
     private CANTalon elevatorCIM;
 
     public Elevator()
     {
+        super("Elevator");
+
+        instance = this;
+
         elevatorCIM = new CANTalon(Constants.elevatorCIM.getInt());
     }
 
@@ -42,7 +49,7 @@ public class Elevator extends SHARPSubsystem
     @Override
     protected void initDefaultCommand()
     {
-
+        setDefaultCommand(new ElevatorHoldPositionCommand());
     }
 
     @Override
@@ -53,6 +60,11 @@ public class Elevator extends SHARPSubsystem
 
     public static Elevator getInstance()
     {
+        if (instance == null || instance.getClass() != Elevator.class)
+        {
+            System.out.println("Something has gone horribly wrong.");
+        }
+
         return (Elevator) instance;
     }
 }

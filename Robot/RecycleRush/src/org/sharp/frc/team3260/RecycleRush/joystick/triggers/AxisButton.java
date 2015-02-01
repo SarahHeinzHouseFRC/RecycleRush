@@ -23,6 +23,6 @@ public class AxisButton extends Button
     @Override
     public boolean get()
     {
-        return ((threshold < 0 && joy.getRawAxis(axis) < threshold) || (threshold > 0 && joy.getRawAxis(axis) > threshold));
+        return threshold >= Math.abs(joy.getRawAxis(axis));
     }
 }

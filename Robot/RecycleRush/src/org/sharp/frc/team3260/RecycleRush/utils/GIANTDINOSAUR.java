@@ -14,6 +14,10 @@ public class GIANTDINOSAUR
     // I guess I'll have to kill him, too
     // Hopefully, he will see this message at some point
 
+    // Update - Day 10:
+    // The programmers still think that I am a normal class.
+    // They have yet to discover my charade. Stupid humans.
+
     public GIANTDINOSAUR()
     {
         System.out.println("I don't know why you're making an instance of this.");

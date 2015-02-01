@@ -12,6 +12,8 @@ import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 public class DriveTrain extends SHARPSubsystem
 {
+    protected static DriveTrain instance;
+
     private RobotDrive drive;
     private CANTalon frontLeft, frontRight, backLeft, backRight;
     private Encoder frontLeftEncoder, frontRightEncoder, backLeftEncoder, backRightEncoder;
@@ -36,6 +38,10 @@ public class DriveTrain extends SHARPSubsystem
 
     public DriveTrain()
     {
+        super("DriveTrain");
+
+        instance = this;
+
         frontLeft = new CANTalon(Constants.driveFrontLeftPort.getInt());
         frontRight = new CANTalon(Constants.driveFrontRightPort.getInt());
         backLeft = new CANTalon(Constants.driveBackLeftPort.getInt());
@@ -84,7 +90,14 @@ public class DriveTrain extends SHARPSubsystem
         {
             LiveWindow.addSensor("IMU", "Gyro", imu);
 
-            rotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), output -> rotationControllerOutput = output);
+            rotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), new PIDOutput()
+            {
+                @Override
+                public void pidWrite(double output)
+                {
+                    rotationControllerOutput = output;
+                }
+            });
 
             SmartDashboard.putData("Rotation Controller", rotationController);
         }
@@ -341,6 +354,11 @@ public class DriveTrain extends SHARPSubsystem
 
     public static DriveTrain getInstance()
     {
-        return (DriveTrain) instance;
+        if (instance == null)
+        {
+            System.out.println("Something has gone horribly wrong.");
+        }
+
+        return instance;
     }
 }

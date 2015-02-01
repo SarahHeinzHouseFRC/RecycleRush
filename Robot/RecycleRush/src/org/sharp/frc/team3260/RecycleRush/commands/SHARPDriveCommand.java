@@ -2,6 +2,7 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.sharp.frc.team3260.RecycleRush.OI;
+import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
@@ -35,15 +36,15 @@ public class SHARPDriveCommand extends Command
 
         double negInertiaAccumulator = 0.0, negInertiaScalar;
 
-        boolean useQuickTurn = OI.getInstance().getMainGamepad().getButtonRightJoystick();
+        boolean useQuickTurn = OI.getInstance().getMainGamepad().getRawButton(SHARPGamepad.BUTTON_LEFT_JOYSTICK);
 
         double nonLinearity;
 
         double wheel;
         double throttle;
 
-        wheel = handleDeadband(OI.getInstance().getMainGamepad().getJoystickRightX(), 0.05);
-        throttle = handleDeadband(OI.getInstance().getMainGamepad().getJoystickLeftY(), 0.05);
+        wheel = handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_LEFT_X), 0.05);
+        throttle = handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y), 0.05);
 
         double negInertia = wheel - oldWheel;
         oldWheel = wheel;
