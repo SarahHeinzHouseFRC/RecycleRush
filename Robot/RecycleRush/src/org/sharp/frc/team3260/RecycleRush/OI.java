@@ -1,32 +1,62 @@
 package org.sharp.frc.team3260.RecycleRush;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.commands.*;
-import org.sharp.frc.team3260.RecycleRush.subsystems.*;
-import org.sharp.frc.team3260.RecycleRush.triggers.DoubleButton;
+import org.sharp.frc.team3260.RecycleRush.commands.CloseGripperCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.ElevatorDownCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.ElevatorUpCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.OpenGripperCommand;
+import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
+import org.sharp.frc.team3260.RecycleRush.joystick.triggers.AxisButton;
 
-/**
- * The operator interface of the robot, it has been simplified from the real
- * robot to allow control with a single PS3 joystick. As a result, not all
- * functionality from the real robot is available.
- */
 public class OI
 {
-    public Joystick joystick;
+    private static OI instance;
+
+    public SHARPGamepad mainGamepad;
+    public SHARPGamepad manipulatorGamepad;
+
+    public Button manipulatorGamepadA,
+            manipulatorGamepadB,
+            manipulatorGamepadLeftTrigger,
+            manipulatorGamepadRightTrigger;
 
     public OI()
     {
-        joystick = new Joystick(0);
+        mainGamepad = new SHARPGamepad(Constants.mainGamepadID.getInt());
+        manipulatorGamepad = new SHARPGamepad(Constants.manipulatorGamepadID.getInt());
 
-        // SmartDashboard Buttons
-        SmartDashboard.putData("Drive Forward", new DriveForward(2.25));
-        SmartDashboard.putData("Drive Backward", new DriveForward(-2.25));
+        manipulatorGamepadA = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_A);
+        manipulatorGamepadB = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_B);
+        manipulatorGamepadLeftTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_LEFT_AXIS, 0.5);
+        manipulatorGamepadRightTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_RIGHT_AXS, 0.5);
+
+        manipulatorGamepadA.whileHeld(new ElevatorUpCommand());
+        manipulatorGamepadB.whileHeld(new ElevatorDownCommand());
+
+        manipulatorGamepadLeftTrigger.whenReleased(new CloseGripperCommand());
+        manipulatorGamepadRightTrigger.whenReleased(new OpenGripperCommand());
+
+        instance = this;
     }
 
-    public Joystick getJoystick()
+    public static OI getInstance()
     {
-        return joystick;
+        if (instance == null)
+        {
+            return new OI();
+        }
+
+        return instance;
+    }
+
+    public SHARPGamepad getMainGamepad()
+    {
+        return mainGamepad;
+    }
+
+    public SHARPGamepad getManipulatorGamepad()
+    {
+        return manipulatorGamepad;
     }
 }

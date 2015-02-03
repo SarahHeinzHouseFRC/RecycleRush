@@ -1,13 +1,13 @@
-package org.sharp.frc.team3260.RecycleRush.triggers;
+package org.sharp.frc.team3260.RecycleRush.joystick.triggers;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Trigger;
+import edu.wpi.first.wpilibj.buttons.Button;
 
 /**
  * A custom button that is triggered when two buttons on a Joystick are
  * simultaneously pressed.
  */
-public class DoubleButton extends Trigger
+public class DoubleButton extends Button
 {
     private Joystick joy;
     private int button1, button2;
