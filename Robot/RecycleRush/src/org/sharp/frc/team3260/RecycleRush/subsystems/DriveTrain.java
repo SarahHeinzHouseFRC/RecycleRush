@@ -20,10 +20,7 @@ public class DriveTrain extends SHARPSubsystem
 
     private IMUAdvanced imu;
 
-    protected double rotationControllerP = 0.01,
-            rotationControllerI = 0.0,
-            rotationControllerD = 0.0,
-            rotationControllerF = 0.0;
+    protected double rotationControllerP = 0.01, rotationControllerI = 0.0, rotationControllerD = 0.0, rotationControllerF = 0.0;
 
     protected double gyroOffset = 0.0;
 
@@ -90,23 +87,12 @@ public class DriveTrain extends SHARPSubsystem
         {
             LiveWindow.addSensor("IMU", "Gyro", imu);
 
-            rotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), new PIDOutput()
-            {
-                @Override
-                public void pidWrite(double output)
-                {
-                    rotationControllerOutput = output;
-                }
-            });
+            rotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), output -> rotationControllerOutput = output);
 
             SmartDashboard.putData("Rotation Controller", rotationController);
         }
     }
 
-    /**
-     * When other commands aren't using the drivetrain, allow tank drive with
-     * the joystick.
-     */
     public void initDefaultCommand()
     {
         setDefaultCommand(new SHARPDriveCommand());
@@ -116,11 +102,6 @@ public class DriveTrain extends SHARPSubsystem
     protected void log()
     {
         SmartDashboard.putNumber("IMU Gyro", imu.getYaw());
-    }
-
-    public void tankDrive(Joystick joy)
-    {
-        drive.tankDrive(joy.getY(), joy.getRawAxis(4));
     }
 
     public void tankDrive(double leftAxis, double rightAxis)
@@ -144,18 +125,20 @@ public class DriveTrain extends SHARPSubsystem
         frontRight.set(frontRightOutput);
         backLeft.set(backLeftOutput);
         backRight.set(backRightOutput);
+
+        SmartDashboard.putNumber("Drive Front Left", frontLeftOutput);
+        SmartDashboard.putNumber("Drive Front Right", frontRightOutput);
+        SmartDashboard.putNumber("Drive Back Left", backLeftOutput);
+        SmartDashboard.putNumber("Drive Back Right", backRightOutput);
     }
 
     /**
-     * Moves the robot forward and sideways while rotating at the specified
-     * speeds. This method uses the specified angle to implement field oriented
-     * controls.
-     *
-     * @param x         The forward speed (negative = backward, positive = forward)
-     * @param y         The sideways (crab) speed (negative = left, positive = right)
-     * @param rotation  The speed to rotate at while moving (negative =
-     *                  clockwise, positive = counterclockwise)
-     * @param gyroAngle the current angle reading from the gyro
+     * @param x         The speed that the robot should drive in the X direction. [-1.0..1.0]
+     * @param y         The speed that the robot should drive in the Y direction.
+     *                  This input is inverted to match the forward == -1.0 that joysticks produce. [-1.0..1.0]
+     * @param rotation  The rate of rotation for the robot that is completely independent of
+     *                  the translation. [-1.0..1.0]
+     * @param gyroAngle The current angle reading from the gyro.  Use this to implement field-oriented controls.
      */
     public void mecanumDrive_Cartesian(double x, double y, double rotation, double gyroAngle)
     {
@@ -164,48 +147,19 @@ public class DriveTrain extends SHARPSubsystem
     }
 
     /**
-     * Moves the robot forward and sideways while rotating at the specified
-     * speeds. This moves the robot relative to the robot's current orientation.
-     *
-     * @param x        The forward speed (negative = backward, positive = forward)
-     * @param y        The sideways (crab) speed (negative = left, positive = right)
-     * @param rotation The speed to rotate at while moving (negative =
-     *                 clockwise, positive = counterclockwise)
+     * @param x        The speed that the robot should drive in the X direction. [-1.0..1.0]
+     * @param y        The speed that the robot should drive in the Y direction.
+     *                 This input is inverted to match the forward == -1.0 that joysticks produce. [-1.0..1.0]
+     * @param rotation The rate of rotation for the robot that is completely independent of
+     *                 the translation. [-1.0..1.0]
      */
     public void mecanumDrive_Cartesian(double x, double y, double rotation)
     {
         mecanumDrive_Cartesian(x, y, rotation, getIMU().getYaw() - gyroOffset);
     }
 
-    public void mecanumDrive_Orientation(double x, double y, double angle)
-    {
-        if (!rotationController.isEnable() || rotationController.getSetpoint() != angle)
-        {
-            rotationController.setSetpoint(angle);
-            rotationController.enable();
-        }
-
-        mecanumDrive_Cartesian0(x, y, rotationControllerOutput, getIMU().getYaw());
-    }
-
-    /**
-     * Real implementation of cartesian mecanum driving. This method does not
-     * include gyro orientation correction and it is only called from with this
-     * class.
-     *
-     * @param x         The forward speed (negative = backward, positive = forward)
-     * @param y         The sideways (crab) speed (negative = left, positive = right)
-     * @param rotation  The speed to rotate at while moving (positive =
-     *                  clockwise, negative = counterclockwise)
-     * @param gyroAngle the current angle reading from the gyro
-     */
     private void mecanumDrive_Cartesian0(double x, double y, double rotation, double gyroAngle)
     {
-        // Send debugging values.
-        SmartDashboard.putNumber("Mecanum X", x);
-        SmartDashboard.putNumber("Mecanum Y", y);
-        SmartDashboard.putNumber("Mecanum Rotation", rotation);
-
         // Compenstate for gyro angle.
         double rotated[] = Util.rotateVector(x, y, gyroAngle);
         x = rotated[0];
@@ -220,6 +174,22 @@ public class DriveTrain extends SHARPSubsystem
         Util.normalize(wheelSpeeds);
 
         setDriveMotors(wheelSpeeds[0], wheelSpeeds[1], wheelSpeeds[2], wheelSpeeds[3]);
+    }
+
+    public void mecanumDrive_Orientation(double x, double y, double angle)
+    {
+        if (!rotationController.isEnable() || rotationController.getSetpoint() != angle)
+        {
+            rotationController.setSetpoint(angle);
+            rotationController.enable();
+        }
+
+        mecanumDrive_Cartesian0(x, y, rotationControllerOutput, getIMU().getYaw());
+    }
+
+    public void mecanumDrive_Cartesian(GenericHID stick)
+    {
+        mecanumDrive_Cartesian(stick.getX(), stick.getY(), 0);
     }
 
     /**
@@ -252,16 +222,6 @@ public class DriveTrain extends SHARPSubsystem
         Util.normalize(wheelSpeeds);
 
         setDriveMotors(wheelSpeeds[0], wheelSpeeds[1], wheelSpeeds[2], wheelSpeeds[3]);
-    }
-
-    /**
-     * Drive based on the specified joystick using the x and y axes.
-     *
-     * @param stick The joystick to use
-     */
-    public void mecanumDrive_Cartesian(GenericHID stick)
-    {
-        mecanumDrive_Cartesian(stick.getX(), stick.getY(), 0);
     }
 
     /**

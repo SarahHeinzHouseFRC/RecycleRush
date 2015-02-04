@@ -13,13 +13,9 @@ public class OI
 {
     private static OI instance;
 
-    public SHARPGamepad mainGamepad;
-    public SHARPGamepad manipulatorGamepad;
+    public SHARPGamepad mainGamepad, manipulatorGamepad;
 
-    public Button manipulatorGamepadA,
-            manipulatorGamepadB,
-            manipulatorGamepadLeftTrigger,
-            manipulatorGamepadRightTrigger;
+    public Button manipulatorGamepadA, manipulatorGamepadB, manipulatorGamepadLeftTrigger, manipulatorGamepadRightTrigger;
 
     public OI()
     {
