@@ -160,16 +160,15 @@ public class DriveTrain extends SHARPSubsystem
 
     private void mecanumDrive_Cartesian0(double x, double y, double rotation, double gyroAngle)
     {
-        // Compenstate for gyro angle.
         double rotated[] = Util.rotateVector(x, y, gyroAngle);
         x = rotated[0];
         y = rotated[1];
 
         double wheelSpeeds[] = new double[4];
-        wheelSpeeds[0] = x + y + rotation; // Front left speed
-        wheelSpeeds[1] = -x + y - rotation; // Front right speed
-        wheelSpeeds[2] = -x + y + rotation; // Rear left speed
-        wheelSpeeds[3] = x + y - rotation; // Rear right speed
+        wheelSpeeds[0] = x + y + rotation;
+        wheelSpeeds[1] = -x + y - rotation;
+        wheelSpeeds[2] = -x + y + rotation;
+        wheelSpeeds[3] = x + y - rotation;
 
         Util.normalize(wheelSpeeds);
 
@@ -193,10 +192,6 @@ public class DriveTrain extends SHARPSubsystem
     }
 
     /**
-     * Drives the robot at the specified speed in the direction specified as an
-     * angle in degrees while rotating. This does not take into account the gyro
-     * correction yet because we do not use it.
-     *
      * @param magnitude The speed that the robot should drive in a given
      *                  direction.
      * @param direction the direction the robot should drive in degrees,
@@ -206,9 +201,8 @@ public class DriveTrain extends SHARPSubsystem
      */
     public void mecanumDrive_Polar(double magnitude, double direction, double rotation)
     {
-        // Normalized for full power along the Cartesian axes.
         magnitude = Util.limit(magnitude) * Math.sqrt(2.0);
-        // The rollers are at 45 degree angles.
+
         double dirInRad = (direction + 45.0) * Math.PI / 180.0;
         double cosD = Math.cos(dirInRad);
         double sinD = Math.sin(dirInRad);
@@ -227,8 +221,7 @@ public class DriveTrain extends SHARPSubsystem
     /**
      * Moves the robot sideways at the specified speed.
      *
-     * @param speed The speed and direction to crab (negative = left, positive =
-     *              right)
+     * @param speed The speed and direction to crab (negative = left, positive = right)
      */
     public void crab(double speed)
     {
@@ -245,14 +238,8 @@ public class DriveTrain extends SHARPSubsystem
      */
     private double getRotationPID(double rotationSpeed)
     {
-        // If the controller is already enabled, check to see if it should be
-        // disabled  or kept running. Otherwise check to see if it needs to be
-        // enabled.
         if (rotationController.isEnable())
         {
-            // If the rotation rate is greater than the deadband disable the PID
-            // controller. Otherwise, return the latest value from the
-            // controller.
             if (Math.abs(rotationSpeed) >= ROTATION_DEADBAND)
             {
                 rotationController.disable();
@@ -264,8 +251,6 @@ public class DriveTrain extends SHARPSubsystem
         }
         else
         {
-            // If the rotation rate is less than the deadband, turn on the PID
-            // controller and set its setpoint to the current angle.
             if (Math.abs(rotationSpeed) < ROTATION_DEADBAND)
             {
                 gyroOffset = getIMU().getYaw();
@@ -273,7 +258,7 @@ public class DriveTrain extends SHARPSubsystem
                 rotationController.enable();
             }
         }
-        // Unless told otherwise, return the rate that was passed in.
+
         return rotationSpeed;
     }
 
