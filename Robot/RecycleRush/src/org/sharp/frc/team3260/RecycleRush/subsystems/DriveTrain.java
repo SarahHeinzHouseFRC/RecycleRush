@@ -14,19 +14,22 @@ public class DriveTrain extends SHARPSubsystem
 {
     protected static DriveTrain instance;
 
-    private RobotDrive drive;
-    private CANTalon frontLeft, frontRight, backLeft, backRight;
+    private CANTalon frontLeftTalon, frontRightTalon, backLeftTalon, backRightTalon;
+    private RobotDrive robotDrive;
     private Encoder frontLeftEncoder, frontRightEncoder, backLeftEncoder, backRightEncoder;
 
     private IMUAdvanced imu;
 
-    protected double rotationControllerP = 0.01, rotationControllerI = 0.0, rotationControllerD = 0.0, rotationControllerF = 0.0;
+    protected double rotationControllerP = 0.01,
+            rotationControllerI = 0.0,
+            rotationControllerD = 0.0,
+            rotationControllerF = 0.0;
 
     protected double gyroOffset = 0.0;
 
     protected double rotationControllerOutput = 0.0;
 
-    protected double ROTATION_DEADBAND = 0.05;
+    protected static final double ROTATION_DEADBAND = 0.05;
 
     protected double rotationTarget = 0.0;
     protected boolean rotatingToTarget = false;
@@ -39,18 +42,23 @@ public class DriveTrain extends SHARPSubsystem
 
         instance = this;
 
-        frontLeft = new CANTalon(Constants.driveFrontLeftPort.getInt());
-        frontRight = new CANTalon(Constants.driveFrontRightPort.getInt());
-        backLeft = new CANTalon(Constants.driveBackLeftPort.getInt());
-        backRight = new CANTalon(Constants.driveBackRightPort.getInt());
+        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt());
+        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt());
+        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt());
+        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt());
 
-        drive = new RobotDrive(frontLeft, backLeft, frontRight, backRight);
-        drive.setSafetyEnabled(true);
-        drive.setExpiration(0.1);
-        drive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, Constants.driveFrontLeftInverted.getInt() == 1);
-        drive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, Constants.driveBackLeftInverted.getInt() == 1);
-        drive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, Constants.driveFrontRightInverted.getInt() == 1);
-        drive.setInvertedMotor(RobotDrive.MotorType.kRearRight, Constants.driveBackRightInverted.getInt() == 1);
+        frontLeftTalon.enableBrakeMode(true);
+        frontRightTalon.enableBrakeMode(true);
+        backLeftTalon.enableBrakeMode(true);
+        backRightTalon.enableBrakeMode(true);
+
+        robotDrive = new RobotDrive(frontLeftTalon, backLeftTalon, frontRightTalon, backRightTalon);
+        robotDrive.setSafetyEnabled(true);
+        robotDrive.setExpiration(0.1);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, Constants.driveFrontLeftInverted.getInt() == 1);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, Constants.driveBackLeftInverted.getInt() == 1);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, Constants.driveFrontRightInverted.getInt() == 1);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, Constants.driveBackRightInverted.getInt() == 1);
 
         frontLeftEncoder = new Encoder(1, 2, true, EncodingType.k4X);
         frontRightEncoder = new Encoder(3, 4, true, EncodingType.k4X);
@@ -106,7 +114,7 @@ public class DriveTrain extends SHARPSubsystem
 
     public void tankDrive(double leftAxis, double rightAxis)
     {
-        drive.tankDrive(leftAxis, rightAxis);
+        robotDrive.tankDrive(leftAxis, rightAxis);
     }
 
     public void zeroGyro()
@@ -116,15 +124,15 @@ public class DriveTrain extends SHARPSubsystem
 
     public void stop()
     {
-        drive.tankDrive(0, 0);
+        robotDrive.tankDrive(0, 0);
     }
 
     public void setDriveMotors(double frontLeftOutput, double frontRightOutput, double backLeftOutput, double backRightOutput)
     {
-        frontLeft.set(frontLeftOutput);
-        frontRight.set(frontRightOutput);
-        backLeft.set(backLeftOutput);
-        backRight.set(backRightOutput);
+        frontLeftTalon.set(frontLeftOutput);
+        frontRightTalon.set(frontRightOutput);
+        backLeftTalon.set(backLeftOutput);
+        backRightTalon.set(backRightOutput);
 
         SmartDashboard.putNumber("Drive Front Left", frontLeftOutput);
         SmartDashboard.putNumber("Drive Front Right", frontRightOutput);

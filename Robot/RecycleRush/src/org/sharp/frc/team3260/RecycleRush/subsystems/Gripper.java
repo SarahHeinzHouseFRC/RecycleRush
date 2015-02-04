@@ -40,11 +40,11 @@ public class Gripper extends SHARPSubsystem
 
     public static Gripper getInstance()
     {
-        if (instance == null || instance.getClass() != Gripper.class)
+        if (instance == null)
         {
             System.out.println("Something has gone horribly wrong.");
         }
 
-        return (Gripper) instance;
+        return instance;
     }
 }

@@ -1,6 +1,7 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.commands.ElevatorHoldPositionCommand;
 
@@ -15,7 +16,7 @@ public class Elevator extends SHARPSubsystem
 {
     protected static Elevator instance;
 
-    private CANTalon elevatorCIM;
+    private CANTalon elevatorTalon;
 
     public Elevator()
     {
@@ -23,7 +24,12 @@ public class Elevator extends SHARPSubsystem
 
         instance = this;
 
-        elevatorCIM = new CANTalon(Constants.elevatorCIM.getInt());
+        elevatorTalon = new CANTalon(Constants.elevatorTalonID.getInt());
+
+        elevatorTalon.enableBrakeMode(true);
+
+//        elevatorTalon.changeControlMode(CANTalon.ControlMode.Position);
+//        elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
     }
 
     public void up()
@@ -43,7 +49,7 @@ public class Elevator extends SHARPSubsystem
 
     private void setElevator(double value)
     {
-        elevatorCIM.set(value);
+        elevatorTalon.set(value);
     }
 
     @Override
@@ -55,16 +61,17 @@ public class Elevator extends SHARPSubsystem
     @Override
     protected void log()
     {
-
+        SmartDashboard.putNumber("Elevator Talon", elevatorTalon.get());
+        SmartDashboard.putNumber("Elevator Encoder", elevatorTalon.getEncPosition());
     }
 
     public static Elevator getInstance()
     {
-        if (instance == null || instance.getClass() != Elevator.class)
+        if (instance == null)
         {
             System.out.println("Something has gone horribly wrong.");
         }
 
-        return (Elevator) instance;
+        return instance;
     }
 }
