@@ -13,7 +13,6 @@ public class ElevatorDownCommand extends Command
     @Override
     protected void initialize()
     {
-
     }
 
     @Override
@@ -31,12 +30,10 @@ public class ElevatorDownCommand extends Command
     @Override
     protected void end()
     {
-
     }
 
     @Override
     protected void interrupted()
     {
-
     }
 }
