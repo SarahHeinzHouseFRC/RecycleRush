@@ -2,29 +2,39 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 public abstract class SHARPSubsystem extends Subsystem
 {
+    protected Log log; 
+    
     public SHARPSubsystem()
     {
         super();
 
-        initialize();
+        initialize(this.getClass().getTypeName());
     }
 
     public SHARPSubsystem(String name)
     {
         super(name);
 
-        initialize();
+        initialize(name);
     }
 
-    private void initialize()
+    private void initialize(String name)
     {
         SmartDashboard.putData(this);
+        
+        log = new Log(name, Log.ATTRIBUTE_TIME);
+        
+        log.info("Created instance of " + name + ".");
     }
 
     protected abstract void initDefaultCommand();
 
-    protected abstract void log();
+    protected Log getLogger()
+    {
+        return log;
+    }
 }

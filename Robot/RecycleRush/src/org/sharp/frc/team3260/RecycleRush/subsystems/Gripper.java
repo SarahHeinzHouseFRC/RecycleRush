@@ -2,6 +2,7 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import org.sharp.frc.team3260.RecycleRush.Constants;
+import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 public class Gripper extends SHARPSubsystem
 {
@@ -30,11 +31,6 @@ public class Gripper extends SHARPSubsystem
 
     @Override
     protected void initDefaultCommand()
-    {
-    }
-
-    @Override
-    protected void log()
     {
     }
 

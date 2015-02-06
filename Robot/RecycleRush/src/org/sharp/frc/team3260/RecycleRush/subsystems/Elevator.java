@@ -1,7 +1,6 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.commands.ElevatorHoldPositionCommand;
 
@@ -58,16 +57,9 @@ public class Elevator extends SHARPSubsystem
         setDefaultCommand(new ElevatorHoldPositionCommand());
     }
 
-    @Override
-    protected void log()
-    {
-        SmartDashboard.putNumber("Elevator Talon", elevatorTalon.get());
-        SmartDashboard.putNumber("Elevator Encoder", elevatorTalon.getEncPosition());
-    }
-
     public static Elevator getInstance()
     {
-        if (instance == null)
+        if(instance == null)
         {
             System.out.println("Something has gone horribly wrong.");
         }
