@@ -7,7 +7,7 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
  * This command drives the robot over a given distance with simple proportional
  * control This command will drive a given distance limiting to a maximum speed.
  */
-public class DriveForwardCommand extends Command
+public class DriveDistanceCommand extends Command
 {
     private double driveForwardSpeed;
     private double distance;
@@ -15,17 +15,17 @@ public class DriveForwardCommand extends Command
     private final double TOLERANCE = .1;
     private final double kP = -1.0 / 5.0;
 
-    public DriveForwardCommand()
+    public DriveDistanceCommand()
     {
         this(10, 0.5);
     }
 
-    public DriveForwardCommand(double dist)
+    public DriveDistanceCommand(double dist)
     {
         this(dist, 0.5);
     }
 
-    public DriveForwardCommand(double dist, double maxSpeed)
+    public DriveDistanceCommand(double dist, double maxSpeed)
     {
         requires(DriveTrain.getInstance());
 

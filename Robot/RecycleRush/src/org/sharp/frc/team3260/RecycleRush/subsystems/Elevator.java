@@ -106,7 +106,7 @@ public class Elevator extends SHARPSubsystem
 
     public void stop()
     {
-        setElevator(0.0);
+        up(0.0);
     }
 
     private void setElevator(double value)
