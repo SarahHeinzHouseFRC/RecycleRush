@@ -10,7 +10,6 @@ import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
-import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 public class DriveTrain extends SHARPSubsystem
 {

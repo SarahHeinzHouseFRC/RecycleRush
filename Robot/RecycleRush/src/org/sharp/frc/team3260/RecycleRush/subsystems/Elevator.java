@@ -17,6 +17,12 @@ public class Elevator extends SHARPSubsystem
 
     private CANTalon elevatorTalon;
 
+    private static final int ELEVATOR_TOLERANCE = 200;
+
+    private boolean useEncoder;
+
+    private int maxSpeedTicks = 50;
+
     public Elevator()
     {
         super("Elevator");
@@ -27,18 +33,75 @@ public class Elevator extends SHARPSubsystem
 
         elevatorTalon.enableBrakeMode(true);
 
-        //        elevatorTalon.changeControlMode(CANTalon.ControlMode.Position);
-        //        elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+        elevatorTalon.changeControlMode(CANTalon.ControlMode.Position);
+
+        elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+
+        elevatorTalon.setProfile(0);
+
+        changeElevatorMode(false);
     }
 
-    public void up()
+    public void changeElevatorMode(boolean useEncoder)
     {
-        setElevator(1.0);
+        this.useEncoder = useEncoder;
+
+        if(!this.useEncoder)
+        {
+            elevatorTalon.disableControl();
+        }
+        else
+        {
+            elevatorTalon.enableControl();
+        }
     }
 
-    public void down()
+    public void up(double speed)
     {
-        setElevator(-1.0);
+        if(useEncoder)
+        {
+            setElevator(elevatorTalon.getPosition() + (speed * maxSpeedTicks));
+        }
+        else
+        {
+            setElevator(speed);
+        }
+    }
+
+    public void down(double speed)
+    {
+        if(useEncoder)
+        {
+            setElevator(elevatorTalon.getPosition() - (speed * maxSpeedTicks));
+        }
+        else
+        {
+            setElevator(-speed);
+        }
+    }
+
+    public void setElevator(int setpoint)
+    {
+        if(setpoint < ElevatorPosition.GROUND.encoderValue)
+        {
+            setpoint = ElevatorPosition.GROUND.encoderValue;
+        }
+        else if(setpoint > ElevatorPosition.TOP.encoderValue)
+        {
+            setpoint = ElevatorPosition.TOP.encoderValue;
+        }
+
+        elevatorTalon.set(setpoint);
+    }
+
+    public void setElevator(ElevatorPosition setpoint)
+    {
+        elevatorTalon.set(setpoint.encoderValue);
+    }
+
+    public boolean atSetpoint()
+    {
+        return (!useEncoder || (Math.abs(elevatorTalon.getEncPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE));
     }
 
     public void stop()
@@ -65,5 +128,20 @@ public class Elevator extends SHARPSubsystem
         }
 
         return instance;
+    }
+
+    public static class ElevatorPosition
+    {
+        String positionName;
+        int encoderValue;
+
+        public static final ElevatorPosition GROUND = new ElevatorPosition("GROUND", 100);
+        public static final ElevatorPosition TOP = new ElevatorPosition("TOP", 1000);
+
+        public ElevatorPosition(String positionName, int encoderValue)
+        {
+            this.positionName = positionName;
+            this.encoderValue = encoderValue;
+        }
     }
 }
