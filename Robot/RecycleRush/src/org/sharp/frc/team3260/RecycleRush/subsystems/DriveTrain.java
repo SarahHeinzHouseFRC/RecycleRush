@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
+import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
@@ -18,6 +19,8 @@ public class DriveTrain extends SHARPSubsystem
     private CANTalon frontLeftTalon, frontRightTalon, backLeftTalon, backRightTalon;
     private RobotDrive robotDrive;
     private Encoder frontLeftEncoder, frontRightEncoder, backLeftEncoder, backRightEncoder;
+
+    private Compressor compressor;
 
     private IMUAdvanced imu;
 
@@ -43,6 +46,9 @@ public class DriveTrain extends SHARPSubsystem
 
         instance = this;
 
+        compressor = new Compressor(0);
+        compressor.start();
+
         frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt());
         frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt());
         backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt());
@@ -54,7 +60,7 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.enableBrakeMode(true);
 
         robotDrive = new RobotDrive(frontLeftTalon, backLeftTalon, frontRightTalon, backRightTalon);
-        robotDrive.setSafetyEnabled(true);
+        robotDrive.setSafetyEnabled(false);
         robotDrive.setExpiration(0.1);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, Constants.driveFrontLeftInverted.getInt() == 1);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, Constants.driveBackLeftInverted.getInt() == 1);
@@ -304,7 +310,7 @@ public class DriveTrain extends SHARPSubsystem
     {
         if (instance == null)
         {
-            System.out.println("Something has gone horribly wrong.");
+            Robot.getInstance().getLogger().error("Something has gone horribly wrong in " + DriveTrain.class.getSimpleName());
         }
 
         return instance;

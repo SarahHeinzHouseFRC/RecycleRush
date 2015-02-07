@@ -1,12 +1,17 @@
 package org.sharp.frc.team3260.RecycleRush.utils;
 
+import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
+
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Vector;
 
 public abstract class ConstantsBase
 {
+    private static final Log log = new Log("ConstantsBase", Log.ATTRIBUTE_TIME);
+
     private static final Vector constants = new Vector();
-    private static final String CONSTANTS_FILE_PATH = "Constants.txt";
+    private static final String CONSTANTS_FILE_PATH = "/Constants/Constants.txt";
 
     public static void readConstantsFromFile()
     {
@@ -19,12 +24,13 @@ public abstract class ConstantsBase
             }
 
             String[] lines = Util.split(file, "\n");
-            for (int i = 0; i < lines.length; i++)
+
+            for (String curLine : lines)
             {
-                String[] line = Util.split(lines[i], "=");
+                String[] line = Util.split(curLine, "=");
                 if (line.length != 2)
                 {
-                    System.out.println("ConstantsBase - Error: Invalid Constants file line: " + (lines[i].length() == 0 ? "(empty line)" : lines[i]));
+                    log.error("Invalid Constants file line: " + (curLine.length() == 0 ? "(Empty Line)" : curLine));
 
                     continue;
                 }
@@ -34,6 +40,7 @@ public abstract class ConstantsBase
                 for (int j = 0; j < constants.size(); j++)
                 {
                     Constant constant = (Constant) constants.elementAt(j);
+
                     if (constant.getName().compareTo(line[0]) == 0)
                     {
                         System.out.println("ConstantsBase - Setting " + constant.getName() + " to " + Double.parseDouble(line[1]));
@@ -45,13 +52,13 @@ public abstract class ConstantsBase
 
                 if (!found)
                 {
-                    System.out.println("ConstantsBase - Error: Constant doesn't exist: " + lines[i]);
+                    log.error("Constants doesn't exist " + curLine);
                 }
             }
         }
-        catch (IOException e)
+        catch (FileNotFoundException e)
         {
-            System.out.println(e);
+            log.error("Unable to open Constants.txt");
         }
         catch (Exception e)
         {
@@ -119,8 +126,7 @@ public abstract class ConstantsBase
 
         public String toHtml()
         {
-            String str = "<html>" +
-                         this.name + ": " + "<input type='text' value=\"" + this.value + "\" name=\"" + this.name + "\"> <br/>";
+            String str = "<html>" + this.name + ": " + "<input type='text' value=\"" + this.value + "\" name=\"" + this.name + "\"> <br/>";
 
             return str;
         }
