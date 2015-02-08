@@ -1,35 +1,43 @@
 package org.sharp.frc.team3260.RecycleRush;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.commands.DriveForwardCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyroCommand;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
+import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 public class Robot extends IterativeRobot
 {
-    private Command autonomousCommand;
+    private static final Log log = new Log("RobotBase", Log.ATTRIBUTE_TIME);
 
-    private SendableChooser autoChooser;
+    private static Robot instance;
+
+    public Robot()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            return;
+        }
+    }
 
     public void robotInit()
     {
+        log.info("Creating subsystem instances...");
         new DriveTrain();
         new Elevator();
         new Gripper();
 
-        autoChooser = new SendableChooser();
-        autoChooser.addObject("Drive Forward", new DriveForwardCommand());
-        SmartDashboard.putData("Auto Mode", autoChooser);
-
+        log.info("Adding SmartDashboard buttons...");
         SmartDashboard.putData("SHARPDrive", new SHARPDriveCommand());
         SmartDashboard.putData("Field Centric Mecanum Drive", new FieldCentricMecanumDriveCommand());
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
@@ -37,30 +45,22 @@ public class Robot extends IterativeRobot
 
     public void autonomousInit()
     {
-        autonomousCommand = (Command) autoChooser.getSelected();
-        autonomousCommand.start();
     }
 
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-
-        log();
     }
 
     public void teleopInit()
     {
-        if (autonomousCommand != null)
-        {
-            autonomousCommand.cancel();
-        }
     }
 
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
 
-        log();
+        OI.getInstance().checkControls();
     }
 
     public void testPeriodic()
@@ -74,14 +74,15 @@ public class Robot extends IterativeRobot
 
     public void disabledPeriodic()
     {
-        log();
     }
 
-    private void log()
+    public Log getLogger()
     {
-        if (DriveTrain.getInstance().getIMU() != null)
-        {
-            SmartDashboard.putNumber("Gyro Angle", DriveTrain.getInstance().getIMU().getYaw());
-        }
+        return log;
+    }
+
+    public static Robot getInstance()
+    {
+        return instance;
     }
 }

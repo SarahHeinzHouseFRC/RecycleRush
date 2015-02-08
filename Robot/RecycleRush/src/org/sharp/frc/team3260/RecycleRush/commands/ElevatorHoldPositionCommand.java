@@ -30,12 +30,10 @@ public class ElevatorHoldPositionCommand extends Command
     @Override
     protected void end()
     {
-
     }
 
     @Override
     protected void interrupted()
     {
-
     }
 }

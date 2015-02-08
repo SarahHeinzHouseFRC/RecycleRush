@@ -5,21 +5,29 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 
 public class ElevatorUpCommand extends Command
 {
+    private double speed = 1.0;
+
     public ElevatorUpCommand()
     {
         requires(Elevator.getInstance());
     }
 
+    public ElevatorUpCommand(double speed)
+    {
+        requires(Elevator.getInstance());
+
+        this.speed = speed;
+    }
+
     @Override
     protected void initialize()
     {
-
     }
 
     @Override
     protected void execute()
     {
-        Elevator.getInstance().up();
+        Elevator.getInstance().up(speed);
     }
 
     @Override
@@ -31,12 +39,10 @@ public class ElevatorUpCommand extends Command
     @Override
     protected void end()
     {
-
     }
 
     @Override
     protected void interrupted()
     {
-
     }
 }

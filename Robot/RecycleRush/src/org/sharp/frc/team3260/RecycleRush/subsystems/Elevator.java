@@ -2,10 +2,9 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import org.sharp.frc.team3260.RecycleRush.Constants;
-import org.sharp.frc.team3260.RecycleRush.commands.ElevatorHoldPositionCommand;
+import org.sharp.frc.team3260.RecycleRush.Robot;
 
 /**
- * TODO: Decide whether or not the Elevator gripper and Elevator should be in the same subsystem
  * TODO: Elevator sensors
  * TODO: Elevator control methods
  * TODO: Elevator operator interface
@@ -15,7 +14,13 @@ public class Elevator extends SHARPSubsystem
 {
     protected static Elevator instance;
 
-    private CANTalon elevatorCIM;
+    private CANTalon elevatorTalon;
+
+    private static final int ELEVATOR_TOLERANCE = 200;
+
+    private boolean useEncoder = false;
+
+    private int maxSpeedTicks = 50;
 
     public Elevator()
     {
@@ -23,48 +28,148 @@ public class Elevator extends SHARPSubsystem
 
         instance = this;
 
-        elevatorCIM = new CANTalon(Constants.elevatorCIM.getInt());
+        elevatorTalon = new CANTalon(Constants.elevatorTalonID.getInt());
+
+        elevatorTalon.enableBrakeMode(true);
+
+        elevatorTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
+
+        elevatorTalon.set(0.0);
+
+        elevatorTalon.reverseOutput(true);
+        //
+        //        changeElevatorMode(false);
     }
 
-    public void up()
+    public void changeElevatorMode(boolean useEncoder)
     {
-        setElevator(1.0);
+        this.useEncoder = useEncoder;
+
+        if(!this.useEncoder)
+        {
+            log.warn("Disabling Elevator PID controller.");
+
+            elevatorTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
+
+            elevatorTalon.set(0.0);
+
+            elevatorTalon.disableControl();
+        }
+        else
+        {
+            log.info("Enabling Elevator PID controller.");
+
+            elevatorTalon.changeControlMode(CANTalon.ControlMode.Position);
+
+            elevatorTalon.set(elevatorTalon.getPosition());
+
+            elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+
+            elevatorTalon.setProfile(0);
+
+            elevatorTalon.enableControl();
+
+        }
     }
 
-    public void down()
+    public void up(double speed)
     {
-        setElevator(-1.0);
+        if(useEncoder)
+        {
+            setElevator(elevatorTalon.getPosition() + (speed * maxSpeedTicks));
+        }
+        else
+        {
+            setElevator(speed);
+        }
+    }
+
+    public void down(double speed)
+    {
+        if(useEncoder)
+        {
+            setElevator(elevatorTalon.getPosition() - (speed * maxSpeedTicks));
+        }
+        else
+        {
+            setElevator(-speed);
+        }
+    }
+
+    public void setElevator(int setpoint)
+    {
+        if(setpoint < ElevatorPosition.GROUND.encoderValue)
+        {
+            setpoint = ElevatorPosition.GROUND.encoderValue;
+        }
+        else if(setpoint > ElevatorPosition.TOP.encoderValue)
+        {
+            setpoint = ElevatorPosition.TOP.encoderValue;
+        }
+
+        elevatorTalon.set(setpoint);
+    }
+
+    public void setElevator(ElevatorPosition setpoint)
+    {
+        log.info("Received new setpoint " + setpoint.positionName + " with encoder value " + setpoint.encoderValue);
+
+        elevatorTalon.set(setpoint.encoderValue);
+    }
+
+    public boolean atSetpoint()
+    {
+        return (!useEncoder || (Math.abs(elevatorTalon.getEncPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE));
     }
 
     public void stop()
     {
-        setElevator(0.0);
+        up(0.0);
     }
 
     private void setElevator(double value)
     {
-        elevatorCIM.set(value);
+        elevatorTalon.set(value);
     }
 
     @Override
     protected void initDefaultCommand()
     {
-        setDefaultCommand(new ElevatorHoldPositionCommand());
-    }
-
-    @Override
-    protected void log()
-    {
-
+        //        setDefaultCommand(new ElevatorHoldPositionCommand());
     }
 
     public static Elevator getInstance()
     {
-        if (instance == null || instance.getClass() != Elevator.class)
+        if (instance == null)
         {
-            System.out.println("Something has gone horribly wrong.");
+            Robot.getInstance().getLogger().error("Something has gone horribly wrong in " + Elevator.class.getSimpleName());
         }
 
-        return (Elevator) instance;
+        return instance;
+    }
+
+    public int getPosition()
+    {
+        return elevatorTalon.getEncPosition();
+    }
+
+    public double getMotorVoltage()
+    {
+        return elevatorTalon.get();
+    }
+
+    public static class ElevatorPosition
+    {
+        public String positionName;
+        public int encoderValue;
+
+        public static final ElevatorPosition GROUND = new ElevatorPosition("GROUND", 100);
+        public static final ElevatorPosition TOP = new ElevatorPosition("TOP", 1000);
+
+        public ElevatorPosition(String positionName, int encoderValue)
+        {
+            this.positionName = positionName;
+            this.encoderValue = encoderValue;
+        }
     }
 }
