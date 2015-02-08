@@ -9,7 +9,7 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
 public class FieldCentricMecanumDriveCommand extends Command
 {
-    public double ROTATION_DEADBAND = 0.2;
+    public double ROTATION_DEADBAND = 0.1;
 
     public FieldCentricMecanumDriveCommand()
     {
@@ -25,10 +25,14 @@ public class FieldCentricMecanumDriveCommand extends Command
         Joystick driveJoystick = OI.getInstance().getMainGamepad();
 
         double strafe = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_X);
-        double forward = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
+        double forward = -driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
         double rotation = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X);
 
         rotation = Math.abs(rotation) > ROTATION_DEADBAND ? rotation : 0;
+
+        strafe = Math.abs(strafe) > ROTATION_DEADBAND ? strafe : 0;
+
+        forward = Math.abs(forward) > ROTATION_DEADBAND ? forward : 0;
 
         SmartDashboard.putNumber("Drive Joystick X", strafe);
         SmartDashboard.putNumber("Drive Joystick Y", forward);
@@ -36,11 +40,13 @@ public class FieldCentricMecanumDriveCommand extends Command
 
         if (DriveTrain.getInstance().getIMU() == null)
         {
-            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe - forward, rotation, 0);
+            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, 0);
         }
         else
         {
-            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, -forward, rotation, DriveTrain.getInstance().getIMU().getYaw());
+            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw());
+
+            SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
         }
     }
 

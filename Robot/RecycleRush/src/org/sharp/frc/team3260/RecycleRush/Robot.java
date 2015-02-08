@@ -14,7 +14,7 @@ import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 public class Robot extends IterativeRobot
 {
-    private static final Log logger = new Log("RobotBase");
+    private static final Log log = new Log("RobotBase", Log.ATTRIBUTE_TIME);
 
     private static Robot instance;
 
@@ -32,12 +32,12 @@ public class Robot extends IterativeRobot
 
     public void robotInit()
     {
-        logger.info("Creating subsystem instances...");
+        log.info("Creating subsystem instances...");
         new DriveTrain();
         new Elevator();
         new Gripper();
 
-        logger.info("Adding SmartDashboard buttons...");
+        log.info("Adding SmartDashboard buttons...");
         SmartDashboard.putData("SHARPDrive", new SHARPDriveCommand());
         SmartDashboard.putData("Field Centric Mecanum Drive", new FieldCentricMecanumDriveCommand());
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
@@ -59,6 +59,8 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
+
+        OI.getInstance().checkControls();
     }
 
     public void testPeriodic()
@@ -74,17 +76,9 @@ public class Robot extends IterativeRobot
     {
     }
 
-//    private void log()
-//    {
-//        if (DriveTrain.getInstance().getIMU() != null)
-//        {
-//            SmartDashboard.putNumber("Gyro Angle", DriveTrain.getInstance().getIMU().getYaw());
-//        }
-//    }
-
     public Log getLogger()
     {
-        return logger;
+        return log;
     }
 
     public static Robot getInstance()

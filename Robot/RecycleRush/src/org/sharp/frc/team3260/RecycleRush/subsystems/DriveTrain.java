@@ -39,6 +39,7 @@ public class DriveTrain extends SHARPSubsystem
 
     protected PIDController rotationController;
 
+
     public DriveTrain()
     {
         super("DriveTrain");
@@ -61,10 +62,10 @@ public class DriveTrain extends SHARPSubsystem
         robotDrive = new RobotDrive(frontLeftTalon, backLeftTalon, frontRightTalon, backRightTalon);
         robotDrive.setSafetyEnabled(false);
         robotDrive.setExpiration(0.1);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, Constants.driveFrontLeftInverted.getInt() == 1);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, Constants.driveBackLeftInverted.getInt() == 1);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, Constants.driveFrontRightInverted.getInt() == 1);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, Constants.driveBackRightInverted.getInt() == 1);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, false);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, false);
 
         frontLeftEncoder = new Encoder(1, 2, true, EncodingType.k4X);
         frontRightEncoder = new Encoder(3, 4, true, EncodingType.k4X);
@@ -129,16 +130,17 @@ public class DriveTrain extends SHARPSubsystem
 
     public void setDriveMotors(double frontLeftOutput, double frontRightOutput, double backLeftOutput, double backRightOutput)
     {
-        frontLeftTalon.set(frontLeftOutput);
-        frontRightTalon.set(frontRightOutput);
-        backLeftTalon.set(backLeftOutput);
-        backRightTalon.set(backRightOutput);
+        frontLeftTalon.set(frontLeftOutput * (Constants.driveFrontLeftInverted.getInt() == 1 ? -1 : 0));
+        frontRightTalon.set(frontRightOutput * (Constants.driveFrontRightInverted.getInt() == 1 ? -1 : 0));
+        backLeftTalon.set(backLeftOutput * (Constants.driveBackLeftInverted.getInt() == 1 ? -1 : 0));
+        backRightTalon.set(backRightOutput * (Constants.driveBackRightInverted.getInt() == 1 ? -1 : 0));
 
         SmartDashboard.putNumber("Drive Front Left", frontLeftOutput);
-        SmartDashboard.putNumber("Drive Front Right", frontRightOutput);
+        SmartDashboard.putNumber("Drive Front Right", -frontRightOutput);
         SmartDashboard.putNumber("Drive Back Left", backLeftOutput);
-        SmartDashboard.putNumber("Drive Back Right", backRightOutput);
+        SmartDashboard.putNumber("Drive Back Right", -backRightOutput);
     }
+
 
     /**
      * @param x         The speed that the robot should drive in the X direction. [-1.0..1.0]

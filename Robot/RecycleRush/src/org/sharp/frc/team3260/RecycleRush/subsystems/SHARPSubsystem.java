@@ -33,7 +33,7 @@ public abstract class SHARPSubsystem extends Subsystem
 
     protected abstract void initDefaultCommand();
 
-    protected Log getLogger()
+    public Log getLogger()
     {
         return log;
     }

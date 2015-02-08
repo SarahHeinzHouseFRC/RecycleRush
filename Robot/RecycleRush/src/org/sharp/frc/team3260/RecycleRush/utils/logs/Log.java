@@ -10,13 +10,13 @@ public class Log
 {
     public static final int ATTRIBUTE_TIME = 1;
     public static final int ATTRIBUTE_THREAD = 2;
-    public static final LogLevel INFO = new LogLevel("INFO").setPrintStream(DriverStationLog.getInstance());
-    public static final LogLevel WARN = new LogLevel("WARN").setPrintStream(DriverStationLog.getInstance());
-    public static final LogLevel ERROR = new LogLevel("ERROR").setPrintStream(DriverStationLog.getInstance());
-    public static final LogLevel SEVERE = new LogLevel("SEVERE").setPrintStream(DriverStationLog.getInstance());
+    public static final LogLevel INFO = new LogLevel("INFO");//.setPrintStream(DriverStationLog.getInstance());
+    public static final LogLevel WARN = new LogLevel("WARN");//.setPrintStream(DriverStationLog.getInstance());
+    public static final LogLevel ERROR = new LogLevel("ERROR");//.setPrintStream(DriverStationLog.getInstance());
+    public static final LogLevel SEVERE = new LogLevel("SEVERE");//.setPrintStream(DriverStationLog.getInstance());
     private static final int ATTRIBUTE_DEFAULT = ATTRIBUTE_TIME | ATTRIBUTE_THREAD;
     public static ArrayList<String> backlog = new ArrayList<>();
-    public DateFormat dateFormat = new SimpleDateFormat("dd/MM/yy-hh:mm:ss");
+    public DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
 
     protected int attr;
     protected String name;

@@ -2,8 +2,6 @@ package org.sharp.frc.team3260.RecycleRush.utils;
 
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Vector;
 
 public abstract class ConstantsBase
@@ -20,7 +18,7 @@ public abstract class ConstantsBase
             String file = Util.getFile(CONSTANTS_FILE_PATH);
             if (file.length() < 1)
             {
-                throw new IOException("Not overriding Constants");
+                log.error("Constants file is blank, unable to override Constants.");
             }
 
             String[] lines = Util.split(file, "\n");
@@ -28,6 +26,7 @@ public abstract class ConstantsBase
             for (String curLine : lines)
             {
                 String[] line = Util.split(curLine, "=");
+
                 if (line.length != 2)
                 {
                     log.error("Invalid Constants file line: " + (curLine.length() == 0 ? "(Empty Line)" : curLine));
@@ -43,7 +42,7 @@ public abstract class ConstantsBase
 
                     if (constant.getName().compareTo(line[0]) == 0)
                     {
-                        System.out.println("ConstantsBase - Setting " + constant.getName() + " to " + Double.parseDouble(line[1]));
+                        log.info("Setting " + constant.getName() + " to " + Double.parseDouble(line[1]));
                         constant.setVal(Double.parseDouble(line[1]));
                         found = true;
                         break;
@@ -56,13 +55,9 @@ public abstract class ConstantsBase
                 }
             }
         }
-        catch (FileNotFoundException e)
-        {
-            log.error("Unable to open Constants.txt");
-        }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.toString());
         }
     }
 
@@ -96,13 +91,6 @@ public abstract class ConstantsBase
         public void setVal(double value)
         {
             this.value = value;
-        }
-
-        public String toHtml()
-        {
-            String str = "<html>" + this.name + ": " + "<input type='text' value=\"" + this.value + "\" name=\"" + this.name + "\"> <br/>";
-
-            return str;
         }
 
         public String toString()

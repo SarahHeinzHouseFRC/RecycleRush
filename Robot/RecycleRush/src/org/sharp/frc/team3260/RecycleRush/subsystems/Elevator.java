@@ -3,7 +3,6 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 import edu.wpi.first.wpilibj.CANTalon;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
-import org.sharp.frc.team3260.RecycleRush.commands.ElevatorHoldPositionCommand;
 
 /**
  * TODO: Elevator sensors
@@ -19,7 +18,7 @@ public class Elevator extends SHARPSubsystem
 
     private static final int ELEVATOR_TOLERANCE = 200;
 
-    private boolean useEncoder;
+    private boolean useEncoder = false;
 
     private int maxSpeedTicks = 50;
 
@@ -33,13 +32,13 @@ public class Elevator extends SHARPSubsystem
 
         elevatorTalon.enableBrakeMode(true);
 
-        elevatorTalon.changeControlMode(CANTalon.ControlMode.Position);
+        elevatorTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
 
-        elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+        elevatorTalon.set(0.0);
 
-        elevatorTalon.setProfile(0);
-
-        changeElevatorMode(false);
+        elevatorTalon.reverseOutput(true);
+        //
+        //        changeElevatorMode(false);
     }
 
     public void changeElevatorMode(boolean useEncoder)
@@ -48,11 +47,28 @@ public class Elevator extends SHARPSubsystem
 
         if(!this.useEncoder)
         {
+            log.warn("Disabling Elevator PID controller.");
+
+            elevatorTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
+
+            elevatorTalon.set(0.0);
+
             elevatorTalon.disableControl();
         }
         else
         {
+            log.info("Enabling Elevator PID controller.");
+
+            elevatorTalon.changeControlMode(CANTalon.ControlMode.Position);
+
+            elevatorTalon.set(elevatorTalon.getPosition());
+
+            elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+
+            elevatorTalon.setProfile(0);
+
             elevatorTalon.enableControl();
+
         }
     }
 
@@ -96,6 +112,8 @@ public class Elevator extends SHARPSubsystem
 
     public void setElevator(ElevatorPosition setpoint)
     {
+        log.info("Received new setpoint " + setpoint.positionName + " with encoder value " + setpoint.encoderValue);
+
         elevatorTalon.set(setpoint.encoderValue);
     }
 
@@ -117,7 +135,7 @@ public class Elevator extends SHARPSubsystem
     @Override
     protected void initDefaultCommand()
     {
-        setDefaultCommand(new ElevatorHoldPositionCommand());
+        //        setDefaultCommand(new ElevatorHoldPositionCommand());
     }
 
     public static Elevator getInstance()
@@ -130,10 +148,20 @@ public class Elevator extends SHARPSubsystem
         return instance;
     }
 
+    public int getPosition()
+    {
+        return elevatorTalon.getEncPosition();
+    }
+
+    public double getMotorVoltage()
+    {
+        return elevatorTalon.get();
+    }
+
     public static class ElevatorPosition
     {
-        String positionName;
-        int encoderValue;
+        public String positionName;
+        public int encoderValue;
 
         public static final ElevatorPosition GROUND = new ElevatorPosition("GROUND", 100);
         public static final ElevatorPosition TOP = new ElevatorPosition("TOP", 1000);
