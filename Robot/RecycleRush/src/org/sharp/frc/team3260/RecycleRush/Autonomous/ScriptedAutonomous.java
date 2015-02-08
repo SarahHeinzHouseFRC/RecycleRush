@@ -62,22 +62,20 @@ public class ScriptedAutonomous extends CommandGroup {
 
             double distance, speed, time;
 
+            distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
+            speed = Double.parseDouble(mappedByHeader.get("Drive Speed").get(i));
+
+
             switch (currentID){
                 //drive forward
                 case 1:
-                    distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
-                    speed = Double.parseDouble(mappedByHeader.get("Drive Speed").get(i));
 
                     Scheduler.getInstance().add(new DriveDistanceCommand(distance, speed));
-
                     break;
 
                 //drive backward
                 case -1:
-                    distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
-                    speed = Double.parseDouble(mappedByHeader.get("Drive Speed").get(i))*-1;
-
-                    Scheduler.getInstance().add(new DriveDistanceCommand(distance, speed));
+                    Scheduler.getInstance().add(new DriveDistanceCommand(distance, speed*-1));
 
                     break;
 
