@@ -23,7 +23,7 @@ public class ScriptedAutonomous extends CommandGroup {
 
     public ScriptedAutonomous() throws  IOException {
 
-        File file = new File("C:\\Users\\NCS Customer\\Desktop\\csv.csv");
+        File file = new File("C:\\Users\\NCS Customer\\Desktop\\csv.csv"); //this will need to be changed
         FileReader fileReader = new FileReader(file);
 
         BufferedReader reader = new BufferedReader(fileReader);

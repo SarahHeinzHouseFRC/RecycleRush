@@ -1,0 +1,33 @@
+#ifndef AUTONOMOUSGUIOBJECT_H
+#define AUTONOMOUSGUIOBJECT_H
+#include <QGraphicsItem>
+#include <QPainter>
+#include <QDebug>
+class AutonomousGuiObject : public QGraphicsItem
+{
+public:
+    AutonomousCommand();
+
+    QRectF boudingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    bool pressed;
+    bool hovered;
+    int getX();
+    int getY();
+
+    
+private:
+    int ImageHeight;
+    int imageWidth;
+    int x;
+    int y;
+    
+    
+protected:
+    void mousePressEvent(QGraphicsSceneMouseEvent *event);
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
+    
+
+};
+
+#endif // AUTONOMOUSCOMMAND_H
