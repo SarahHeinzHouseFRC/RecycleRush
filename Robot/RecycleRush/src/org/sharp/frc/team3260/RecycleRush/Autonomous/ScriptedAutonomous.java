@@ -1,4 +1,4 @@
-package org.sharp.frc.team3260.RecycleRush.Autonomous;
+package org.sharp.frc.team3260.RecycleRush.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
@@ -70,12 +70,12 @@ public class ScriptedAutonomous extends CommandGroup {
                 //drive forward
                 case 1:
 
-                    Scheduler.getInstance().add(new DriveDistanceCommand(distance, speed));
+                    addSequential(new DriveDistanceCommand(distance, speed));
                     break;
 
                 //drive backward
                 case -1:
-                    Scheduler.getInstance().add(new DriveDistanceCommand(distance, speed*-1));
+                    addSequential(new DriveDistanceCommand(distance, speed*-1));
 
                     break;
 
