@@ -14,7 +14,7 @@ import java.util.List;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
 import org.apache.commons.csv.*;
-import org.sharp.frc.team3260.RecycleRush.commands.DriveDistanceCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.*;
 
 /**
  * Created by NCS Customer on 2/8/2015.
@@ -76,20 +76,35 @@ public class ScriptedAutonomous extends CommandGroup {
                 //drive backward
                 case -1:
                     addSequential(new DriveDistanceCommand(distance, speed*-1));
-
                     break;
 
-                //strafe right
+                // TODO: Get rotate to work correctly
+                //rotate right
                 case 2:
-
-
                     break;
 
-                //strafe left
+                //rotate left
                 case -2:
+                    break;
 
+                //open tote
+                case 6:
+                    addSequential(new OpenGripperCommand());
+                    break;
 
+                //close gripper
+                case -6:
+                    addSequential(new CloseGripperCommand());
+                    break;
 
+                //elevator up- should be set to point?
+                case 7:
+                    addSequential(new ElevatorUpCommand());
+                    break;
+
+                //elevator down - should be set to point?
+                case -7:
+                    addSequential(new ElevatorDownCommand());
                     break;
 
             }
