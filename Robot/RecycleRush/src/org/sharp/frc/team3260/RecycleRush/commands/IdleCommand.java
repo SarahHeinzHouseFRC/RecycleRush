@@ -2,19 +2,21 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
+import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
+import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
+import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
 
-/**
- * Created by NCS Customer on 2/9/2015.
- */
 public class IdleCommand extends Command {
 
-    private double timeToIdle;
-    private Timer timer;
-
-    public IdleCommand(double timeToIdle){this.timeToIdle = timeToIdle;}
+    public IdleCommand(double timeToIdle){
+            setTimeout(timeToIdle);
+            requires(DriveTrain.getInstance());
+            requires(Elevator.getInstance());
+            requires(Gripper.getInstance());
+    }
     @Override
     protected void initialize(){
-        timer.start();
+
     }
 
     @Override
@@ -25,7 +27,7 @@ public class IdleCommand extends Command {
     @Override
     protected boolean isFinished() {
 
-        return timer.hasPeriodPassed(timeToIdle);
+        return isTimedOut();
     }
 
     @Override

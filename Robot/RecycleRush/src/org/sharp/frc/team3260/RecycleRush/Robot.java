@@ -11,9 +11,14 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
+import org.sharp.frc.team3260.RecycleRush.autonomous.*;
+
 
 public class Robot extends IterativeRobot
 {
+
+    private ScriptedAutonomous autonomousCommandGroup;
+
     private static final Log log = new Log("RobotBase", Log.ATTRIBUTE_TIME);
 
     private static Robot instance;
@@ -45,6 +50,17 @@ public class Robot extends IterativeRobot
 
     public void autonomousInit()
     {
+        autonomousCommandGroup = new ScriptedAutonomous();
+
+        if(autonomousCommandGroup.commandWasSuccessFul()){
+            log.info("Scripted Autonomous Loaded Successfully");
+            autonomousCommandGroup.start();
+        }
+        else{
+            log.info("Scripted Autonomous Loading Failed.");
+            BasicAutoCommandGroup basicAuto = new BasicAutoCommandGroup();
+            basicAuto.start();
+        }
     }
 
     public void autonomousPeriodic()
