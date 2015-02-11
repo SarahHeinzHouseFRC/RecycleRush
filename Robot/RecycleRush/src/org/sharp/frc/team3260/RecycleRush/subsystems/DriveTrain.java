@@ -2,8 +2,6 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.PIDSource.PIDSourceParameter;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
@@ -14,6 +12,8 @@ import org.sharp.frc.team3260.RecycleRush.utils.Util;
 public class DriveTrain extends SHARPSubsystem
 {
     protected static DriveTrain instance;
+
+    public static final double THEORETICAL_MAX_SPEED = 11.82; // (ft/s)
 
     private CANTalon frontLeftTalon, frontRightTalon, backLeftTalon, backRightTalon;
     private RobotDrive robotDrive;
@@ -38,7 +38,6 @@ public class DriveTrain extends SHARPSubsystem
     protected boolean rotatingToTarget = false;
 
     protected PIDController rotationController;
-
 
     public DriveTrain()
     {
@@ -67,18 +66,7 @@ public class DriveTrain extends SHARPSubsystem
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, false);
 
-        frontLeftEncoder = new Encoder(1, 2, true, EncodingType.k4X);
-        frontRightEncoder = new Encoder(3, 4, true, EncodingType.k4X);
-        backLeftEncoder = new Encoder(5, 6, true, EncodingType.k4X);
-        backRightEncoder = new Encoder(7, 8, true, EncodingType.k4X);
-
-        frontLeftEncoder.setPIDSourceParameter(PIDSourceParameter.kDistance);
-        frontRightEncoder.setPIDSourceParameter(PIDSourceParameter.kDistance);
-        backLeftEncoder.setPIDSourceParameter(PIDSourceParameter.kDistance);
-        backRightEncoder.setPIDSourceParameter(PIDSourceParameter.kDistance);
-
-        frontLeftEncoder.setDistancePerPulse((4.0/*in*/ * Math.PI) / (256.0 * 12.0/*in/ft*/));
-        backLeftEncoder.setDistancePerPulse((4.0/*in*/ * Math.PI) / (256.0 * 12.0/*in/ft*/));
+        //        frontLeftEncoder.setDistancePerPulse((4.0/*in*/ * Math.PI) / (256.0 * 12.0/*in/ft*/));
 
         LiveWindow.addSensor("DriveTrain", "Front Left Encoder", frontLeftEncoder);
         LiveWindow.addSensor("DriveTrain", "Front Right Encoder", frontRightEncoder);
@@ -105,6 +93,62 @@ public class DriveTrain extends SHARPSubsystem
             rotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), output -> rotationControllerOutput = output);
 
             SmartDashboard.putData("Rotation Controller", rotationController);
+        }
+    }
+
+    public void changeControlMode(CANTalon.ControlMode controlMode)
+    {
+        if (controlMode == CANTalon.ControlMode.PercentVbus)
+        {
+            frontLeftTalon.disableControl();
+            frontLeftTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
+            frontLeftTalon.set(0.0);
+
+            frontRightTalon.disableControl();
+            frontRightTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
+            frontRightTalon.set(0.0);
+
+            backLeftTalon.disableControl();
+            backLeftTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
+            backLeftTalon.set(0.0);
+
+            backRightTalon.disableControl();
+            backRightTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
+            backRightTalon.set(0.0);
+
+            log.info("ControlMode changed to " + controlMode.getClass().getSimpleName());
+        }
+        else if (controlMode == CANTalon.ControlMode.Speed)
+        {
+            frontLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
+            frontLeftTalon.set(0.0);
+            frontLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+            frontLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+            frontLeftTalon.enableControl();
+
+            frontRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
+            frontRightTalon.set(0.0);
+            frontRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+            frontRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+            frontRightTalon.enableControl();
+
+            backLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
+            backLeftTalon.set(0.0);
+            backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+            backLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+            backLeftTalon.enableControl();
+
+            backRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
+            backRightTalon.set(0.0);
+            backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+            backRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+            backRightTalon.enableControl();
+
+            log.info("ControlMode changed to " + controlMode.getClass().getSimpleName());
+        }
+        else
+        {
+            log.warn("Invalid ControlMode supplied, not setting ControlMode to " + controlMode.getClass().getSimpleName());
         }
     }
 
@@ -248,6 +292,21 @@ public class DriveTrain extends SHARPSubsystem
      */
     private double getRotationPID(double rotationSpeed)
     {
+        if (rotatingToTarget)
+        {
+            if (!rotationController.isEnable())
+            {
+                rotationController.enable();
+            }
+
+            if (rotationController.getSetpoint() != rotationTarget)
+            {
+                rotationController.setSetpoint(rotationTarget);
+            }
+
+            return rotationControllerOutput;
+        }
+
         if (rotationController.isEnable())
         {
             if (Math.abs(rotationSpeed) >= ROTATION_DEADBAND)
@@ -272,16 +331,26 @@ public class DriveTrain extends SHARPSubsystem
         return rotationSpeed;
     }
 
-    public void setRotationTarget(double rotationTarget)
+    public boolean reachedRotationTarget()
     {
-        this.rotationTarget = rotationTarget;
-
-        rotationController.setSetpoint(rotationTarget);
+        return rotationController.onTarget();
     }
 
-    public void setRotatingToTarget(boolean rotatingToTarget)
+    public void setRotationTarget(double rotationTarget)
     {
-        this.rotatingToTarget = rotatingToTarget;
+        rotatingToTarget = true;
+
+        if (rotationController.getSetpoint() != rotationTarget)
+        {
+            this.rotationTarget = rotationTarget;
+
+            rotationController.setSetpoint(rotationTarget);
+        }
+
+        if (!rotationController.isEnable())
+        {
+            rotationController.enable();
+        }
     }
 
     public IMUAdvanced getIMU()

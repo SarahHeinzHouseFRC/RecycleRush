@@ -61,6 +61,8 @@ public class Elevator extends SHARPSubsystem
 
             elevatorTalon.changeControlMode(CANTalon.ControlMode.Position);
 
+            elevatorTalon.set(0.0);
+
             elevatorTalon.set(elevatorTalon.getPosition());
 
             elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
