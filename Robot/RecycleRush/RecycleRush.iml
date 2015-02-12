@@ -12,13 +12,11 @@
       <excludeFolder url="file://$MODULE_DIR$/.gradle" />
       <excludeFolder url="file://$MODULE_DIR$/build" />
     </content>
-    <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library" exported="">
-      <library>
+      <library name="Gradle: NetworkTables">
         <CLASSES>
-          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/NetworkTables.jar!/" />
-          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/NetworkTables.jar!/" />
           <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/NetworkTables.jar!/" />
           <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/NetworkTables.jar!/" />
         </CLASSES>
@@ -27,17 +25,25 @@
       </library>
     </orderEntry>
     <orderEntry type="module-library" exported="">
-      <library>
+      <library name="Gradle: WPILib">
         <CLASSES>
           <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib.jar!/" />
           <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib.jar!/" />
-          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib.jar!/" />
-          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="Gradle: commons-csv-1.1">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/gradle/libs/commons-csv-1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="commons-csv-1.1" level="project" />
   </component>
 </module>

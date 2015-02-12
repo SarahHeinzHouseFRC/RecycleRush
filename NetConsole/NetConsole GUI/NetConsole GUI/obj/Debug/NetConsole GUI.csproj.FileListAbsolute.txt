@@ -1,0 +1,9 @@
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole GUI\NetConsole GUI\bin\Debug\NetConsole GUI.exe.config
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole GUI\NetConsole GUI\bin\Debug\NetConsole GUI.exe
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole GUI\NetConsole GUI\bin\Debug\NetConsole GUI.pdb
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole GUI\NetConsole GUI\obj\Debug\NetConsole GUI.csprojResolveAssemblyReference.cache
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole GUI\NetConsole GUI\obj\Debug\NetConsole_GUI.MainForm.resources
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole GUI\NetConsole GUI\obj\Debug\NetConsole_GUI.Properties.Resources.resources
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole GUI\NetConsole GUI\obj\Debug\NetConsole GUI.csproj.GenerateResource.Cache
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole GUI\NetConsole GUI\obj\Debug\NetConsole GUI.exe
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole GUI\NetConsole GUI\obj\Debug\NetConsole GUI.pdb

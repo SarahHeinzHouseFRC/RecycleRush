@@ -4,7 +4,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.autonomous.*;
+import org.sharp.frc.team3260.RecycleRush.Autonomous.BasicAutoCommandGroup;
+import org.sharp.frc.team3260.RecycleRush.Autonomous.ScriptedAutonomous;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyroCommand;
@@ -13,10 +14,8 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
-
 public class Robot extends IterativeRobot
 {
-
     private ScriptedAutonomous autonomousCommandGroup;
 
     private static final Log log = new Log("RobotBase", Log.ATTRIBUTE_TIME);

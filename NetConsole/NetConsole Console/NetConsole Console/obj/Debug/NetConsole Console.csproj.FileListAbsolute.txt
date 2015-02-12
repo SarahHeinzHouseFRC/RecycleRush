@@ -1,0 +1,6 @@
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole Console\NetConsole Console\bin\Debug\NetConsole Console.exe.config
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole Console\NetConsole Console\bin\Debug\NetConsole Console.exe
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole Console\NetConsole Console\bin\Debug\NetConsole Console.pdb
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole Console\NetConsole Console\obj\Debug\NetConsole Console.csprojResolveAssemblyReference.cache
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole Console\NetConsole Console\obj\Debug\NetConsole Console.exe
+C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole Console\NetConsole Console\obj\Debug\NetConsole Console.pdb

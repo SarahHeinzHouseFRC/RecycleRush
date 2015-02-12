@@ -51,9 +51,7 @@ public class ScriptedAutonomous extends CommandGroup
             }
             for (int i = 0; i < mappedByHeader.get("ID").size(); i++)
             {
-
-             /* TODO: Add the rest of the ID's and process their given variables. */
-
+                /* TODO: Add the rest of the ID's and process their given variables. */
                 int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
 
                 double distance, speed, time;
