@@ -1,4 +1,4 @@
-package org.sharp.frc.team3260.RecycleRush.autonomous;
+package org.sharp.frc.team3260.RecycleRush.Autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.apache.commons.csv.CSVFormat;
@@ -14,12 +14,10 @@ import java.util.*;
 
 public class ScriptedAutonomous extends CommandGroup
 {
-
     private boolean successful;
 
     public ScriptedAutonomous()
     {
-
         try
         {
             File file = new File("/home/lvuser/autonomousVariables.csv"); //need to make sure if this is the correct path
