@@ -42,14 +42,14 @@ public class Log
     {
         StringBuilder builder = new StringBuilder();
 
-        if((attr & ATTRIBUTE_TIME) == ATTRIBUTE_TIME)
+        if ((attr & ATTRIBUTE_TIME) == ATTRIBUTE_TIME)
         {
             builder.append("[" + getTime() + "] ");
         }
 
         builder.append("[" + name + "] ");
 
-        if((attr & ATTRIBUTE_THREAD) == ATTRIBUTE_THREAD)
+        if ((attr & ATTRIBUTE_THREAD) == ATTRIBUTE_THREAD)
         {
             builder.append("[" + Thread.currentThread().getName() + "] ");
         }

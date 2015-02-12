@@ -1,42 +1,49 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
 
-public class IdleCommand extends Command {
+public class IdleCommand extends Command
+{
 
-    public IdleCommand(double timeToIdle){
-            setTimeout(timeToIdle);
-            requires(DriveTrain.getInstance());
-            requires(Elevator.getInstance());
-            requires(Gripper.getInstance());
-    }
-    @Override
-    protected void initialize(){
-
+    public IdleCommand(double timeToIdle)
+    {
+        setTimeout(timeToIdle);
+        requires(DriveTrain.getInstance());
+        requires(Elevator.getInstance());
+        requires(Gripper.getInstance());
     }
 
     @Override
-    protected void execute() {
+    protected void initialize()
+    {
 
     }
 
     @Override
-    protected boolean isFinished() {
+    protected void execute()
+    {
+
+    }
+
+    @Override
+    protected boolean isFinished()
+    {
 
         return isTimedOut();
     }
 
     @Override
-    protected void end() {
+    protected void end()
+    {
 
     }
 
     @Override
-    protected void interrupted() {
+    protected void interrupted()
+    {
 
     }
 }

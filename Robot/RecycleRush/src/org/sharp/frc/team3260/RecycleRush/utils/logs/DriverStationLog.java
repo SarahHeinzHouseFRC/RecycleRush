@@ -26,7 +26,7 @@ public class DriverStationLog extends PrintStream
             public void flush()
             {
                 DriverStation.reportError(stringBuilder.toString(), false);
-                
+
                 stringBuilder = new StringBuilder();
             }
         });
@@ -34,7 +34,7 @@ public class DriverStationLog extends PrintStream
 
     public static DriverStationLog getInstance()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = new DriverStationLog();
         }

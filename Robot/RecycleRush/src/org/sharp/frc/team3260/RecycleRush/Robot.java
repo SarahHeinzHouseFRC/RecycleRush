@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.sharp.frc.team3260.RecycleRush.autonomous.*;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyroCommand;
@@ -11,7 +12,6 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
-import org.sharp.frc.team3260.RecycleRush.autonomous.*;
 
 
 public class Robot extends IterativeRobot
@@ -52,11 +52,13 @@ public class Robot extends IterativeRobot
     {
         autonomousCommandGroup = new ScriptedAutonomous();
 
-        if(autonomousCommandGroup.commandWasSuccessFul()){
+        if (autonomousCommandGroup.commandWasSuccessFul())
+        {
             log.info("Scripted Autonomous Loaded Successfully");
             autonomousCommandGroup.start();
         }
-        else{
+        else
+        {
             log.info("Scripted Autonomous Loading Failed.");
             BasicAutoCommandGroup basicAuto = new BasicAutoCommandGroup();
             basicAuto.start();

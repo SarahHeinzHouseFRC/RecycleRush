@@ -45,7 +45,7 @@ public class Elevator extends SHARPSubsystem
     {
         this.useEncoder = useEncoder;
 
-        if(!this.useEncoder)
+        if (!this.useEncoder)
         {
             log.warn("Disabling Elevator PID controller.");
 
@@ -76,7 +76,7 @@ public class Elevator extends SHARPSubsystem
 
     public void up(double speed)
     {
-        if(useEncoder)
+        if (useEncoder)
         {
             setElevator(elevatorTalon.getPosition() + (speed * maxSpeedTicks));
         }
@@ -88,7 +88,7 @@ public class Elevator extends SHARPSubsystem
 
     public void down(double speed)
     {
-        if(useEncoder)
+        if (useEncoder)
         {
             setElevator(elevatorTalon.getPosition() - (speed * maxSpeedTicks));
         }
@@ -100,11 +100,11 @@ public class Elevator extends SHARPSubsystem
 
     public void setElevator(int setpoint)
     {
-        if(setpoint < ElevatorPosition.GROUND.encoderValue)
+        if (setpoint < ElevatorPosition.GROUND.encoderValue)
         {
             setpoint = ElevatorPosition.GROUND.encoderValue;
         }
-        else if(setpoint > ElevatorPosition.TOP.encoderValue)
+        else if (setpoint > ElevatorPosition.TOP.encoderValue)
         {
             setpoint = ElevatorPosition.TOP.encoderValue;
         }

@@ -6,8 +6,8 @@ import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 public abstract class SHARPSubsystem extends Subsystem
 {
-    protected Log log; 
-    
+    protected Log log;
+
     public SHARPSubsystem()
     {
         super();
@@ -25,9 +25,9 @@ public abstract class SHARPSubsystem extends Subsystem
     private void initialize(String name)
     {
         SmartDashboard.putData(this);
-        
+
         log = new Log(name, Log.ATTRIBUTE_TIME);
-        
+
         log.info("Created instance of " + name + ".");
     }
 
