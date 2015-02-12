@@ -16,6 +16,15 @@ public class ElevatorToSetpointCommand extends Command
         this.setpoint = setpoint;
     }
 
+    public ElevatorToSetpointCommand(String positionName, int positionTicks, double timeout)
+    {
+        requires(Elevator.getInstance());
+
+        setTimeout(timeout);
+
+        this.setpoint = new Elevator.ElevatorPosition(positionName, positionTicks);
+    }
+
     @Override
     protected void initialize()
     {
@@ -30,7 +39,6 @@ public class ElevatorToSetpointCommand extends Command
     @Override
     protected boolean isFinished()
     {
-
         return isTimedOut() || Elevator.getInstance().atSetpoint();
     }
 
