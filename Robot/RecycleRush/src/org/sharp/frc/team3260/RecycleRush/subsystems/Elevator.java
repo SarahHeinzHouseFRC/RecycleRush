@@ -180,6 +180,12 @@ public class Elevator extends SHARPSubsystem
             positions.put(index, this);
         }
 
+        public ElevatorPosition(String positionName, int encoderValue)
+        {
+            this.positionName = positionName;
+            this.encoderValue = encoderValue;
+        }
+
         public ElevatorPosition getPositionByName(String name)
         {
             for (Object obj : positions.entrySet())
