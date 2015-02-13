@@ -14,7 +14,7 @@ public class Log
     public static final LogLevel WARN = new LogLevel("WARN");//.setPrintStream(DriverStationLog.getInstance());
     public static final LogLevel ERROR = new LogLevel("ERROR");//.setPrintStream(DriverStationLog.getInstance());
     public static final LogLevel SEVERE = new LogLevel("SEVERE");//.setPrintStream(DriverStationLog.getInstance());
-    private static final int ATTRIBUTE_DEFAULT = ATTRIBUTE_TIME | ATTRIBUTE_THREAD;
+    protected static final int ATTRIBUTE_DEFAULT = ATTRIBUTE_TIME | ATTRIBUTE_THREAD;
     public static ArrayList<String> backlog = new ArrayList<>();
     public DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
 
@@ -44,18 +44,17 @@ public class Log
 
         if ((attr & ATTRIBUTE_TIME) == ATTRIBUTE_TIME)
         {
-            builder.append("[" + getTime() + "] ");
+            builder.append("[").append(getTime()).append("] ");
         }
 
-        builder.append("[" + name + "] ");
+        builder.append("[").append(name).append("] ");
 
         if ((attr & ATTRIBUTE_THREAD) == ATTRIBUTE_THREAD)
         {
-            builder.append("[" + Thread.currentThread().getName() + "] ");
+            builder.append("[").append(Thread.currentThread().getName()).append("] ");
         }
 
-        builder.append("[" + level + "] ");
-        builder.append(message);
+        builder.append("[").append(level).append("] ").append(message);
 
         String ts = builder.toString();
 
