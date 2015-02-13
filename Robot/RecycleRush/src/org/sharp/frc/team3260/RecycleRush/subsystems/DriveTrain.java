@@ -8,9 +8,12 @@ import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
+import org.sharp.frc.team3260.RecycleRush.utils.logs.ThrottledLog;
 
 public class DriveTrain extends SHARPSubsystem
 {
+    protected static final ThrottledLog spammer = new ThrottledLog("DriveTrain", 0, 500);
+
     protected static DriveTrain instance;
 
     public static final double THEORETICAL_MAX_SPEED = 11.82; // (ft/s)
@@ -218,8 +221,8 @@ public class DriveTrain extends SHARPSubsystem
         wheelSpeeds[2] = -x + y + rotation;
         wheelSpeeds[3] = x + y - rotation;
 
-        log.info(x + ", " + y + ", " + rotation);
-        log.info(wheelSpeeds[0] + ", " + wheelSpeeds[1] + ", " + wheelSpeeds[2] + ", " + wheelSpeeds[3]);
+        spammer.info(x + ", " + y + ", " + rotation);
+        spammer.info(wheelSpeeds[0] + ", " + wheelSpeeds[1] + ", " + wheelSpeeds[2] + ", " + wheelSpeeds[3]);
 
         Util.normalize(wheelSpeeds);
 
