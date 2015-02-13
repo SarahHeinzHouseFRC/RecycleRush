@@ -3,6 +3,7 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 import edu.wpi.first.wpilibj.CANTalon;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
+import org.sharp.frc.team3260.RecycleRush.commands.ElevatorHoldPositionCommand;
 
 import java.util.HashMap;
 
@@ -17,8 +18,6 @@ public class Elevator extends SHARPSubsystem
     protected static Elevator instance;
 
     private CANTalon elevatorTalon;
-
-    private static final int ELEVATOR_TOLERANCE = 200;
 
     private boolean useEncoder = false;
 
@@ -123,7 +122,7 @@ public class Elevator extends SHARPSubsystem
 
     public boolean atSetpoint()
     {
-        return (!useEncoder || (Math.abs(elevatorTalon.getEncPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE));
+        return (!useEncoder || elevatorTalon.);
     }
 
     public void stop()
@@ -139,7 +138,7 @@ public class Elevator extends SHARPSubsystem
     @Override
     protected void initDefaultCommand()
     {
-        //        setDefaultCommand(new ElevatorHoldPositionCommand());
+        setDefaultCommand(new ElevatorHoldPositionCommand());
     }
 
     public static Elevator getInstance()
@@ -157,11 +156,6 @@ public class Elevator extends SHARPSubsystem
         return elevatorTalon.getEncPosition();
     }
 
-    public double getMotorVoltage()
-    {
-        return elevatorTalon.get();
-    }
-
     public static class ElevatorPosition
     {
         private static final HashMap<Integer, ElevatorPosition> positions = new HashMap<>();
@@ -170,7 +164,11 @@ public class Elevator extends SHARPSubsystem
         public int encoderValue;
 
         public static final ElevatorPosition GROUND = new ElevatorPosition(0, "GROUND", 100);
-        public static final ElevatorPosition TOP = new ElevatorPosition(1, "TOP", 1000);
+        public static final ElevatorPosition ONE_TOTE = new ElevatorPosition(1, "ONE_TOTE", 100);
+        public static final ElevatorPosition TWO_TOTE = new ElevatorPosition(2, "TWO_TOTES", 100);
+        public static final ElevatorPosition RECYCLING_CAN = new ElevatorPosition(3, "RECYCLING_CAN", 100);
+        public static final ElevatorPosition THREE_TOTES = new ElevatorPosition(4, "THREE_TOTES", 100);
+        public static final ElevatorPosition TOP = new ElevatorPosition(5, "TOP", 1000);
 
         public ElevatorPosition(int index, String positionName, int encoderValue)
         {
