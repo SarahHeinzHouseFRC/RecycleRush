@@ -13,12 +13,12 @@ public class Constants extends ConstantsBase
     public static final Constant driveBackRightTalonID = new Constant("driveBackRightTalonID", 1);
 
     public static final Constant driveFrontLeftInverted = new Constant("driveFrontLeftInverted", 0);
-    public static final Constant driveFrontRightInverted = new Constant("driveFrontRightInverted", 1);
+    public static final Constant driveFrontRightInverted = new Constant("driveFrontRightInverted", 0);
     public static final Constant driveBackLeftInverted = new Constant("driveBackLeftInverted", 0);
-    public static final Constant driveBackRightInverted = new Constant("driveBackRightInverted", 1);
+    public static final Constant driveBackRightInverted = new Constant("driveBackRightInverted", 0);
 
-    public static final Constant gripperSolenoidForwardChannel = new Constant("gripperSolenoidForwardChannel", 2);
-    public static final Constant gripperSolenoidReverseChannel = new Constant("gripperSolenoidReverseChannel", 3);
+    public static final Constant gripperSolenoidForwardChannel = new Constant("gripperSolenoidForwardChannel", 0);
+    public static final Constant gripperSolenoidReverseChannel = new Constant("gripperSolenoidReverseChannel", 1);
 
     public static final Constant elevatorTalonID = new Constant("elevatorTalonID", 5);
 

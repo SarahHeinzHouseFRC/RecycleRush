@@ -17,7 +17,6 @@ public class DriveTrain extends SHARPSubsystem
 
     private CANTalon frontLeftTalon, frontRightTalon, backLeftTalon, backRightTalon;
     private RobotDrive robotDrive;
-    private Encoder frontLeftEncoder, frontRightEncoder, backLeftEncoder, backRightEncoder;
 
     private Compressor compressor;
 
@@ -61,17 +60,12 @@ public class DriveTrain extends SHARPSubsystem
         robotDrive = new RobotDrive(frontLeftTalon, backLeftTalon, frontRightTalon, backRightTalon);
         robotDrive.setSafetyEnabled(false);
         robotDrive.setExpiration(0.1);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, false);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, false);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, false);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, false);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, Constants.driveFrontLeftInverted.getInt() == 1);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, Constants.driveBackLeftInverted.getInt() == 1);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, Constants.driveFrontRightInverted.getInt() == 1);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, Constants.driveBackRightInverted.getInt() == 1);
 
         //        frontLeftEncoder.setDistancePerPulse((4.0/*in*/ * Math.PI) / (256.0 * 12.0/*in/ft*/));
-
-        LiveWindow.addSensor("DriveTrain", "Front Left Encoder", frontLeftEncoder);
-        LiveWindow.addSensor("DriveTrain", "Front Right Encoder", frontRightEncoder);
-        LiveWindow.addSensor("DriveTrain", "Back Left Encoder", backLeftEncoder);
-        LiveWindow.addSensor("DriveTrain", "Back Right Encoder", backRightEncoder);
 
         try
         {
@@ -179,10 +173,10 @@ public class DriveTrain extends SHARPSubsystem
         backLeftTalon.set(backLeftOutput * (Constants.driveBackLeftInverted.getInt() == 1 ? -1 : 0));
         backRightTalon.set(backRightOutput * (Constants.driveBackRightInverted.getInt() == 1 ? -1 : 0));
 
-        SmartDashboard.putNumber("Drive Front Left", frontLeftOutput);
-        SmartDashboard.putNumber("Drive Front Right", -frontRightOutput);
-        SmartDashboard.putNumber("Drive Back Left", backLeftOutput);
-        SmartDashboard.putNumber("Drive Back Right", -backRightOutput);
+        SmartDashboard.putNumber("Drive Front Left", frontLeftOutput * (Constants.driveFrontLeftInverted.getInt() == 1 ? -1 : 0));
+        SmartDashboard.putNumber("Drive Front Right", frontRightOutput * (Constants.driveFrontRightInverted.getInt() == 1 ? -1 : 0));
+        SmartDashboard.putNumber("Drive Back Left", backLeftOutput * (Constants.driveBackLeftInverted.getInt() == 1 ? -1 : 0));
+        SmartDashboard.putNumber("Drive Back Right", backRightOutput * (Constants.driveBackRightInverted.getInt() == 1 ? -1 : 0));
     }
 
 
@@ -217,6 +211,10 @@ public class DriveTrain extends SHARPSubsystem
         double rotated[] = Util.rotateVector(x, y, gyroAngle);
         x = rotated[0];
         y = rotated[1];
+
+        SmartDashboard.putNumber("Drive X", x);
+        SmartDashboard.putNumber("Drive Y", y);
+        SmartDashboard.putNumber("Drive Rotation", rotation);
 
         double wheelSpeeds[] = new double[4];
         wheelSpeeds[0] = x + y + rotation;
@@ -294,17 +292,18 @@ public class DriveTrain extends SHARPSubsystem
     {
         if (rotatingToTarget)
         {
-            if (!rotationController.isEnable())
-            {
-                rotationController.enable();
-            }
-
-            if (rotationController.getSetpoint() != rotationTarget)
-            {
-                rotationController.setSetpoint(rotationTarget);
-            }
-
-            return rotationControllerOutput;
+            //            if (!rotationController.isEnable())
+            //            {
+            //                rotationController.enable();
+            //            }
+            //
+            //            if (rotationController.getSetpoint() != rotationTarget)
+            //            {
+            //                rotationController.setSetpoint(rotationTarget);
+            //            }
+            //
+            //            return rotationControllerOutput;
+            rotatingToTarget = false;
         }
 
         if (rotationController.isEnable())
@@ -365,15 +364,16 @@ public class DriveTrain extends SHARPSubsystem
 
     public void resetEncoders()
     {
-        frontLeftEncoder.reset();
-        frontRightEncoder.reset();
-        backLeftEncoder.reset();
-        backRightEncoder.reset();
+        //        frontLeftEncoder.reset();
+        //        frontRightEncoder.reset();
+        //        backLeftEncoder.reset();
+        //        backRightEncoder.reset();
     }
 
     public double getAverageEncoderDistance()
     {
-        return Util.mean(new double[]{frontLeftEncoder.getDistance(), frontRightEncoder.getDistance(), backRightEncoder.getDistance(), backRightEncoder.getDistance()});
+        return 0;
+        //        return Util.mean(new double[]{frontLeftEncoder.getDistance(), frontRightEncoder.getDistance(), backRightEncoder.getDistance(), backRightEncoder.getDistance()});
     }
 
     public static DriveTrain getInstance()

@@ -44,7 +44,7 @@ public class SHARPDriveCommand extends Command
         double throttle;
 
         wheel = handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X), 0.05);
-        throttle = handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y), 0.05);
+        throttle = -handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y), 0.05);
 
         double negInertia = wheel - oldWheel;
         oldWheel = wheel;
