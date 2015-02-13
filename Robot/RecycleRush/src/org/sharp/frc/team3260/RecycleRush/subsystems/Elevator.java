@@ -15,6 +15,8 @@ import java.util.HashMap;
  */
 public class Elevator extends SHARPSubsystem
 {
+    private static final int ELEVATOR_TOLERANCE = 100;
+
     protected static Elevator instance;
 
     private CANTalon elevatorTalon;
@@ -122,7 +124,7 @@ public class Elevator extends SHARPSubsystem
 
     public boolean atSetpoint()
     {
-        return (!useEncoder || elevatorTalon.);
+        return (!useEncoder || (Math.abs(elevatorTalon.getEncPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE));
     }
 
     public void stop()
