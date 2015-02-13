@@ -1,10 +1,11 @@
-package org.sharp.frc.team3260.RecycleRush.Autonomous;
+package org.sharp.frc.team3260.RecycleRush.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.sharp.frc.team3260.RecycleRush.commands.*;
+import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -55,10 +56,12 @@ public class ScriptedAutonomous extends CommandGroup
                 int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
 
                 double distance, speed, time;
+                int elevatorPosition;
 
                 distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
                 speed = Double.parseDouble(mappedByHeader.get("Drive Speed").get(i));
                 time = Double.parseDouble(mappedByHeader.get("Time Out").get(i));
+                elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
 
                 switch (currentID)
                 {
@@ -98,7 +101,7 @@ public class ScriptedAutonomous extends CommandGroup
 
                     //elevator up- should be set to point?
                     case 7:
-                        addSequential(new ElevatorUpCommand());
+                        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition),10));
                         break;
 
                     //elevator down - should be set to point?
@@ -125,7 +128,6 @@ public class ScriptedAutonomous extends CommandGroup
 
         return successful;
     }
-
 }
 
 

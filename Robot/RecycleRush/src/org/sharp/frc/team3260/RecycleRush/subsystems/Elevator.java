@@ -196,7 +196,7 @@ public class Elevator extends SHARPSubsystem
             return null;
         }
 
-        public ElevatorPosition getPositionByIndex(int index)
+        static public ElevatorPosition getPositionByIndex(int index)
         {
             if (positions.containsKey(index))
             {
