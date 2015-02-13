@@ -212,15 +212,14 @@ public class DriveTrain extends SHARPSubsystem
         x = rotated[0];
         y = rotated[1];
 
-        SmartDashboard.putNumber("Drive X", x);
-        SmartDashboard.putNumber("Drive Y", y);
-        SmartDashboard.putNumber("Drive Rotation", rotation);
-
         double wheelSpeeds[] = new double[4];
         wheelSpeeds[0] = x + y + rotation;
         wheelSpeeds[1] = -x + y - rotation;
         wheelSpeeds[2] = -x + y + rotation;
         wheelSpeeds[3] = x + y - rotation;
+
+        log.info(x + ", " + y + ", " + rotation);
+        log.info(wheelSpeeds[0] + ", " + wheelSpeeds[1] + ", " + wheelSpeeds[2] + ", " + wheelSpeeds[3]);
 
         Util.normalize(wheelSpeeds);
 
