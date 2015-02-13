@@ -221,10 +221,9 @@ public class DriveTrain extends SHARPSubsystem
         wheelSpeeds[2] = -x + y + rotation;
         wheelSpeeds[3] = x + y - rotation;
 
-        spammer.info(x + ", " + y + ", " + rotation);
-        spammer.info(wheelSpeeds[0] + ", " + wheelSpeeds[1] + ", " + wheelSpeeds[2] + ", " + wheelSpeeds[3]);
-
         Util.normalize(wheelSpeeds);
+
+        spammer.info(x + ", " + y + ", " + rotation + " - " + wheelSpeeds[0] + ", " + wheelSpeeds[1] + ", " + wheelSpeeds[2] + ", " + wheelSpeeds[3]);
 
         setDriveMotors(wheelSpeeds[0], wheelSpeeds[1], wheelSpeeds[2], wheelSpeeds[3]);
     }
