@@ -37,9 +37,8 @@ public class ScriptedAutonomous extends CommandGroup
             String desiredValue;
 
             // run through each key add its values to the vector
-            for (int i = 0; i < headers.size(); i++)
+            for (String currentHeader : headers)
             {
-                String currentHeader = headers.get(i);
                 csvFileFormat = CSVFormat.DEFAULT.withHeader(currentHeader);
                 csvFileParser = new CSVParser(fileReader, csvFileFormat);
                 csvRecords = (List) csvFileParser.getRecords();
@@ -101,7 +100,7 @@ public class ScriptedAutonomous extends CommandGroup
 
                     //elevator up- should be set to point?
                     case 7:
-                        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition),10));
+                        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition), 10));
                         break;
 
                     //elevator down - should be set to point?
@@ -125,7 +124,6 @@ public class ScriptedAutonomous extends CommandGroup
 
     public boolean commandWasSuccessFul()
     {
-
         return successful;
     }
 }
