@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.CANTalon;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 
+import java.util.HashMap;
+
 /**
  * TODO: Elevator sensors
  * TODO: Elevator control methods
@@ -162,16 +164,46 @@ public class Elevator extends SHARPSubsystem
 
     public static class ElevatorPosition
     {
+        private static final HashMap<Integer, ElevatorPosition> positions = new HashMap<>();
+
         public String positionName;
         public int encoderValue;
 
-        public static final ElevatorPosition GROUND = new ElevatorPosition("GROUND", 100);
-        public static final ElevatorPosition TOP = new ElevatorPosition("TOP", 1000);
+        public static final ElevatorPosition GROUND = new ElevatorPosition(0, "GROUND", 100);
+        public static final ElevatorPosition TOP = new ElevatorPosition(1, "TOP", 1000);
 
-        public ElevatorPosition(String positionName, int encoderValue)
+        public ElevatorPosition(int index, String positionName, int encoderValue)
         {
             this.positionName = positionName;
             this.encoderValue = encoderValue;
+
+            positions.put(index, this);
+        }
+
+        public ElevatorPosition getPositionByName(String name)
+        {
+            for (Object obj : positions.entrySet())
+            {
+                if (obj.getClass().equals(ElevatorPosition.class))
+                {
+                    if (((ElevatorPosition) obj).positionName.equals(name))
+                    {
+                        return (ElevatorPosition) obj;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public ElevatorPosition getPositionByIndex(int index)
+        {
+            if (positions.containsKey(index))
+            {
+                return positions.get(index);
+            }
+
+            return null;
         }
     }
 }
