@@ -69,12 +69,12 @@ public class ScriptedAutonomous extends CommandGroup
                         //drive forward
                         case 1:
 
-                            addSequential(new DriveDistanceCommand(distance, speed));
+//                            addSequential(new DriveDistanceCommand(distance, speed));
                             break;
 
                         //drive backward
                         case -1:
-                            addSequential(new DriveDistanceCommand(distance, speed * -1));
+//                            addSequential(new DriveDistanceCommand(distance, speed * -1));
                             break;
 
                         // TODO: Get rotate to work correctly
