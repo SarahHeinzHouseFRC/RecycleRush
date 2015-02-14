@@ -60,12 +60,14 @@ public class ScriptedAutonomous extends CommandGroup {
                 /* Add the ID's and process their given variables. */
                     int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
                     double distance, speed, time;
-                    int elevatorPosition;
+                    int elevatorPosition,degreeToRotate;
 
                     distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
                     speed = Double.parseDouble(mappedByHeader.get("Drive Speed").get(i));
                     time = Double.parseDouble(mappedByHeader.get("Time Out").get(i));
                     elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
+                    degreeToRotate = Integer.parseInt(mappedByHeader.get("Degree to Rotate").get(i));
+
 
                     System.out.println("ID: " + currentID);
                     System.out.println("Speed: " + speed);
@@ -77,9 +79,11 @@ public class ScriptedAutonomous extends CommandGroup {
                         //drive forward
                         case 1:
 
+                            //18.85 inches per rotation
+                            //163 tick per ft
+                            //0.07 inches per tick
                             addSequential(new DriveDistanceCommand(distance));
                             break;
-
                         //drive backward
                         case -1:
                             addSequential(new DriveDistanceCommand(distance * -1));
@@ -88,10 +92,13 @@ public class ScriptedAutonomous extends CommandGroup {
                         // TODO: Get rotate and strafe to work correctly
                         //rotate right
                         case 2:
+
+                            addSequential(new RotateToHeadingCommand((double)degreeToRotate, true));
                             break;
 
                         //rotate left
                         case -2:
+                            addSequential(new RotateToHeadingCommand((double)degreeToRotate*-1, true));
                             break;
 
                         //strafe right
