@@ -9,54 +9,34 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
  */
 public class DriveDistanceCommand extends Command
 {
-    private double driveForwardSpeed;
     private double distance;
-    private double error;
-    private final double TOLERANCE = .1;
-    private final double kP = -1.0 / 5.0;
 
     public DriveDistanceCommand()
     {
-        this(10, 0.5);
+        this(10);
     }
 
     public DriveDistanceCommand(double dist)
     {
-        this(dist, 0.5);
-    }
-
-    public DriveDistanceCommand(double dist, double maxSpeed)
-    {
         requires(DriveTrain.getInstance());
 
         distance = dist;
-        driveForwardSpeed = maxSpeed;
     }
 
     protected void initialize()
     {
-        DriveTrain.getInstance().resetEncoders();
-
         setTimeout(2);
+
+        DriveTrain.getInstance().setDriveEncoderTargets(distance, distance, distance, distance);
     }
 
     protected void execute()
     {
-        error = (distance - DriveTrain.getInstance().getAverageEncoderDistance());
-
-        if (driveForwardSpeed * kP * error >= driveForwardSpeed)
-        {
-            DriveTrain.getInstance().tankDrive(driveForwardSpeed, driveForwardSpeed);
-        }
-        else
-        {
-            DriveTrain.getInstance().tankDrive(driveForwardSpeed * kP * error, driveForwardSpeed * kP * error);
-        }
     }
 
     protected boolean isFinished()
     {
-        return (Math.abs(error) <= TOLERANCE) || isTimedOut();
+        return isTimedOut() || DriveTrain.getInstance().atDriveTarget();
     }
 
     protected void end()

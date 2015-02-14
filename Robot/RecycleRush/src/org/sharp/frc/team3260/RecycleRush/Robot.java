@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Autonomous.BasicAutoCommandGroup;
 import org.sharp.frc.team3260.RecycleRush.Autonomous.ScriptedAutonomous;
+import org.sharp.frc.team3260.RecycleRush.commands.FIRSTMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyroCommand;
@@ -44,6 +45,7 @@ public class Robot extends IterativeRobot
         log.info("Adding SmartDashboard buttons...");
         SmartDashboard.putData("SHARPDrive", new SHARPDriveCommand());
         SmartDashboard.putData("Field Centric Mecanum Drive", new FieldCentricMecanumDriveCommand());
+        SmartDashboard.putData("FIRST Mecanum Drive", new FIRSTMecanumDriveCommand());
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
     }
 

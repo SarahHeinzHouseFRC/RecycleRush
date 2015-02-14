@@ -95,57 +95,87 @@ public class DriveTrain extends SHARPSubsystem
 
     public void changeControlMode(CANTalon.ControlMode controlMode)
     {
-        if (controlMode == CANTalon.ControlMode.PercentVbus)
+        switch (controlMode)
         {
-            frontLeftTalon.disableControl();
-            frontLeftTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
-            frontLeftTalon.set(0.0);
+            case PercentVbus:
+                frontLeftTalon.disableControl();
+                frontLeftTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
+                frontLeftTalon.set(0.0);
 
-            frontRightTalon.disableControl();
-            frontRightTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
-            frontRightTalon.set(0.0);
+                frontRightTalon.disableControl();
+                frontRightTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
+                frontRightTalon.set(0.0);
 
-            backLeftTalon.disableControl();
-            backLeftTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
-            backLeftTalon.set(0.0);
+                backLeftTalon.disableControl();
+                backLeftTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
+                backLeftTalon.set(0.0);
 
-            backRightTalon.disableControl();
-            backRightTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
-            backRightTalon.set(0.0);
+                backRightTalon.disableControl();
+                backRightTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
+                backRightTalon.set(0.0);
 
-            log.info("ControlMode changed to " + controlMode.getClass().getSimpleName());
-        }
-        else if (controlMode == CANTalon.ControlMode.Speed)
-        {
-            frontLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
-            frontLeftTalon.set(0.0);
-            frontLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-            frontLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
-            frontLeftTalon.enableControl();
+                log.info("ControlMode changed to " + controlMode.getClass().getSimpleName());
+                break;
 
-            frontRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
-            frontRightTalon.set(0.0);
-            frontRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-            frontRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
-            frontRightTalon.enableControl();
+            case Speed:
+                frontLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
+                frontLeftTalon.set(0.0);
+                frontLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+                frontLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                frontLeftTalon.enableControl();
 
-            backLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
-            backLeftTalon.set(0.0);
-            backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-            backLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
-            backLeftTalon.enableControl();
+                frontRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
+                frontRightTalon.set(0.0);
+                frontRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+                frontRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                frontRightTalon.enableControl();
 
-            backRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
-            backRightTalon.set(0.0);
-            backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-            backRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
-            backRightTalon.enableControl();
+                backLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
+                backLeftTalon.set(0.0);
+                backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+                backLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                backLeftTalon.enableControl();
 
-            log.info("ControlMode changed to " + controlMode.getClass().getSimpleName());
-        }
-        else
-        {
-            log.warn("Invalid ControlMode supplied, not setting ControlMode to " + controlMode.getClass().getSimpleName());
+                backRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
+                backRightTalon.set(0.0);
+                backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+                backRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                backRightTalon.enableControl();
+
+                log.info("ControlMode changed to " + controlMode.getClass().getSimpleName());
+                break;
+
+            case Position:
+                frontLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
+                frontLeftTalon.set(0.0);
+                frontLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+                frontLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                frontLeftTalon.enableControl();
+
+                frontRightTalon.changeControlMode(CANTalon.ControlMode.Position);
+                frontRightTalon.set(0.0);
+                frontRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+                frontRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                frontRightTalon.enableControl();
+
+                backLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
+                backLeftTalon.set(0.0);
+                backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+                backLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                backLeftTalon.enableControl();
+
+                backRightTalon.changeControlMode(CANTalon.ControlMode.Position);
+                backRightTalon.set(0.0);
+                backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+                backRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                backRightTalon.enableControl();
+
+                log.info("ControlMode changed to " + controlMode.getClass().getSimpleName());
+                break;
+
+            default:
+                log.warn("Unsupported ControlMode supplied, not setting ControlMode to " + controlMode.getClass().getSimpleName());
+                break;
         }
     }
 
@@ -195,6 +225,11 @@ public class DriveTrain extends SHARPSubsystem
     {
         rotation = getRotationPID(rotation);
         mecanumDrive_Cartesian0(x, y, rotation, gyroAngle);
+    }
+
+    public void stockMecnaumDrive(double x, double y, double rotation, double gyroAngle)
+    {
+        robotDrive.mecanumDrive_Cartesian(x, y, rotation, gyroAngle);
     }
 
     /**
@@ -293,18 +328,17 @@ public class DriveTrain extends SHARPSubsystem
     {
         if (rotatingToTarget)
         {
-            //            if (!rotationController.isEnable())
-            //            {
-            //                rotationController.enable();
-            //            }
-            //
-            //            if (rotationController.getSetpoint() != rotationTarget)
-            //            {
-            //                rotationController.setSetpoint(rotationTarget);
-            //            }
-            //
-            //            return rotationControllerOutput;
-            rotatingToTarget = false;
+            if (!rotationController.isEnable())
+            {
+                rotationController.enable();
+            }
+
+            if (rotationController.getSetpoint() != rotationTarget)
+            {
+                rotationController.setSetpoint(rotationTarget);
+            }
+
+            return rotationControllerOutput;
         }
 
         if (rotationController.isEnable())
@@ -363,18 +397,34 @@ public class DriveTrain extends SHARPSubsystem
         return imu;
     }
 
-    public void resetEncoders()
+    public void setDriveEncoderTargets(double frontLeftTarget, double frontRightTarget, double backLeftTarget, double backRightTarget)
     {
-        //        frontLeftEncoder.reset();
-        //        frontRightEncoder.reset();
-        //        backLeftEncoder.reset();
-        //        backRightEncoder.reset();
+        changeControlMode(CANTalon.ControlMode.Position);
+
+        frontLeftTarget += frontLeftTalon.getEncPosition();
+        frontRightTarget += frontRightTalon.getEncPosition();
+        backLeftTarget += backLeftTalon.getEncPosition();
+        backRightTarget += backRightTalon.getEncPosition();
+
+        frontLeftTalon.set(frontLeftTarget);
+        frontRightTalon.set(frontRightTarget);
+        backLeftTalon.set(backLeftTarget);
+        backRightTalon.set(backRightTarget);
     }
 
-    public double getAverageEncoderDistance()
+    public boolean atDriveTarget()
     {
-        return 0;
-        //        return Util.mean(new double[]{frontLeftEncoder.getDistance(), frontRightEncoder.getDistance(), backRightEncoder.getDistance(), backRightEncoder.getDistance()});
+        if (frontLeftTalon.getControlMode() != CANTalon.ControlMode.Position || frontRightTalon.getControlMode() != CANTalon.ControlMode.Position || backLeftTalon.getControlMode() != CANTalon.ControlMode.Position || backRightTalon.getControlMode() != CANTalon.ControlMode.Position)
+        {
+            return false;
+        }
+
+        return talonOnTarget(frontLeftTalon, 200) && talonOnTarget(backLeftTalon, 200) && talonOnTarget(frontRightTalon, 200) && talonOnTarget(backRightTalon, 200);
+    }
+
+    protected boolean talonOnTarget(CANTalon talon, double tolerance)
+    {
+        return (Math.abs(talon.getSetpoint() - talon.getPosition()) < tolerance);
     }
 
     public static DriveTrain getInstance()
