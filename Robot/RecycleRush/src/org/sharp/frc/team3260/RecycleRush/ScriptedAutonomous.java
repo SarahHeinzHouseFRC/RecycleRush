@@ -65,7 +65,7 @@ public class ScriptedAutonomous extends CommandGroup
                         {
                             if (i == 0)
                             {
-                                mappedByHeader.put(header, new ArrayList<String>());
+                                mappedByHeader.put(header, new ArrayList<>());
                             }
                             mappedByHeader.get(header).add(csvRecords.get(i).get(header));
                         }

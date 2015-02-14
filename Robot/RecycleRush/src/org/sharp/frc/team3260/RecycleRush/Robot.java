@@ -68,6 +68,13 @@ public class Robot extends IterativeRobot
         {
             hasCamera = false;
         }
+
+        if (hasCamera)
+        {
+            Runnable cameraThread = this::sendImage;
+
+            cameraThread.run();
+        }
     }
 
     public void autonomousInit()
@@ -91,11 +98,6 @@ public class Robot extends IterativeRobot
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-
-        if (hasCamera)
-        {
-            sendImage();
-        }
     }
 
     public void teleopInit()
@@ -107,11 +109,6 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
 
         OI.getInstance().checkControls();
-
-        if (hasCamera)
-        {
-            sendImage();
-        }
     }
 
     public void testPeriodic()
@@ -125,10 +122,6 @@ public class Robot extends IterativeRobot
 
     public void disabledPeriodic()
     {
-        if (hasCamera)
-        {
-            sendImage();
-        }
     }
 
     public Log getLogger()
