@@ -77,6 +77,7 @@ public class Robot extends IterativeRobot
         if (autonomousCommandGroup.commandWasSuccessFul())
         {
             log.info("Scripted Autonomous Loaded Successfully.");
+
             autonomousCommandGroup.start();
         }
         else
