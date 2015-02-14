@@ -4,8 +4,8 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.Autonomous.BasicAutoCommandGroup;
-import org.sharp.frc.team3260.RecycleRush.Autonomous.ScriptedAutonomous;
+import org.sharp.frc.team3260.RecycleRush.autonomous.BasicAutoCommandGroup;
+import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
 import org.sharp.frc.team3260.RecycleRush.commands.FIRSTMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
@@ -55,7 +55,7 @@ public class Robot extends IterativeRobot
 
         if (autonomousCommandGroup.commandWasSuccessFul())
         {
-            log.info("Scripted Autonomous Loaded Successfully");
+            log.info("Scripted Autonomous Loaded Successfully.");
             autonomousCommandGroup.start();
         }
         else
