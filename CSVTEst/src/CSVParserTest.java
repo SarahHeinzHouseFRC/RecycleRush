@@ -13,9 +13,10 @@ public class CSVParserTest
     public static void main(String [ ] args) throws IOException
     {
         {
-            File file = new File("csv.csv"); //need to make sure if this is the correct path
+            File file = new File("C:\\Users\\NCS Customer\\Desktop\\csv.csv"); //need to make sure if this is the correct path
 
             FileReader fileReader = new FileReader(file);
+
 
             BufferedReader reader = new BufferedReader(fileReader);
             String line = reader.readLine();
@@ -25,48 +26,64 @@ public class CSVParserTest
 
             CSVParser csvFileParser;
             CSVFormat csvFileFormat;
-            List<CSVRecord> csvRecords;
-            String desiredValue;
+
+            String[] stockArr = new String[headers.size()];
+            stockArr = headers.toArray(stockArr);
+
+            List<CSVRecord> csvRecords = null;
+
+
             ArrayList<String> values = new ArrayList<String>();
 
             // run through each key add its values to the vector
 
-            for (int i = 0; i < headers.size(); i++)
-            {
+            for (int i = 0; i < headers.size(); i++) {
+
                 String currentHeader = headers.get(i);
                 System.out.println(currentHeader);
 
-                csvFileFormat = CSVFormat.DEFAULT.withHeader();
+                csvFileFormat = CSVFormat.DEFAULT.withHeader(stockArr).withSkipHeaderRecord();
 
-                csvFileParser = new CSVParser(fileReader, csvFileFormat);
+                csvFileParser = new CSVParser(new FileReader(file), csvFileFormat);
 
                 csvRecords = (List) csvFileParser.getRecords();
-                System.out.println();
 
-                for (int k =0; k < csvRecords.size(); k++)
-                {
-                    desiredValue = csvRecords.get(k).get(currentHeader);
-                    values.add(desiredValue);
-                    System.out.println(desiredValue);
-                }
+               // values.clear();
+                String desiredValue = null;
+                //System.out.println(csvRecords.size());
 
-                mappedByHeader.put(currentHeader, values);
-                //System.out.println(mappedByHeader.get(currentHeader).get(0));
 
             }
+            String value;
+            if(!csvRecords.isEmpty()) {
+                for (int i = 0; i < csvRecords.size(); i++) {
+                    for (String header : headers) {
+                        value = csvRecords.get(i).get(header);
+                        if (i == 0) {
+                            mappedByHeader.put(header, new ArrayList<String>());
+                        }
+                        mappedByHeader.get(header).add(new String(csvRecords.get(i).get(header)));
+                    }
+                }
 
-            for (int i = 0; i < mappedByHeader.get("ID").size(); i++)
-            {
+                for (int i = 0; i < mappedByHeader.get("ID").size(); i++) {
                 /* Add the ID's and process their given variables. */
-                int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
-                System.out.println(currentID);
-                double distance, speed, time;
-                int elevatorPosition;
+                    int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
+                    double distance, speed, time;
+                    int elevatorPosition;
 
-                distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
-                speed = Double.parseDouble(mappedByHeader.get("Drive Speed").get(i));
-                time = Double.parseDouble(mappedByHeader.get("Time Out").get(i));
-                elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
+                    distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
+                    speed = Double.parseDouble(mappedByHeader.get("Drive Speed").get(i));
+                    time = Double.parseDouble(mappedByHeader.get("Time Out").get(i));
+                    elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
+
+
+                    System.out.println("ID: " + currentID);
+                    System.out.println("Speed: " + speed);
+                    System.out.println("Distance: " + distance);
+                    System.out.println("Time: " + time);
+                    System.out.println("Pos: " + elevatorPosition);
+                }
             }
         }
     }

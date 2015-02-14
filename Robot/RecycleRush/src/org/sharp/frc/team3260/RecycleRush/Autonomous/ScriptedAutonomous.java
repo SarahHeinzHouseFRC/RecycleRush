@@ -22,7 +22,6 @@ public class ScriptedAutonomous extends CommandGroup {
 
             FileReader fileReader = new FileReader(file);
 
-
             BufferedReader reader = new BufferedReader(fileReader);
             String line = reader.readLine();
             List<String> headers = Arrays.asList(line.split(","));
@@ -32,13 +31,10 @@ public class ScriptedAutonomous extends CommandGroup {
             CSVParser csvFileParser;
             CSVFormat csvFileFormat;
 
-            String[] stockArr = new String[headers.size()];
-            stockArr = headers.toArray(stockArr);
+            String[] headerArray = new String[headers.size()];
+            headerArray = headers.toArray(headerArray);
 
             List<CSVRecord> csvRecords = null;
-
-
-            ArrayList<String> values = new ArrayList<String>();
 
             // run through each key add its values to the vector
 
@@ -47,103 +43,99 @@ public class ScriptedAutonomous extends CommandGroup {
                 String currentHeader = headers.get(i);
                 System.out.println(currentHeader);
 
-                csvFileFormat = CSVFormat.DEFAULT.withHeader(stockArr).withSkipHeaderRecord();
+                csvFileFormat = CSVFormat.DEFAULT.withHeader(headerArray).withSkipHeaderRecord();
 
                 csvFileParser = new CSVParser(new FileReader(file), csvFileFormat);
 
                 csvRecords = (List) csvFileParser.getRecords();
-
-                // values.clear();
-                String desiredValue = null;
-                //System.out.println(csvRecords.size());
-
-
             }
-            String value;
-            for (int i = 0; i < csvRecords.size(); i++) {
-                for (String header : headers) {
-                    value = csvRecords.get(i).get(header);
-                    if (i == 0) {
-                        mappedByHeader.put(header, new ArrayList<String>());
-                        mappedByHeader.get(header).add(value);
-                    } else mappedByHeader.get(header).add(value);
+            if(!csvRecords.isEmpty()) {
+                for (int i = 0; i < csvRecords.size(); i++) {
+                    for (String header : headers) {
+                        if (i == 0) mappedByHeader.put(header, new ArrayList<String>());
+                        mappedByHeader.get(header).add(new String(csvRecords.get(i).get(header)));
+                    }
                 }
-
-            }
-            for (int i = 0; i < mappedByHeader.get("ID").size(); i++) {
+                for (int i = 0; i < mappedByHeader.get("ID").size(); i++) {
                 /* Add the ID's and process their given variables. */
-                int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
-                double distance, speed, time;
-                int elevatorPosition;
+                    int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
+                    double distance, speed, time;
+                    int elevatorPosition;
 
-                System.out.println(currentID);
+                    distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
+                    speed = Double.parseDouble(mappedByHeader.get("Drive Speed").get(i));
+                    time = Double.parseDouble(mappedByHeader.get("Time Out").get(i));
+                    elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
 
-                distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
-                speed = Double.parseDouble(mappedByHeader.get("Drive Speed").get(i));
-                time = Double.parseDouble(mappedByHeader.get("Time Out").get(i));
-                elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
+                    System.out.println("ID: " + currentID);
+                    System.out.println("Speed: " + speed);
+                    System.out.println("Distance: " + distance);
+                    System.out.println("Time: " + time);
+                    System.out.println("Pos: " + elevatorPosition);
 
-                System.out.println(speed);
-                System.out.println(distance);
-                System.out.println(time);
-
-                switch (currentID) {
-                    //drive forward
-                    case 1:
+                    switch (currentID) {
+                        //drive forward
+                        case 1:
 
                             addSequential(new DriveDistanceCommand(distance));
-                        break;
+                            break;
 
-                    //drive backward
-                    case -1:
-                           addSequential(new DriveDistanceCommand(distance * -1));
-                        break;
+                        //drive backward
+                        case -1:
+                            addSequential(new DriveDistanceCommand(distance * -1));
+                            break;
 
-                    // TODO: Get rotate to work correctly
-                    //rotate right
-                    case 2:
-                        break;
+                        // TODO: Get rotate and strafe to work correctly
+                        //rotate right
+                        case 2:
+                            break;
 
-                    //rotate left
-                    case -2:
-                        break;
+                        //rotate left
+                        case -2:
+                            break;
 
-                    case 5:
-                        addSequential(new IdleCommand(time));
-                        break;
+                        //strafe right
+                        case 3:
+                            break;
 
-                    //open tote
-                    case 6:
-                        addSequential(new OpenGripperCommand());
-                        break;
+                        //strafe left
+                        case -3:
+                            break;
 
-                    //close gripper
-                    case -6:
-                        addSequential(new CloseGripperCommand());
-                        break;
+                        case 5:
+                            addSequential(new IdleCommand(time));
+                            break;
 
-                    //elevator up- should be set to point?
-                    case 7:
-                        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition), 10));
-                        break;
+                        //open tote
+                        case 6:
+                            addSequential(new OpenGripperCommand());
+                            break;
 
-                    //elevator down - should be set to point?
-                    case -7:
-                        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition), 10));
-                        break;
+                        //close gripper
+                        case -6:
+                            addSequential(new CloseGripperCommand());
+                            break;
+
+                        //elevator up- should be set to point?
+                        case 7:
+                            addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition), 10));
+                            break;
+
+                        //elevator down - should be set to point?
+                        case -7:
+                            addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition), 10));
+                            break;
+                    }
                 }
-            }
-        }catch (IOException e) {
-        e.printStackTrace();
-        successful = false;
-    }
+            }else successful = false;
+        } catch (IOException e) {
+            e.printStackTrace();
+            successful = false;
+        }
         successful = true;
     }
 
-
-
-    public boolean commandWasSuccessFul()
-    {
+    public boolean commandWasSuccessFul() {
         return successful;
 
     }
