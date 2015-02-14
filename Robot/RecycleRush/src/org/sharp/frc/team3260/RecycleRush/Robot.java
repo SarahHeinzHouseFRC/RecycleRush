@@ -24,6 +24,8 @@ public class Robot extends IterativeRobot
 
     NIVision.Image frame;
 
+    boolean hasCamera = false;
+
     public Robot()
     {
         if (instance == null)
@@ -50,13 +52,22 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("Rotate To 180", new RotateToHeadingCommand(180, 5, true));
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
 
-        frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+        try
+        {
+            frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
 
-        session = NIVision.IMAQdxOpenCamera("cam0", NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+            session = NIVision.IMAQdxOpenCamera("cam0", NIVision.IMAQdxCameraControlMode.CameraControlModeController);
 
-        NIVision.IMAQdxConfigureGrab(session);
+            NIVision.IMAQdxConfigureGrab(session);
 
-        NIVision.IMAQdxStartAcquisition(session);
+            NIVision.IMAQdxStartAcquisition(session);
+
+            hasCamera = true;
+        }
+        catch (Exception e)
+        {
+            hasCamera = false;
+        }
     }
 
     public void autonomousInit()
@@ -80,7 +91,10 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
 
-        sendImage();
+        if (hasCamera)
+        {
+            sendImage();
+        }
     }
 
     public void teleopInit()
@@ -93,7 +107,10 @@ public class Robot extends IterativeRobot
 
         OI.getInstance().checkControls();
 
-        sendImage();
+        if (hasCamera)
+        {
+            sendImage();
+        }
     }
 
     public void testPeriodic()
@@ -107,7 +124,10 @@ public class Robot extends IterativeRobot
 
     public void disabledPeriodic()
     {
-        sendImage();
+        if (hasCamera)
+        {
+            sendImage();
+        }
     }
 
     public Log getLogger()
