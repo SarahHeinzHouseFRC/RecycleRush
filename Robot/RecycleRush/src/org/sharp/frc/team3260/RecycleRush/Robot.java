@@ -1,15 +1,13 @@
 package org.sharp.frc.team3260.RecycleRush;
 
+import com.ni.vision.NIVision;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.autonomous.BasicAutoCommandGroup;
 import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
-import org.sharp.frc.team3260.RecycleRush.commands.FIRSTMecanumDriveCommand;
-import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
-import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
-import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyroCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
@@ -22,6 +20,10 @@ public class Robot extends IterativeRobot
     private static final Log log = new Log("RobotBase", Log.ATTRIBUTE_TIME);
 
     private static Robot instance;
+
+    int session;
+
+    NIVision.Image frame;
 
     public Robot()
     {
@@ -46,7 +48,16 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("SHARPDrive", new SHARPDriveCommand());
         SmartDashboard.putData("Field Centric Mecanum Drive", new FieldCentricMecanumDriveCommand());
         SmartDashboard.putData("FIRST Mecanum Drive", new FIRSTMecanumDriveCommand());
+        SmartDashboard.putData("Rotate To 180", new RotateToHeadingCommand(180, 5, true));
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
+        //
+        //        frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+        //
+        //        session = NIVision.IMAQdxOpenCamera("cam0", NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+        //
+        //        NIVision.IMAQdxConfigureGrab(session);
+        //
+        //        NIVision.IMAQdxStartAcquisition(session);
     }
 
     public void autonomousInit()
@@ -69,6 +80,8 @@ public class Robot extends IterativeRobot
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
+
+        sendImage();
     }
 
     public void teleopInit()
@@ -80,6 +93,8 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
 
         OI.getInstance().checkControls();
+
+        sendImage();
     }
 
     public void testPeriodic()
@@ -93,6 +108,7 @@ public class Robot extends IterativeRobot
 
     public void disabledPeriodic()
     {
+        sendImage();
     }
 
     public Log getLogger()
@@ -103,5 +119,12 @@ public class Robot extends IterativeRobot
     public static Robot getInstance()
     {
         return instance;
+    }
+
+    public void sendImage()
+    {
+        //        NIVision.IMAQdxGrab(session, frame, 1);
+        //
+        //        CameraServer.getInstance().setImage(frame);
     }
 }

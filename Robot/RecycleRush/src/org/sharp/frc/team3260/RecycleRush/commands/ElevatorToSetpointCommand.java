@@ -28,6 +28,8 @@ public class ElevatorToSetpointCommand extends Command
     @Override
     protected void initialize()
     {
+        Elevator.getInstance().changeElevatorMode(true);
+
         Elevator.getInstance().setElevator(setpoint);
     }
 

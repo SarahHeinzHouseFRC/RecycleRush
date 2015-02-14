@@ -13,20 +13,15 @@ public class OI
 
     public SHARPGamepad mainGamepad, manipulatorGamepad;
 
-    public Button manipulatorGamepadA, manipulatorGamepadB, manipulatorGamepadLeftTrigger, manipulatorGamepadRightTrigger;
+    public Button manipulatorGamepadLeftTrigger, manipulatorGamepadRightTrigger;
 
     public OI()
     {
         mainGamepad = new SHARPGamepad(Constants.mainGamepadID.getInt());
         manipulatorGamepad = new SHARPGamepad(Constants.manipulatorGamepadID.getInt());
 
-        //        manipulatorGamepadA = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_A);
-        //        manipulatorGamepadB = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_B);
         manipulatorGamepadLeftTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_LEFT_AXIS, 0.5);
         manipulatorGamepadRightTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_RIGHT_AXS, 0.5);
-
-        //        manipulatorGamepadA.whileHeld(new ElevatorUpCommand(0.3));
-        //        manipulatorGamepadB.whileHeld(new ElevatorDownCommand(0.3));
 
         manipulatorGamepadLeftTrigger.whenReleased(new CloseGripperCommand());
         manipulatorGamepadRightTrigger.whenReleased(new OpenGripperCommand());

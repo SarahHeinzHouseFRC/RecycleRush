@@ -17,6 +17,8 @@ public class Elevator extends SHARPSubsystem
 {
     private static final int ELEVATOR_TOLERANCE = 100;
 
+    private int currentZero = 0;
+
     protected static Elevator instance;
 
     private CANTalon elevatorTalon;
@@ -35,13 +37,13 @@ public class Elevator extends SHARPSubsystem
 
         elevatorTalon.enableBrakeMode(true);
 
-        elevatorTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
-
-        elevatorTalon.set(0.0);
-
         elevatorTalon.reverseOutput(true);
-        //
-        //        changeElevatorMode(false);
+
+        elevatorTalon.reverseSensor(true);
+
+        elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+
+        changeElevatorMode(false);
     }
 
     public void changeElevatorMode(boolean useEncoder)
@@ -56,7 +58,7 @@ public class Elevator extends SHARPSubsystem
 
             elevatorTalon.set(0.0);
 
-            elevatorTalon.disableControl();
+            elevatorTalon.enableControl();
         }
         else
         {
@@ -67,8 +69,6 @@ public class Elevator extends SHARPSubsystem
             elevatorTalon.set(0.0);
 
             elevatorTalon.set(elevatorTalon.getPosition());
-
-            elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
             elevatorTalon.setProfile(0);
 
@@ -99,6 +99,13 @@ public class Elevator extends SHARPSubsystem
         {
             setElevator(-speed);
         }
+
+        if (elevatorTalon.isRevLimitSwitchClosed())
+        {
+            currentZero = elevatorTalon.getEncPosition();
+
+            log.info(currentZero + "");
+        }
     }
 
     public void setElevator(int setpoint)
@@ -119,7 +126,7 @@ public class Elevator extends SHARPSubsystem
     {
         log.info("Received new setpoint " + setpoint.positionName + " with encoder value " + setpoint.encoderValue);
 
-        elevatorTalon.set(setpoint.encoderValue);
+        elevatorTalon.set(setpoint.encoderValue - currentZero);
     }
 
     public boolean atSetpoint()
@@ -166,11 +173,10 @@ public class Elevator extends SHARPSubsystem
         public int encoderValue;
 
         public static final ElevatorPosition GROUND = new ElevatorPosition(0, "GROUND", 100);
-        public static final ElevatorPosition ONE_TOTE = new ElevatorPosition(1, "ONE_TOTE", 100);
-        public static final ElevatorPosition TWO_TOTE = new ElevatorPosition(2, "TWO_TOTES", 100);
+        public static final ElevatorPosition TWO_TOTE = new ElevatorPosition(2, "TWO_TOTES", 1300);
         public static final ElevatorPosition RECYCLING_CAN = new ElevatorPosition(3, "RECYCLING_CAN", 100);
         public static final ElevatorPosition THREE_TOTES = new ElevatorPosition(4, "THREE_TOTES", 100);
-        public static final ElevatorPosition TOP = new ElevatorPosition(5, "TOP", 1000);
+        public static final ElevatorPosition TOP = new ElevatorPosition(5, "TOP", 6200);
 
         public ElevatorPosition(int index, String positionName, int encoderValue)
         {
@@ -184,22 +190,6 @@ public class Elevator extends SHARPSubsystem
         {
             this.positionName = positionName;
             this.encoderValue = encoderValue;
-        }
-
-        public ElevatorPosition getPositionByName(String name)
-        {
-            for (Object obj : positions.entrySet())
-            {
-                if (obj.getClass().equals(ElevatorPosition.class))
-                {
-                    if (((ElevatorPosition) obj).positionName.equals(name))
-                    {
-                        return (ElevatorPosition) obj;
-                    }
-                }
-            }
-
-            return null;
         }
 
         static public ElevatorPosition getPositionByIndex(int index)

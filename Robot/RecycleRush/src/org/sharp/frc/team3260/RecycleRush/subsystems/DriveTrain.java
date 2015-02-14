@@ -12,7 +12,7 @@ import org.sharp.frc.team3260.RecycleRush.utils.logs.ThrottledLog;
 
 public class DriveTrain extends SHARPSubsystem
 {
-    protected static final ThrottledLog spammer = new ThrottledLog("DriveTrain", 0, 500);
+    protected static final ThrottledLog spammer = new ThrottledLog("DriveTrain", 0, 2000);
 
     protected static DriveTrain instance;
 
@@ -98,19 +98,15 @@ public class DriveTrain extends SHARPSubsystem
         switch (controlMode)
         {
             case PercentVbus:
-                frontLeftTalon.disableControl();
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
                 frontLeftTalon.set(0.0);
 
-                frontRightTalon.disableControl();
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
                 frontRightTalon.set(0.0);
 
-                backLeftTalon.disableControl();
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
                 backLeftTalon.set(0.0);
 
-                backRightTalon.disableControl();
                 backRightTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
                 backRightTalon.set(0.0);
 
@@ -142,7 +138,7 @@ public class DriveTrain extends SHARPSubsystem
                 backRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
                 backRightTalon.enableControl();
 
-                log.info("ControlMode changed to " + controlMode.getClass().getSimpleName());
+                log.info("ControlMode changed to " + controlMode.name());
                 break;
 
             case Position:
@@ -170,11 +166,11 @@ public class DriveTrain extends SHARPSubsystem
                 backRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
                 backRightTalon.enableControl();
 
-                log.info("ControlMode changed to " + controlMode.getClass().getSimpleName());
+                log.info("ControlMode changed to " + controlMode.name());
                 break;
 
             default:
-                log.warn("Unsupported ControlMode supplied, not setting ControlMode to " + controlMode.getClass().getSimpleName());
+                log.warn("Unsupported ControlMode supplied, not setting ControlMode to " + controlMode.name());
                 break;
         }
     }
@@ -258,7 +254,7 @@ public class DriveTrain extends SHARPSubsystem
 
         Util.normalize(wheelSpeeds);
 
-        spammer.info(x + ", " + y + ", " + rotation + " - " + wheelSpeeds[0] + ", " + wheelSpeeds[1] + ", " + wheelSpeeds[2] + ", " + wheelSpeeds[3]);
+        spammer.info(wheelSpeeds[0] + ", " + wheelSpeeds[1] + ", " + wheelSpeeds[2] + ", " + wheelSpeeds[3]);
 
         setDriveMotors(wheelSpeeds[0], wheelSpeeds[1], wheelSpeeds[2], wheelSpeeds[3]);
     }
