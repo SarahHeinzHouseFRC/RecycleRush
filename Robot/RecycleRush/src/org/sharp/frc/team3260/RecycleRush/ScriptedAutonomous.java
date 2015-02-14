@@ -77,7 +77,7 @@ public class ScriptedAutonomous extends CommandGroup
                     speed = Double.parseDouble(mappedByHeader.get("Drive Speed").get(i));
                     time = Double.parseDouble(mappedByHeader.get("Time Out").get(i));
                     elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
-                    //                    degreeToRotate = Integer.parseInt(mappedByHeader.get("Degree to Rotate").get(i));
+                    degreeToRotate = Integer.parseInt(mappedByHeader.get("Degree to Rotate").get(i));
 
 
                     System.out.println("ID: " + currentID);
@@ -98,18 +98,18 @@ public class ScriptedAutonomous extends CommandGroup
                             break;
                         //drive backward
                         case -1:
-                            addSequential(new DriveDistanceCommand(distance * -1));
+                            addSequential(new DriveDistanceCommand(-distance));
                             break;
 
                         // TODO: Get rotate and strafe to work correctly
                         //rotate right
                         case 2:
-                            //                            addSequential(new RotateToHeadingCommand((double) degreeToRotate, true));
+                            addSequential(new RotateToHeadingCommand((double) degreeToRotate, true));
                             break;
 
                         //rotate left
                         case -2:
-                            //                            addSequential(new RotateToHeadingCommand((double) degreeToRotate * -1, true));
+                            addSequential(new RotateToHeadingCommand((double) -degreeToRotate, true));
                             break;
 
                         //strafe right
