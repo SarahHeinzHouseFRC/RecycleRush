@@ -1,4 +1,4 @@
-package org.sharp.frc.team3260.RecycleRush.autonomous;
+package org.sharp.frc.team3260.RecycleRush;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.sharp.frc.team3260.RecycleRush.commands.IdleCommand;

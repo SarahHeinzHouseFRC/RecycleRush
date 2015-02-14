@@ -1,12 +1,11 @@
 package org.sharp.frc.team3260.RecycleRush;
 
 import com.ni.vision.NIVision;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.autonomous.BasicAutoCommandGroup;
-import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
 import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
@@ -50,14 +49,14 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("FIRST Mecanum Drive", new FIRSTMecanumDriveCommand());
         SmartDashboard.putData("Rotate To 180", new RotateToHeadingCommand(180, 5, true));
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
-        //
-        //        frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-        //
-        //        session = NIVision.IMAQdxOpenCamera("cam0", NIVision.IMAQdxCameraControlMode.CameraControlModeController);
-        //
-        //        NIVision.IMAQdxConfigureGrab(session);
-        //
-        //        NIVision.IMAQdxStartAcquisition(session);
+
+        frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
+
+        session = NIVision.IMAQdxOpenCamera("cam0", NIVision.IMAQdxCameraControlMode.CameraControlModeController);
+
+        NIVision.IMAQdxConfigureGrab(session);
+
+        NIVision.IMAQdxStartAcquisition(session);
     }
 
     public void autonomousInit()
@@ -123,8 +122,8 @@ public class Robot extends IterativeRobot
 
     public void sendImage()
     {
-        //        NIVision.IMAQdxGrab(session, frame, 1);
-        //
-        //        CameraServer.getInstance().setImage(frame);
+        NIVision.IMAQdxGrab(session, frame, 1);
+
+        CameraServer.getInstance().setImage(frame);
     }
 }
