@@ -1,12 +1,15 @@
 package org.sharp.frc.team3260.RecycleRush.utils;
 
-import java.io.IOException;
+import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
+
 import java.util.Vector;
 
 public abstract class ConstantsBase
 {
+    private static final Log log = new Log("ConstantsBase", Log.ATTRIBUTE_TIME);
+
     private static final Vector constants = new Vector();
-    private static final String CONSTANTS_FILE_PATH = "Constants.txt";
+    private static final String CONSTANTS_FILE_PATH = "/Constants/Constants.txt";
 
     public static void readConstantsFromFile()
     {
@@ -15,29 +18,31 @@ public abstract class ConstantsBase
             String file = Util.getFile(CONSTANTS_FILE_PATH);
             if (file.length() < 1)
             {
-                throw new IOException("Not over riding constants");
+                log.error("Constants file is blank, unable to override Constants.");
             }
-            // Extract each line separately.
+
             String[] lines = Util.split(file, "\n");
-            for (int i = 0; i < lines.length; i++)
+
+            for (String curLine : lines)
             {
-                // Extract the key and value.
-                String[] line = Util.split(lines[i], "=");
+                String[] line = Util.split(curLine, "=");
+
                 if (line.length != 2)
                 {
-                    System.out.println("Error: invalid constants file line: " + (lines[i].length() == 0 ? "(empty line)" : lines[i]));
+                    log.error("Invalid Constants file line: " + (curLine.length() == 0 ? "(Empty Line)" : curLine));
 
                     continue;
                 }
 
                 boolean found = false;
-                // Search through the constants until we find one with the same name.
+
                 for (int j = 0; j < constants.size(); j++)
                 {
                     Constant constant = (Constant) constants.elementAt(j);
+
                     if (constant.getName().compareTo(line[0]) == 0)
                     {
-                        System.out.println("Setting " + constant.getName() + " to " + Double.parseDouble(line[1]));
+                        log.info("Setting " + constant.getName() + " to " + Double.parseDouble(line[1]));
                         constant.setVal(Double.parseDouble(line[1]));
                         found = true;
                         break;
@@ -46,51 +51,16 @@ public abstract class ConstantsBase
 
                 if (!found)
                 {
-                    System.out.println("Error: the constant doesn't exist: " + lines[i]);
+                    log.error("Constants doesn't exist " + curLine);
                 }
             }
         }
-        catch (IOException e)
-        {
-            System.out.println(e);
-        }
         catch (Exception e)
         {
-            e.printStackTrace();
+            log.error(e.toString());
         }
     }
 
-    public static String generateHtml()
-    {
-        String str = "<html><head><title>Chezy Constants</title></head><body>"
-                + "<form method=\"post\">";
-        for (int i = 0; i < constants.size(); ++i)
-        {
-            str += ((Constant) constants.elementAt(i)).toHtml();
-        }
-        str += "<input type=\"submit\" value=\"Submit\">";
-        str += "</form>";
-        str += "</body></html>";
-        return str;
-    }
-
-    public static void writeConstant(String name, double value)
-    {
-        Constant constant;
-        for (int i = 0; i < constants.size(); i++)
-        {
-            constant = ((Constant) constants.elementAt(i));
-            if (constant.name.equals(name))
-            {
-                constant.setVal(value);
-            }
-        }
-    }
-
-
-    /**
-     * Handles an individual value used in the Constants class.
-     */
     public static class Constant
     {
         private String name;
@@ -121,16 +91,6 @@ public abstract class ConstantsBase
         public void setVal(double value)
         {
             this.value = value;
-        }
-
-        public String toHtml()
-        {
-            String str = "<html>" +
-                    this.name + ": "
-                    + "<input type='text' value=\"" + this.value + "\" name=\"" + this.name
-                    + "\"> <br/>";
-
-            return str;
         }
 
         public String toString()

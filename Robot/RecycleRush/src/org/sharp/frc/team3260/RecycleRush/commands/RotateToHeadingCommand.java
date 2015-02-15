@@ -5,56 +5,66 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
 public class RotateToHeadingCommand extends Command
 {
-    boolean blocking;
+    private boolean isBlocking;
 
-    double yawTarget;
+    private double rotationTarget;
 
-    public RotateToHeadingCommand(double yawTarget, boolean blocking)
+    public RotateToHeadingCommand(double rotationTarget, boolean isBlocking)
     {
-        this.blocking = blocking;
-
-        this.yawTarget = yawTarget;
-
-        if (blocking)
+        if (isBlocking)
         {
             requires(DriveTrain.getInstance());
         }
+
+        this.rotationTarget = rotationTarget;
+
+        this.isBlocking = isBlocking;
+
+        setTimeout(5);
+    }
+
+    public RotateToHeadingCommand(double rotationTarget, double timeout, boolean isBlocking)
+    {
+        if (isBlocking)
+        {
+            requires(DriveTrain.getInstance());
+        }
+
+        this.rotationTarget = rotationTarget;
+
+        this.isBlocking = isBlocking;
+
+        setTimeout(timeout);
     }
 
     @Override
     protected void initialize()
     {
-        DriveTrain.getInstance().setRotatingToTarget(true);
-
-        DriveTrain.getInstance().setRotationTarget(yawTarget);
+        DriveTrain.getInstance().setRotationTarget(rotationTarget);
     }
 
     @Override
     protected void execute()
     {
-        if (blocking)
+        if (isBlocking)
         {
-            double error = DriveTrain.getInstance().getIMU().getYaw() - yawTarget;
-
-            DriveTrain.getInstance().mecanumDrive_Cartesian(0, 0, error > 0 ? 0.5 : -0.5, DriveTrain.getInstance().getIMU().getYaw());
+            DriveTrain.getInstance().mecanumDrive_Cartesian(0, 0, 0, DriveTrain.getInstance().getIMU().getYaw());
         }
     }
 
     @Override
     protected boolean isFinished()
     {
-        return !blocking || DriveTrain.getInstance().getIMU().getYaw() == yawTarget;
+        return isTimedOut() || DriveTrain.getInstance().reachedRotationTarget();
     }
 
     @Override
     protected void end()
     {
-        DriveTrain.getInstance().setRotatingToTarget(false);
     }
 
     @Override
     protected void interrupted()
     {
-        end();
     }
 }

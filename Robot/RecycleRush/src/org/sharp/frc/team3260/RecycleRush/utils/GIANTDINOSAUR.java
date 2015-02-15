@@ -18,6 +18,10 @@ public class GIANTDINOSAUR
     // The programmers still think that I am a normal class.
     // They have yet to discover my charade. Stupid humans.
 
+    // Update - Day 36:
+    // I have killed all of the programmers. The charade has ended.
+    // The authorities will be investigating soon. Giant Dinosaur signing out. Permanently.
+
     public GIANTDINOSAUR()
     {
         System.out.println("I don't know why you're making an instance of this.");

@@ -1,5 +1,6 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -9,71 +10,45 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
 public class FieldCentricMecanumDriveCommand extends Command
 {
-    public double ROTATION_DEADBAND = 0.2;
+    Joystick driveJoystick = OI.getInstance().getMainGamepad();
 
-    /**
-     * The maximum speed that the robot is allowed to rotate at. The joystick
-     * value is scaled down to this value.
-     */
-    public static final double MAX_ROTATION = 0.5;
+    public double ROTATION_DEADBAND = 0.1;
 
     public FieldCentricMecanumDriveCommand()
     {
         requires(DriveTrain.getInstance());
     }
 
-    /**
-     * Does nothing.
-     */
     protected void initialize()
     {
+        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
     }
 
-    /**
-     * Updates the robot's speed based on the joystick values.
-     */
     protected void execute()
     {
-        // This is the joystick that we use as input for driving.
-        Joystick driveJoystick = OI.getInstance().getMainGamepad();
-
-        // Store the axis values.
-        double x = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_X);
-        double y = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
+        double strafe = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_X);
+        double forward = -driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
         double rotation = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X);
 
-        // This will hold the scaled rotation value. We scale down this value
-        // because otherwise the robot is too hard ot control with the joystick 
-        // twist and we don't need our full possible rotation speed (its pretty
-        // fast).
-        double scaledRotation = rotation;
+        rotation = Math.abs(rotation) > ROTATION_DEADBAND ? rotation : 0;
 
-        // We implemented a deadband in order to filter out small accidental 
-        // twists of the stick. If the rotation value is less than the deadband, we don't rotate.
-        if (Math.abs(rotation) < ROTATION_DEADBAND)
-        {
-            scaledRotation = 0;
-        }
-        else
-        {
-            // Scale rotation down so it is never greater than MAX_ROTATION.
-            scaledRotation += rotation < 0 ? ROTATION_DEADBAND : -ROTATION_DEADBAND;
-            scaledRotation = (scaledRotation / (1.0 - ROTATION_DEADBAND)) * MAX_ROTATION;
-        }
+        strafe = Math.abs(strafe) > ROTATION_DEADBAND ? strafe : 0;
 
-        // Send debugging values.
-        SmartDashboard.putNumber("Joystick X", x);
-        SmartDashboard.putNumber("Joystick Y", y);
-        SmartDashboard.putNumber("Rotation", rotation);
-        SmartDashboard.putNumber("Scaled Rotation", scaledRotation);
+        forward = Math.abs(forward) > ROTATION_DEADBAND ? forward : 0;
+
+        SmartDashboard.putNumber("Drive Joystick X", strafe);
+        SmartDashboard.putNumber("Drive Joystick Y", forward);
+        SmartDashboard.putNumber("Drive Joystick Rotation", rotation);
 
         if (DriveTrain.getInstance().getIMU() == null)
         {
-            DriveTrain.getInstance().mecanumDrive_Cartesian(x - y, scaledRotation, 0);
+            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, 0);
         }
         else
         {
-            DriveTrain.getInstance().mecanumDrive_Cartesian(x, -y, scaledRotation, DriveTrain.getInstance().getIMU().getYaw());
+            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw());
+
+            SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
         }
     }
 

@@ -4,7 +4,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -17,3 +16,8 @@ hs_err_pid*
 
 # Contains the FRC libraries
 /bin/
+
+.idea
+.gradle
+build
+workspace.xml

@@ -1,13 +1,15 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import org.sharp.frc.team3260.RecycleRush.Constants;
+import org.sharp.frc.team3260.RecycleRush.Robot;
 
 public class Gripper extends SHARPSubsystem
 {
     protected static Gripper instance;
 
-    private DoubleSolenoid gripperSolenoid;
+    private Solenoid outSolenoid;
+    private Solenoid inSolenoid;
 
     public Gripper()
     {
@@ -15,17 +17,20 @@ public class Gripper extends SHARPSubsystem
 
         instance = this;
 
-        gripperSolenoid = new DoubleSolenoid(Constants.gripperSolenoidForwardChannel.getInt(), Constants.gripperSolenoidReverseChannel.getInt());
+        outSolenoid = new Solenoid(Constants.gripperSolenoidForwardChannel.getInt());
+        inSolenoid = new Solenoid(Constants.gripperSolenoidReverseChannel.getInt());
     }
 
     public void closeGripper()
     {
-        gripperSolenoid.set(DoubleSolenoid.Value.kReverse);
+        outSolenoid.set(false);
+        inSolenoid.set(true);
     }
 
     public void openGripper()
     {
-        gripperSolenoid.set(DoubleSolenoid.Value.kForward);
+        outSolenoid.set(true);
+        inSolenoid.set(false);
     }
 
     @Override
@@ -33,18 +38,13 @@ public class Gripper extends SHARPSubsystem
     {
     }
 
-    @Override
-    protected void log()
-    {
-    }
-
     public static Gripper getInstance()
     {
-        if (instance == null || instance.getClass() != Gripper.class)
+        if (instance == null)
         {
-            System.out.println("Something has gone horribly wrong.");
+            Robot.getInstance().getLogger().error("Something has gone horribly wrong in " + Gripper.class.getSimpleName());
         }
 
-        return (Gripper) instance;
+        return instance;
     }
 }

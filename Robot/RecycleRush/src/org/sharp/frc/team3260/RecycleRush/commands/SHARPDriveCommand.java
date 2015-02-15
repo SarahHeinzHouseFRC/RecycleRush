@@ -1,5 +1,6 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
@@ -22,7 +23,7 @@ public class SHARPDriveCommand extends Command
 
     protected void initialize()
     {
-        // robot.drivetrain.disableControllers();
+        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
     }
 
     protected void execute()
@@ -44,7 +45,7 @@ public class SHARPDriveCommand extends Command
         double throttle;
 
         wheel = handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X), 0.05);
-        throttle = handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y), 0.05);
+        throttle = -handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y), 0.05);
 
         double negInertia = wheel - oldWheel;
         oldWheel = wheel;
