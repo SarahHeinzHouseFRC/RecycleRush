@@ -28,7 +28,9 @@ Connector::Connector(Connector::Location location, Type type, string name)
      case SEQUNTIAL:
         this->pathToPixmap = ":/Icons/Resources/sequentialConnector.png";
         break;
-
+     case STATE:
+        this->pathToPixmap = ":/Icons/Resources/intConnector.png";
+        break;
     }
 
 }
@@ -95,7 +97,7 @@ void Connector::mousePressEvent(QGraphicsSceneMouseEvent *event)
             myMenu.addAction("Remove Constant");
 
             QAction* selectedItem = myMenu.exec(globalPos);
-            if(selectedItem !=NULL){
+            if(selectedItem !=NULL && this->type != SEQUNTIAL){
                 if(selectedItem->iconText().toStdString() == "Add Constant"){
                     if(constant == NULL){
                         switch(this->type){

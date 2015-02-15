@@ -32,7 +32,12 @@
    </widget>
    <widget class="QWidget" name="armTab">
     <attribute name="title">
-     <string>Page</string>
+     <string>Arm</string>
+    </attribute>
+   </widget>
+   <widget class="QWidget" name="elevatorTab">
+    <attribute name="title">
+     <string>Elevator</string>
     </attribute>
    </widget>
    <widget class="QWidget" name="visionTab">

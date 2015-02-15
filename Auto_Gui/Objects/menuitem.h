@@ -20,7 +20,9 @@ public:
         ELEVATORUP,
         ELEVATORDOWN,
         GRABTOTE,
-        RELEASETOTE
+        RELEASETOTE,
+        ROTATERIGHT,
+        ROTATELEFT
     };
 
     MenuItem(std::string pathToPixmap, MenuItemType type, QWidget *parent);

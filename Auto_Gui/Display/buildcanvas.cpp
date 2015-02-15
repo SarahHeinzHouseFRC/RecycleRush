@@ -27,17 +27,17 @@ void BuildCanvas::mouseReleaseEvent(QMouseEvent *event)
          type = CommandBlock::DRIVEBACKWARD;
      break;
 
-     case MenuItem::DRIVELEFT:
-         pathToPixmap = ":/Icons/Resources/Drive GUI.png";
-         type = CommandBlock::DRIVELEFT;
+     case MenuItem::ROTATELEFT:
+         pathToPixmap = ":/Icons/Resources/rotateLeft90.png";
+         type = CommandBlock::ROTATELEFT;
      break;
 
-     case MenuItem::DRIVERIGHT:
-         pathToPixmap = ":/Icons/Resources/Drive GUI.png";
-         type = CommandBlock::DRIVERIGHT;
+     case MenuItem::ROTATERIGHT:
+         pathToPixmap = ":/Icons/Resources/rotateRight90.png";
+         type = CommandBlock::ROTATERIGHT;
      break;
      case MenuItem::AUTOSTART:
-         pathToPixmap = ":/Icons/Resources/Drive GUI.png";
+         pathToPixmap = ":/Icons/Resources/startAuto.png";
          type = CommandBlock::AUTOSTART;
      break;
 
@@ -49,10 +49,12 @@ void BuildCanvas::mouseReleaseEvent(QMouseEvent *event)
 
      case MenuItem::ELEVATORUP:
          type = CommandBlock::ELEVATORUP;
+         pathToPixmap = ":/Icons/Resources/elevatorUp.png";
          break;
 
      case MenuItem::ELEVATORDOWN:
          type = CommandBlock::ELEVATORDOWN;
+         pathToPixmap = ":/Icons/Resources/elevatorDown.png";
          break;
 
      case MenuItem::GRABTOTE:
@@ -61,6 +63,7 @@ void BuildCanvas::mouseReleaseEvent(QMouseEvent *event)
          break;
 
      case MenuItem::RELEASETOTE:
+         pathToPixmap = ":/Icons/Resources/releaseArm.png";
          type = CommandBlock::RELEASETOTE;
          break;
         }

@@ -11,8 +11,12 @@
         <file>Resources/sequentialConnector.png</file>
         <file>Resources/intConnector.png</file>
         <file>Resources/doubleConnector.png</file>
+        <file>Resources/elevatorUp.png</file>
+        <file>Resources/startAuto.png</file>
+        <file>Resources/elevatorDown.png</file>
+        <file>Resources/rotateRight90.png</file>
+        <file>Resources/rotateLeft90.png</file>
+        <file>Resources/releaseArm.png</file>
     </qresource>
-    <qresource prefix="/scripts">
-        <file>Python Scripts/ftpCSV.py</file>
-    </qresource>
+    <qresource prefix="/scripts"/>
 </RCC>

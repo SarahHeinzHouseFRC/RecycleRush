@@ -19,8 +19,13 @@ public:
     void setLine(QGraphicsLineItem* line);
     QGraphicsLineItem* getLine();
 
+public slots:
+    void resizeBox();
+
 private:
     QGraphicsLineItem * line;
+
+
 
 
 };

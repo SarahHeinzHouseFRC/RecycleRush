@@ -43,13 +43,17 @@ void Dialog::loadGuiElelements()
 {
     driveBlocks.push_back(new MenuItem(":/Icons/Resources/Drive GUI.png", MenuItem::DRIVEFORWARD, ui->driveTab));
     driveBlocks.push_back(new MenuItem(":/Icons/Resources/driveBack.png", MenuItem::DRIVEBACKWARD,ui->driveTab));
-    driveBlocks.push_back(new MenuItem(":/Icons/Resources/driveRight.png", MenuItem::DRIVELEFT, ui->driveTab));
-    driveBlocks.push_back(new MenuItem(":/Icons/Resources/driveLeft.png", MenuItem::DRIVERIGHT,ui->driveTab));
-    driveBlocks.push_back(new MenuItem(":/Icons/Resources/driveForward.png", MenuItem::DRIVEFORWARD, ui->driveTab));
+    driveBlocks.push_back(new MenuItem(":/Icons/Resources/rotateRight90.png", MenuItem::ROTATERIGHT, ui->driveTab));
+    driveBlocks.push_back(new MenuItem(":/Icons/Resources/rotateLeft90.png", MenuItem::ROTATELEFT,ui->driveTab));
 
      driveBlocks.push_back(new MenuItem(":/Icons/Resources/Arm.png", MenuItem::GRABTOTE, ui->armTab));
+     driveBlocks.push_back(new MenuItem(":/Icons/Resources/releaseArm.png", MenuItem::RELEASETOTE, ui->armTab));
 
-    driveBlocks.push_back(new MenuItem("/home/lucas/Desktop/Auto_Gui/driveForward.png", MenuItem::AUTOSTART, ui->startStopTab));
+     driveBlocks.push_back(new MenuItem(":/Icons/Resources/elevatorUp.png", MenuItem::ELEVATORUP, ui->elevatorTab));
+     driveBlocks.push_back(new MenuItem(":/Icons/Resources/elevatorDown.png", MenuItem::ELEVATORDOWN, ui->elevatorTab));
+
+
+    driveBlocks.push_back(new MenuItem(":/Icons/Resources/startAuto.png", MenuItem::AUTOSTART, ui->startStopTab));
 
     driveBlocks.push_back(new MenuItem(":/Icons/Resources/Timeout.png", MenuItem::TIMEOUT,ui->timeoutTab));
 
@@ -82,7 +86,7 @@ void Dialog::updateMenuManager(){
 
 void Dialog::on_generateButton_released()
 {;
-    string keys[] = {"ID","Drive Speed","Elevator Speed","Time Out", "Drive Distance", "Elevator Distance"};
+    string keys[] = {"ID","Drive Speed","Elevator Speed","Time Out", "Drive Distance", "Elevator Position","Degree to Rotate"};
     int sizeOfKeys = sizeof(keys) / sizeof(keys[0]);
 
     unordered_multimap<std::string,std::vector<string>*> outPutStuff;
@@ -104,7 +108,7 @@ void Dialog::on_generateButton_released()
         //ommandCode.push_back(std::to_string(orderedCommands.at(i)->getID()));
         commandIOVector.push_back(orderedCommands.at(i)->sendOutputs());
      }
-        csvFile.open("/home/lucas/Desktop/auto.csv");
+        csvFile.open("/home/lucas/Desktop/autonomousVariables.csv");
 
         sendCommmandCode = boost::algorithm::join(keys,",");
         csvFile << sendCommmandCode << endl;
@@ -141,7 +145,7 @@ void Dialog::on_generateButton_released()
 
         for(int i = 0; i < commandIOVector.size(); i++){
             vector<string> outPutString;
-            stringstream send;
+            //stringstream send;
             unordered_multimap<string,string>* currentCommand = commandIOVector.at(i);
                     for(int k =0; k < sizeOfKeys; k++){
                         std::unordered_map<std::string,string>::const_iterator place  = currentCommand->find(std::string(keys[k]));
@@ -152,8 +156,9 @@ void Dialog::on_generateButton_released()
                 }
 
             }
-                    copy(outPutString.begin(), outPutString.end(), ostream_iterator<string>(send, ","));
-                    csvFile << send.str() << endl;
+                    //copy(outPutString.begin(), outPutString.end(), ostream_iterator<string>(send, ","));
+                    string send = boost::algorithm::join(outPutString,",");
+                    csvFile << send << endl;
 
         }
 
@@ -164,7 +169,7 @@ void Dialog::on_generateButton_released()
 
         // TODO: Find a better way to ftp files to the roboRIO
 
-        /* -> cheaty way*/ : system("python :/Scripts/Python Scripts/ftpCSV.py");
+        /* -> cheaty way*/ system("python /home/lucas/Desktop/Auto_Gui/Python_Scripts/ftpCSV.py");
 
 
 
