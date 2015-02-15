@@ -45,7 +45,7 @@ public class Elevator extends SHARPSubsystem
 
         elevatorTalon.setProfile(1);
 
-        elevatorTalon.setPID(0.0009105, 0.0, 0.0);
+        elevatorTalon.setPID(0.93239296, 0.0, 0.0);
 
         changeElevatorMode(false);
     }
