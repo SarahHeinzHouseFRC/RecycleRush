@@ -128,22 +128,22 @@ public class DriveTrain extends SHARPSubsystem
             case Speed:
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 frontLeftTalon.set(0.0);
-                frontLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                frontLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 frontRightTalon.set(0.0);
-                frontRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                frontRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 backLeftTalon.set(0.0);
-                backLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                backLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 backRightTalon.set(0.0);
-                backRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                backRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 backRightTalon.enableControl();
 
                 log.info("ControlMode changed to " + controlMode.name());
@@ -152,22 +152,22 @@ public class DriveTrain extends SHARPSubsystem
             case Position:
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontLeftTalon.set(0.0);
-                frontLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                frontLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontRightTalon.set(0.0);
-                frontRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                frontRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backLeftTalon.set(0.0);
-                backLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                backLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backRightTalon.set(0.0);
-                backRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
+                backRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 backRightTalon.enableControl();
 
                 log.info("ControlMode changed to " + controlMode.name());
