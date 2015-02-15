@@ -12,16 +12,18 @@ public:
 
     enum Type{
 
-        DRIVEFORWARD,
-        DRIVEBACKWARD,
-        DRIVELEFT,
-        DRIVERIGHT,
-        AUTOSTART,
-        TIMEOUT,
-        ELEVATORUP,
-        ELEVATORDOWN,
-        GRABTOTE,
-        RELEASETOTE
+            DRIVEFORWARD,
+            DRIVEBACKWARD,
+            DRIVELEFT,
+            DRIVERIGHT,
+            AUTOSTART,
+            TIMEOUT,
+            ELEVATORUP,
+            ELEVATORDOWN,
+            GRABTOTE,
+            RELEASETOTE,
+            ROTATERIGHT,
+            ROTATELEFT
     };
 
     CommandBlock(string pathToPixmap, CommandBlock::Type type);

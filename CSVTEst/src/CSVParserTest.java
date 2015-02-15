@@ -83,6 +83,13 @@ public class CSVParserTest
                     System.out.println("Distance: " + distance);
                     System.out.println("Time: " + time);
                     System.out.println("Pos: " + elevatorPosition);
+
+                    switch (currentID){
+
+                        case 1:
+                            System.out.println("one");
+                            break;
+                    }
                 }
             }
         }

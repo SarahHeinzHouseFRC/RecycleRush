@@ -30,9 +30,31 @@ CommandBlock::CommandBlock(string pathToPixmap, CommandBlock::Type type): Autono
         ID = -1;
         break;
 
+
+        case ROTATERIGHT:
+        connectors.push_back(new Connector( Connector::TOP,Connector::INT, "Degree to Rotate"));
+
+        connectors.push_back(new Connector( Connector::RIGHT,Connector::SEQUNTIAL, "Sequence To"));
+        connectors.push_back(new Connector( Connector::LEFT,Connector::SEQUNTIAL, "Sequence From"));
+
+        ID = 2;
+
+        break;
+
+        case ROTATELEFT:
+
+        connectors.push_back(new Connector( Connector::TOP,Connector::INT, "Degree to Rotate"));
+
+        connectors.push_back(new Connector( Connector::RIGHT,Connector::SEQUNTIAL, "Sequence To"));
+        connectors.push_back(new Connector( Connector::LEFT,Connector::SEQUNTIAL, "Sequence From"));
+
+        ID = -2;
+
+        break;
+
         case TIMEOUT:
 
-            connectors.push_back(new Connector( Connector::TOP,Connector::INT, "Time"));
+            connectors.push_back(new Connector( Connector::TOP,Connector::INT, "Time Out"));
 
             connectors.push_back(new Connector( Connector::RIGHT,Connector::SEQUNTIAL, "Sequence To"));
             connectors.push_back(new Connector( Connector::LEFT,Connector::SEQUNTIAL, "Sequence From"));
@@ -45,7 +67,7 @@ CommandBlock::CommandBlock(string pathToPixmap, CommandBlock::Type type): Autono
             connectors.push_back(new Connector( Connector::LEFT,Connector::SEQUNTIAL, "Sequence From"));
 
 
-        ID = 6;
+        ID =-6;
         break;
         case RELEASETOTE:
 
@@ -53,11 +75,11 @@ CommandBlock::CommandBlock(string pathToPixmap, CommandBlock::Type type): Autono
            connectors.push_back(new Connector( Connector::LEFT,Connector::SEQUNTIAL, "Sequence From"));
 
 
-        ID = -6;
+        ID = 6;
         break;
         case ELEVATORUP:
 
-            connectors.push_back(new Connector( Connector::TOP,Connector::STATE, "Position"));
+            connectors.push_back(new Connector( Connector::TOP,Connector::STATE, "Elevator Position"));
 
             connectors.push_back(new Connector( Connector::RIGHT,Connector::SEQUNTIAL, "Sequence To"));
             connectors.push_back(new Connector( Connector::LEFT,Connector::SEQUNTIAL, "Sequence From"));
@@ -67,7 +89,7 @@ CommandBlock::CommandBlock(string pathToPixmap, CommandBlock::Type type): Autono
         break;
         case ELEVATORDOWN:
 
-            connectors.push_back(new Connector( Connector::TOP,Connector::STATE, "Postition"));
+            connectors.push_back(new Connector( Connector::TOP,Connector::STATE, "Elevator Postition"));
 
             connectors.push_back(new Connector( Connector::RIGHT,Connector::SEQUNTIAL, "Sequence To"));
             connectors.push_back(new Connector( Connector::LEFT,Connector::SEQUNTIAL, "Sequence From"));
