@@ -8,13 +8,13 @@ import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
-public class FIRSTMecanumDriveCommand extends Command
+public class FieldCentricMecanumPIDDrive extends Command
 {
     Joystick driveJoystick = OI.getInstance().getMainGamepad();
 
     public double ROTATION_DEADBAND = 0.1;
 
-    public FIRSTMecanumDriveCommand()
+    public FieldCentricMecanumPIDDrive()
     {
         requires(DriveTrain.getInstance());
     }
@@ -22,7 +22,7 @@ public class FIRSTMecanumDriveCommand extends Command
     @Override
     protected void initialize()
     {
-        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
+        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.Speed);
     }
 
     @Override

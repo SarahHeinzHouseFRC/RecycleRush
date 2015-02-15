@@ -128,21 +128,25 @@ public class DriveTrain extends SHARPSubsystem
             case Speed:
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 frontLeftTalon.set(0.0);
+                frontLeftTalon.setProfile(1);
                 frontLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 frontRightTalon.set(0.0);
+                frontRightTalon.setProfile(1);
                 frontRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 backLeftTalon.set(0.0);
+                backLeftTalon.setProfile(1);
                 backLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 backRightTalon.set(0.0);
+                backRightTalon.setProfile(1);
                 backRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 backRightTalon.enableControl();
 
@@ -152,21 +156,25 @@ public class DriveTrain extends SHARPSubsystem
             case Position:
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontLeftTalon.set(0.0);
+                frontLeftTalon.setProfile(0);
                 frontLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontRightTalon.set(0.0);
+                frontLeftTalon.setProfile(0);
                 frontRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backLeftTalon.set(0.0);
+                frontLeftTalon.setProfile(0);
                 backLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backRightTalon.set(0.0);
+                frontLeftTalon.setProfile(0);
                 backRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
                 backRightTalon.enableControl();
 
@@ -222,7 +230,7 @@ public class DriveTrain extends SHARPSubsystem
         mecanumDrive_Cartesian0(x, y, rotation, gyroAngle);
     }
 
-    public void stockMecnaumDrive(double x, double y, double rotation, double gyroAngle)
+    public void stockMecanumDrive(double x, double y, double rotation, double gyroAngle)
     {
         robotDrive.mecanumDrive_Cartesian(x, y, rotation, gyroAngle);
     }
@@ -245,7 +253,7 @@ public class DriveTrain extends SHARPSubsystem
         x = rotated[0];
         y = rotated[1];
 
-        stockMecnaumDrive(x, y, rotation, 0);
+        stockMecanumDrive(x, y, rotation, 0);
     }
 
     public void mecanumDrive_Orientation(double x, double y, double angle)

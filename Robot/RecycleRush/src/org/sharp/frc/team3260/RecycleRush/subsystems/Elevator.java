@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.CANTalon;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.commands.ElevatorHoldPositionCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.ElevatorWithJoystickCommand;
 
 import java.util.HashMap;
 
@@ -138,7 +139,14 @@ public class Elevator extends SHARPSubsystem
 
     public void stop()
     {
-        up(0.0);
+        if(getControlMode() == CANTalon.ControlMode.PercentVbus)
+        {
+            up(0.0);
+        }
+        else
+        {
+            setElevator(elevatorTalon.getPosition());
+        }
     }
 
     private void setElevator(double value)
@@ -149,7 +157,7 @@ public class Elevator extends SHARPSubsystem
     @Override
     protected void initDefaultCommand()
     {
-        setDefaultCommand(new ElevatorHoldPositionCommand());
+        setDefaultCommand(new ElevatorWithJoystickCommand());
     }
 
     public static Elevator getInstance()

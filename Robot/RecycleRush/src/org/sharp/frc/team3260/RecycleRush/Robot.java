@@ -1,6 +1,7 @@
 package org.sharp.frc.team3260.RecycleRush;
 
 import com.ni.vision.NIVision;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -54,6 +55,17 @@ public class Robot extends IterativeRobot
 
         log.info("Loading Autonomous Commands from CSV...");
         autonomousCommandGroup = new ScriptedAutonomous();
+
+        log.info("Attempting to start Camera Server...");
+        try
+        {
+            CameraServer.getInstance().setQuality(50);
+            CameraServer.getInstance().startAutomaticCapture("cam0");
+        }
+        catch(Exception e)
+        {
+            log.info("Starting Camera Server failed with exception " + e.getMessage());
+        }
     }
 
     public void autonomousInit()

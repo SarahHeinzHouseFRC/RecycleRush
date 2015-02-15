@@ -1,5 +1,6 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Solenoid;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
@@ -11,26 +12,30 @@ public class Gripper extends SHARPSubsystem
     private Solenoid outSolenoid;
     private Solenoid inSolenoid;
 
+    private DoubleSolenoid solenoid;
+
     public Gripper()
     {
         super("Gripper");
 
         instance = this;
 
-        outSolenoid = new Solenoid(Constants.gripperSolenoidForwardChannel.getInt());
-        inSolenoid = new Solenoid(Constants.gripperSolenoidReverseChannel.getInt());
+        solenoid = new DoubleSolenoid(Constants.gripperSolenoidForwardChannel.getInt(), Constants.gripperSolenoidReverseChannel.getInt());
     }
 
     public void closeGripper()
     {
-        outSolenoid.set(false);
-        inSolenoid.set(true);
+        solenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void openGripper()
     {
-        outSolenoid.set(true);
-        inSolenoid.set(false);
+        solenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void removePower()
+    {
+        solenoid.set(DoubleSolenoid.Value.kOff);
     }
 
     @Override

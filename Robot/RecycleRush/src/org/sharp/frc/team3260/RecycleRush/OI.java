@@ -3,18 +3,23 @@ package org.sharp.frc.team3260.RecycleRush;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.command.Scheduler;
 import org.sharp.frc.team3260.RecycleRush.commands.CloseGripperCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.ElevatorToSetpointCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.OpenGripperCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.SwitchGamepadsCommand;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.joystick.triggers.AxisButton;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
+import org.sharp.frc.team3260.RecycleRush.subsystems.SHARPSubsystem;
 
 public class OI
 {
     private static OI instance;
 
     public SHARPGamepad mainGamepad, manipulatorGamepad;
+
+    public Button mainGamepadSelectButton, manipulatorGamepadSelectButton;
 
     public Button manipulatorGamepadA, manipulatorGamepadB, manipulatorGamepadX, manipulatorGamepadY;
 
@@ -25,6 +30,9 @@ public class OI
         mainGamepad = new SHARPGamepad(Constants.mainGamepadID.getInt());
         manipulatorGamepad = new SHARPGamepad(Constants.manipulatorGamepadID.getInt());
 
+        mainGamepadSelectButton = new JoystickButton(mainGamepad, SHARPGamepad.BUTTON_SELECT);
+        manipulatorGamepadSelectButton = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_SELECT);
+
         manipulatorGamepadLeftTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_LEFT_AXIS, 0.5);
         manipulatorGamepadRightTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_RIGHT_AXS, 0.5);
 
@@ -32,6 +40,9 @@ public class OI
         manipulatorGamepadB = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_B);
         manipulatorGamepadX = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_X);
         manipulatorGamepadY = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_Y);
+
+        mainGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
+        manipulatorGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
 
         manipulatorGamepadLeftTrigger.whenReleased(new CloseGripperCommand());
         manipulatorGamepadRightTrigger.whenReleased(new OpenGripperCommand());
@@ -70,10 +81,14 @@ public class OI
         {
             Elevator.getInstance().changeElevatorMode(false);
         }
+    }
 
-        if (Elevator.getInstance().getControlMode() == CANTalon.ControlMode.PercentVbus && Math.abs(manipulatorGamepad.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.05)
-        {
-            Elevator.getInstance().up(-manipulatorGamepad.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y));
-        }
+    public void switchGamepads()
+    {
+        SHARPGamepad temp = mainGamepad;
+
+        mainGamepad = manipulatorGamepad;
+
+        manipulatorGamepad = temp;
     }
 }
