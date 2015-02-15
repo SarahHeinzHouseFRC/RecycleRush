@@ -24,7 +24,7 @@ public class ElevatorWithJoystickCommand extends Command
     {
         if (Elevator.getInstance().getControlMode() == CANTalon.ControlMode.PercentVbus)
         {
-            Elevator.getInstance().up((Math.abs(OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.1) ? OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y) : 0.0f);
+            Elevator.getInstance().up((Math.abs(OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.1) ? -OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y) : 0.0f);
         }
     }
 

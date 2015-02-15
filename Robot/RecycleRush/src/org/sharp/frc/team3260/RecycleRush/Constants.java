@@ -22,9 +22,6 @@ public class Constants extends ConstantsBase
 
     public static final Constant elevatorTalonID = new Constant("elevatorTalonID", 5);
 
-    public static final Constant intakeWheelLeftTalonID = new Constant("intakeWheelLeftTalonID", 6);
-    public static final Constant intakeWheelRightTalonID = new Constant("intakeWheelRightTalonID", 7);
-
     static
     {
         readConstantsFromFile();

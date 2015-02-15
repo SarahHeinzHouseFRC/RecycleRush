@@ -6,6 +6,7 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
+import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +16,8 @@ import java.util.*;
 
 public class ScriptedAutonomous extends CommandGroup
 {
+    private static final Log log = new Log("ScriptedAutonomous", Log.ATTRIBUTE_TIME);
+    
     private boolean successful;
 
     public ScriptedAutonomous()
@@ -43,17 +46,11 @@ public class ScriptedAutonomous extends CommandGroup
 
             // run through each key add its values to the vector
 
-            for (String currentHeader : headers)
-            {
-
-                System.out.println(currentHeader);
-
                 csvFileFormat = CSVFormat.DEFAULT.withHeader(headerArray).withSkipHeaderRecord();
 
                 csvFileParser = new CSVParser(new FileReader(file), csvFileFormat);
 
                 csvRecords = (List) csvFileParser.getRecords();
-            }
 
             if (csvRecords != null)
             {
@@ -70,25 +67,18 @@ public class ScriptedAutonomous extends CommandGroup
                             mappedByHeader.get(header).add(csvRecords.get(i).get(header));
                         }
                     }
+                    
                     for (int i = 0; i < mappedByHeader.get("ID").size(); i++)
                     {
-                    /* Add the ID's and process their given variables. */
+                        /* Add the ID's and process their given variables. */
                         int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
-                        double distance, speed, time;
+                        double distance, time;
                         int elevatorPosition, degreeToRotate;
 
                         distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
-                        speed = Double.parseDouble(mappedByHeader.get("Drive Speed").get(i));
                         time = Double.parseDouble(mappedByHeader.get("Time Out").get(i));
                         elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
                         degreeToRotate = Integer.parseInt(mappedByHeader.get("Degree to Rotate").get(i));
-
-
-                        System.out.println("ID: " + currentID);
-                        System.out.println("Speed: " + speed);
-                        System.out.println("Distance: " + distance);
-                        System.out.println("Time: " + time);
-                        System.out.println("Pos: " + elevatorPosition);
 
                         switch (currentID)
                         {
@@ -97,53 +87,55 @@ public class ScriptedAutonomous extends CommandGroup
                                 //18.85 inches per rotation
                                 //163 tick per ft
                                 //0.07 inches per tick
-                                addSequential(new DriveDistanceCommand(distance * 162));
+                                getLog().info("Adding DriveDistance command, distance: " + distance);
+                                addSequential(new DriveDistanceCommand(distance));
                                 break;
+
                             //drive backward
                             case -1:
-                                addSequential(new DriveDistanceCommand(-distance * 162));
+                                getLog().info("Adding DriveDistance command, distance: " + distance);
+                                addSequential(new DriveDistanceCommand(-distance));
                                 break;
 
                             //rotate right
                             case 2:
-                                addSequential(new RotateToHeadingCommand((double) degreeToRotate, true));
+                                getLog().info("Adding RotateToHeading command, angle: " + degreeToRotate);
+                                addSequential(new RotateToHeadingCommand((double) -degreeToRotate, true));
                                 break;
 
                             //rotate left
                             case -2:
-                                addSequential(new RotateToHeadingCommand((double) -degreeToRotate, true));
-                                break;
-
-                            //strafe right
-                            case 3:
-                                break;
-
-                            //strafe left
-                            case -3:
+                                getLog().info("Adding RotateToHeading command, angle: " + degreeToRotate);
+                                addSequential(new RotateToHeadingCommand((double) degreeToRotate, true));
                                 break;
 
                             case 5:
+                                getLog().info("Adding IdleCommand command, time: " + time);
                                 addSequential(new IdleCommand(time));
                                 break;
 
                             //open tote
                             case 6:
+                                getLog().info("Adding OpenGripper command");
                                 addSequential(new OpenGripperCommand());
                                 break;
 
                             //close gripper
                             case -6:
+                                getLog().info("Adding CloseGripper command");
                                 addSequential(new CloseGripperCommand());
                                 break;
 
                             //elevator up- should be set to point?
                             case 7:
-                                addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition), 10));
+                                getLog().info("Adding ElevatorToSetpoint command, position: " + elevatorPosition);
+                                addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition)));
                                 break;
 
                             //elevator down - should be set to point?
                             case -7:
-                                addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition), 10));
+                                getLog().info("Adding ElevatorToSetpoint command, position: " + elevatorPosition);
+                                addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition)));
                                 break;
                         }
                     }
@@ -161,12 +153,16 @@ public class ScriptedAutonomous extends CommandGroup
             successful = false;
         }
 
-        Robot.getInstance().getLogger().info("Autonomous loading was " + (successful ? "successful." : "not successful."));
+        getLog().info("Autonomous loading was " + (successful ? "successful." : "not successful."));
     }
 
     public boolean commandWasSuccessFul()
     {
         return successful;
+    }
 
+    public static Log getLog()
+    {
+        return log;
     }
 }

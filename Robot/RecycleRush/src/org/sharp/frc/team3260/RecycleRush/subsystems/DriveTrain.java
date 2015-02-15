@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
-import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.FIRSTMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.ThrottledLog;
 
@@ -16,8 +16,6 @@ public class DriveTrain extends SHARPSubsystem
 
     protected static DriveTrain instance;
 
-    public static final double THEORETICAL_MAX_SPEED = 11.82; // (ft/s)
-
     private CANTalon frontLeftTalon, frontRightTalon, backLeftTalon, backRightTalon;
     private RobotDrive robotDrive;
 
@@ -25,7 +23,7 @@ public class DriveTrain extends SHARPSubsystem
 
     private IMUAdvanced imu;
 
-    protected double rotationControllerP = 0.01,
+    protected double rotationControllerP = 0.005,
             rotationControllerI = 0.0,
             rotationControllerD = 0.0,
             rotationControllerF = 0.0;
@@ -73,12 +71,12 @@ public class DriveTrain extends SHARPSubsystem
         backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
         backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
-        frontLeftTalon.reverseSensor(Constants.driveFrontLeftInverted.getInt() == 1);
-        frontRightTalon.reverseSensor(Constants.driveFrontRightInverted.getInt() == 1);
-        backLeftTalon.reverseSensor(Constants.driveBackLeftInverted.getInt() == 1);
-        backRightTalon.reverseSensor(Constants.driveBackRightInverted.getInt() == 1);
+        frontLeftTalon.reverseSensor(true);
+        frontRightTalon.reverseSensor(true);
+        backLeftTalon.reverseSensor(true);
+        backRightTalon.reverseSensor(true);
 
-        //        frontLeftEncoder.setDistancePerPulse((4.0/*in*/ * Math.PI) / (256.0 * 12.0/*in/ft*/));
+        zeroEncoders();
 
         try
         {
@@ -157,25 +155,25 @@ public class DriveTrain extends SHARPSubsystem
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontLeftTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                frontLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
+                frontLeftTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontRightTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                frontRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
+                frontRightTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backLeftTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                backLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
+                backLeftTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backRightTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                backRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
+                backRightTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
                 backRightTalon.enableControl();
 
                 log.info("ControlMode changed to " + controlMode.name());
@@ -189,7 +187,7 @@ public class DriveTrain extends SHARPSubsystem
 
     public void initDefaultCommand()
     {
-        setDefaultCommand(new SHARPDriveCommand());
+        setDefaultCommand(new FIRSTMecanumDriveCommand());
     }
 
     public void tankDrive(double leftAxis, double rightAxis)
@@ -202,9 +200,24 @@ public class DriveTrain extends SHARPSubsystem
         imu.zeroYaw();
     }
 
+    public void zeroEncoders()
+    {
+        frontLeftTalon.setPosition(0.0);
+        frontRightTalon.setPosition(0.0);
+        backLeftTalon.setPosition(0.0);
+        backRightTalon.setPosition(0.0);
+    }
+
     public void stop()
     {
-        robotDrive.tankDrive(0, 0);
+        if (frontLeftTalon.getControlMode() == CANTalon.ControlMode.PercentVbus)
+        {
+            robotDrive.tankDrive(0, 0);
+        }
+        else
+        {
+            setDriveMotors(frontLeftTalon.getPosition(), frontRightTalon.getPosition(), backLeftTalon.getPosition(), backRightTalon.getPosition());
+        }
     }
 
     public void setDriveMotors(double frontLeftOutput, double frontRightOutput, double backLeftOutput, double backRightOutput)

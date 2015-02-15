@@ -3,7 +3,6 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 import edu.wpi.first.wpilibj.CANTalon;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
-import org.sharp.frc.team3260.RecycleRush.commands.ElevatorHoldPositionCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.ElevatorWithJoystickCommand;
 
 import java.util.HashMap;
@@ -16,9 +15,7 @@ import java.util.HashMap;
  */
 public class Elevator extends SHARPSubsystem
 {
-    private static final int ELEVATOR_TOLERANCE = 100;
-
-    private int currentZero = 0;
+    private static final int ELEVATOR_TOLERANCE = 50;
 
     protected static Elevator instance;
 
@@ -38,7 +35,7 @@ public class Elevator extends SHARPSubsystem
 
         elevatorTalon.enableBrakeMode(true);
 
-        elevatorTalon.reverseOutput(true);
+        elevatorTalon.reverseOutput(false);
 
         elevatorTalon.reverseSensor(true);
 
@@ -80,7 +77,7 @@ public class Elevator extends SHARPSubsystem
 
             elevatorTalon.setProfile(0);
 
-            elevatorTalon.setPID(0.00091054, 0, 0);
+            elevatorTalon.setPID(0.93239296, 0, 0);
 
             elevatorTalon.enableControl();
 
@@ -134,7 +131,7 @@ public class Elevator extends SHARPSubsystem
 
     public boolean atSetpoint()
     {
-        return (!useEncoder || (Math.abs(elevatorTalon.getEncPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE));
+        return (!useEncoder || (Math.abs(elevatorTalon.getPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE));
     }
 
     public void stop()
@@ -195,11 +192,14 @@ public class Elevator extends SHARPSubsystem
         public String positionName;
         public int encoderValue;
 
-        public static final ElevatorPosition GROUND = new ElevatorPosition(0, "GROUND", 100);
-        public static final ElevatorPosition TWO_TOTE = new ElevatorPosition(2, "TWO_TOTES", 1300);
-        public static final ElevatorPosition RECYCLING_CAN = new ElevatorPosition(3, "RECYCLING_CAN", 1300);
-        public static final ElevatorPosition THREE_TOTES = new ElevatorPosition(4, "THREE_TOTES", 2600);
-        public static final ElevatorPosition TOP = new ElevatorPosition(5, "TOP", 6200);
+        public static final ElevatorPosition GROUND = new ElevatorPosition(0, "GROUND", -500);
+        public static final ElevatorPosition TWO_TOTE = new ElevatorPosition(2, "TWO_TOTES", 1270);
+        public static final ElevatorPosition RECYCLING_CAN = new ElevatorPosition(3, "RECYCLING_CAN", 1150);
+        public static final ElevatorPosition THREE_TOTES = new ElevatorPosition(4, "THREE_TOTES", 2500);
+        public static final ElevatorPosition TOP = new ElevatorPosition(5, "TOP", 6000);
+        public static final ElevatorPosition CAN_ON_TOTE = new ElevatorPosition(6, "CAN_ON_TOTE", 2260);
+        public static final ElevatorPosition CAN_ABOVE_TOTE = new ElevatorPosition(7, "CAN_ABOVE_TOTE", 3000);
+        public static final ElevatorPosition DRIVING_HEIGHT = new ElevatorPosition(8, "DRIVING_HEIGHT", 500);
 
         public ElevatorPosition(int index, String positionName, int encoderValue)
         {

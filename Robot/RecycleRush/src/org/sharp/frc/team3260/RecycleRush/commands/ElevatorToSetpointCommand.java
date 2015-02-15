@@ -7,20 +7,16 @@ public class ElevatorToSetpointCommand extends Command
 {
     Elevator.ElevatorPosition setpoint;
 
-    public ElevatorToSetpointCommand(Elevator.ElevatorPosition setpoint, double timeout)
+    public ElevatorToSetpointCommand(Elevator.ElevatorPosition setpoint)
     {
         requires(Elevator.getInstance());
-
-        setTimeout(timeout);
 
         this.setpoint = setpoint;
     }
 
-    public ElevatorToSetpointCommand(String positionName, int positionTicks, double timeout)
+    public ElevatorToSetpointCommand(String positionName, int positionTicks)
     {
         requires(Elevator.getInstance());
-
-        setTimeout(timeout);
 
         this.setpoint = new Elevator.ElevatorPosition(positionName, positionTicks);
     }
@@ -31,6 +27,12 @@ public class ElevatorToSetpointCommand extends Command
         Elevator.getInstance().changeElevatorMode(true);
 
         Elevator.getInstance().setElevator(setpoint);
+
+        int timeout = Math.abs(Elevator.getInstance().getPosition() - setpoint.encoderValue) / 1500;
+
+        Elevator.getInstance().getLogger().info("Elevator To Setpoint Timeout: " + timeout);
+
+        setTimeout(timeout);
     }
 
     @Override

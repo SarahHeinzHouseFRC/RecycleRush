@@ -47,10 +47,10 @@ public class OI
         manipulatorGamepadLeftTrigger.whenReleased(new CloseGripperCommand());
         manipulatorGamepadRightTrigger.whenReleased(new OpenGripperCommand());
 
-        manipulatorGamepadA.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.GROUND, 5));
-        manipulatorGamepadB.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE, 5));
-        manipulatorGamepadX.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.RECYCLING_CAN, 5));
-        manipulatorGamepadY.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.THREE_TOTES, 5));
+        manipulatorGamepadA.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.GROUND));
+        manipulatorGamepadB.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
+        manipulatorGamepadX.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.RECYCLING_CAN));
+        manipulatorGamepadY.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.THREE_TOTES));
 
         instance = this;
     }

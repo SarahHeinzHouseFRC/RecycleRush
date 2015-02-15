@@ -53,9 +53,6 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("Rotate To 180", new RotateToHeadingCommand(180, 5, false));
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
 
-        log.info("Loading Autonomous Commands from CSV...");
-        autonomousCommandGroup = new ScriptedAutonomous();
-
         log.info("Attempting to start Camera Server...");
         try
         {
@@ -70,6 +67,9 @@ public class Robot extends IterativeRobot
 
     public void autonomousInit()
     {
+        log.info("Loading Autonomous Commands from CSV...");
+        autonomousCommandGroup = new ScriptedAutonomous();
+
         if (autonomousCommandGroup.getClass() == ScriptedAutonomous.class && ((ScriptedAutonomous) autonomousCommandGroup).commandWasSuccessFul())
         {
             log.info("Scripted Autonomous Loaded Successfully.");

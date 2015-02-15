@@ -25,17 +25,16 @@ public class Gripper extends SHARPSubsystem
 
     public void closeGripper()
     {
+        getLogger().info("Closing");
+
         solenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void openGripper()
     {
-        solenoid.set(DoubleSolenoid.Value.kForward);
-    }
+        getLogger().info("Opening");
 
-    public void removePower()
-    {
-        solenoid.set(DoubleSolenoid.Value.kOff);
+        solenoid.set(DoubleSolenoid.Value.kForward);
     }
 
     @Override
