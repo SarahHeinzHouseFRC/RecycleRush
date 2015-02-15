@@ -1,8 +1,8 @@
 package org.sharp.frc.team3260.RecycleRush;
 
 import com.ni.vision.NIVision;
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -14,7 +14,7 @@ import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 public class Robot extends IterativeRobot
 {
-    private ScriptedAutonomous autonomousCommandGroup;
+    private CommandGroup autonomousCommandGroup;
 
     private static final Log log = new Log("RobotBase", Log.ATTRIBUTE_TIME);
 
@@ -49,39 +49,16 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("SHARPDrive", new SHARPDriveCommand());
         SmartDashboard.putData("Field Centric Mecanum Drive", new FieldCentricMecanumDriveCommand());
         SmartDashboard.putData("FIRST Mecanum Drive", new FIRSTMecanumDriveCommand());
-        SmartDashboard.putData("Rotate To 180", new RotateToHeadingCommand(180, 5, true));
+        SmartDashboard.putData("Rotate To 180", new RotateToHeadingCommand(180, 5, false));
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
 
-        try
-        {
-            frame = NIVision.imaqCreateImage(NIVision.ImageType.IMAGE_RGB, 0);
-
-            session = NIVision.IMAQdxOpenCamera("cam0", NIVision.IMAQdxCameraControlMode.CameraControlModeController);
-
-            NIVision.IMAQdxConfigureGrab(session);
-
-            NIVision.IMAQdxStartAcquisition(session);
-
-            hasCamera = true;
-        }
-        catch (Exception e)
-        {
-            hasCamera = false;
-        }
-
-        if (hasCamera)
-        {
-            Runnable cameraThread = this::sendImage;
-
-            cameraThread.run();
-        }
+        log.info("Loading Autonomous Commands from CSV...");
+        autonomousCommandGroup = new ScriptedAutonomous();
     }
 
     public void autonomousInit()
     {
-        autonomousCommandGroup = new ScriptedAutonomous();
-
-        if (autonomousCommandGroup.commandWasSuccessFul())
+        if (autonomousCommandGroup.getClass() == ScriptedAutonomous.class && ((ScriptedAutonomous) autonomousCommandGroup).commandWasSuccessFul())
         {
             log.info("Scripted Autonomous Loaded Successfully.");
 
@@ -90,14 +67,20 @@ public class Robot extends IterativeRobot
         else
         {
             log.info("Scripted Autonomous Loading Failed.");
+
             BasicAutoCommandGroup basicAuto = new BasicAutoCommandGroup();
+
             basicAuto.start();
+
+            autonomousCommandGroup = basicAuto;
         }
     }
 
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
+
+        Elevator.getInstance().checkLimitSwitch();
     }
 
     public void teleopInit()
@@ -109,6 +92,8 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
 
         OI.getInstance().checkControls();
+
+        Elevator.getInstance().checkLimitSwitch();
     }
 
     public void testPeriodic()
@@ -118,6 +103,10 @@ public class Robot extends IterativeRobot
 
     public void disabledInit()
     {
+        if (autonomousCommandGroup != null)
+        {
+            autonomousCommandGroup.cancel();
+        }
     }
 
     public void disabledPeriodic()
@@ -132,12 +121,5 @@ public class Robot extends IterativeRobot
     public static Robot getInstance()
     {
         return instance;
-    }
-
-    public void sendImage()
-    {
-        NIVision.IMAQdxGrab(session, frame, 1);
-
-        CameraServer.getInstance().setImage(frame);
     }
 }

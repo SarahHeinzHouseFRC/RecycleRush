@@ -13,7 +13,7 @@ public class DriveDistanceCommand extends Command
 
     public DriveDistanceCommand()
     {
-        this(10);
+        this(10 * 162);
     }
 
     public DriveDistanceCommand(double dist)
@@ -25,7 +25,9 @@ public class DriveDistanceCommand extends Command
 
     protected void initialize()
     {
-        setTimeout(2);
+        setTimeout(5);
+
+        DriveTrain.getInstance().getLogger().info("DriveDistanceCommand initiated, distance set to " + distance + ".");
 
         DriveTrain.getInstance().setDriveEncoderTargets(distance, distance, distance, distance);
     }
@@ -36,11 +38,13 @@ public class DriveDistanceCommand extends Command
 
     protected boolean isFinished()
     {
-        return isTimedOut() || DriveTrain.getInstance().atDriveTarget();
+        return DriveTrain.getInstance().atDriveTarget();
     }
 
     protected void end()
     {
+        DriveTrain.getInstance().getLogger().info("DriveDistanceCommand ended.");
+
         DriveTrain.getInstance().stop();
     }
 

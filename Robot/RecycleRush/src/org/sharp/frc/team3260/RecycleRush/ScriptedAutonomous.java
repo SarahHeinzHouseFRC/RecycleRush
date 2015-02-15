@@ -97,14 +97,13 @@ public class ScriptedAutonomous extends CommandGroup
                                 //18.85 inches per rotation
                                 //163 tick per ft
                                 //0.07 inches per tick
-                                addSequential(new DriveDistanceCommand(distance));
+                                addSequential(new DriveDistanceCommand(distance * 162));
                                 break;
                             //drive backward
                             case -1:
-                                addSequential(new DriveDistanceCommand(-distance));
+                                addSequential(new DriveDistanceCommand(-distance * 162));
                                 break;
 
-                            // TODO: Get rotate and strafe to work correctly
                             //rotate right
                             case 2:
                                 addSequential(new RotateToHeadingCommand((double) degreeToRotate, true));
@@ -161,6 +160,8 @@ public class ScriptedAutonomous extends CommandGroup
 
             successful = false;
         }
+
+        Robot.getInstance().getLogger().info("Autonomous loading was " + (successful ? "successful." : "not successful."));
     }
 
     public boolean commandWasSuccessFul()

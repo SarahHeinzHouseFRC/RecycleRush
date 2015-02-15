@@ -68,6 +68,16 @@ public class DriveTrain extends SHARPSubsystem
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, Constants.driveFrontRightInverted.getInt() == 1);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, Constants.driveBackRightInverted.getInt() == 1);
 
+        frontLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+        frontRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+        backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+        backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+
+        frontLeftTalon.reverseSensor(Constants.driveFrontLeftInverted.getInt() == 1);
+        frontRightTalon.reverseSensor(Constants.driveFrontRightInverted.getInt() == 1);
+        backLeftTalon.reverseSensor(Constants.driveBackLeftInverted.getInt() == 1);
+        backRightTalon.reverseSensor(Constants.driveBackRightInverted.getInt() == 1);
+
         //        frontLeftEncoder.setDistancePerPulse((4.0/*in*/ * Math.PI) / (256.0 * 12.0/*in/ft*/));
 
         try
@@ -88,6 +98,8 @@ public class DriveTrain extends SHARPSubsystem
             LiveWindow.addSensor("IMU", "Gyro", imu);
 
             rotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), output -> rotationControllerOutput = output);
+
+            rotationController.setPercentTolerance(1);
 
             SmartDashboard.putData("Rotation Controller", rotationController);
         }
@@ -110,31 +122,27 @@ public class DriveTrain extends SHARPSubsystem
                 backRightTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
                 backRightTalon.set(0.0);
 
-                log.info("ControlMode changed to " + controlMode.getClass().getSimpleName());
+                log.info("ControlMode changed to " + controlMode.name());
                 break;
 
             case Speed:
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 frontLeftTalon.set(0.0);
-                frontLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
                 frontLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 frontRightTalon.set(0.0);
-                frontRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
                 frontRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 backLeftTalon.set(0.0);
-                backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
                 backLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 backRightTalon.set(0.0);
-                backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
                 backRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
                 backRightTalon.enableControl();
 
@@ -144,25 +152,21 @@ public class DriveTrain extends SHARPSubsystem
             case Position:
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontLeftTalon.set(0.0);
-                frontLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
                 frontLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontRightTalon.set(0.0);
-                frontRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
                 frontRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backLeftTalon.set(0.0);
-                backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
                 backLeftTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backRightTalon.set(0.0);
-                backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
                 backRightTalon.setPID(0.01, 0, 0, 0, 0, 12, 0);
                 backRightTalon.enableControl();
 
@@ -201,11 +205,6 @@ public class DriveTrain extends SHARPSubsystem
         frontRightTalon.set(frontRightOutput * (Constants.driveFrontRightInverted.getInt() == 1 ? -1 : 0));
         backLeftTalon.set(backLeftOutput * (Constants.driveBackLeftInverted.getInt() == 1 ? -1 : 0));
         backRightTalon.set(backRightOutput * (Constants.driveBackRightInverted.getInt() == 1 ? -1 : 0));
-
-        SmartDashboard.putNumber("Drive Front Left", frontLeftOutput * (Constants.driveFrontLeftInverted.getInt() == 1 ? -1 : 0));
-        SmartDashboard.putNumber("Drive Front Right", frontRightOutput * (Constants.driveFrontRightInverted.getInt() == 1 ? -1 : 0));
-        SmartDashboard.putNumber("Drive Back Left", backLeftOutput * (Constants.driveBackLeftInverted.getInt() == 1 ? -1 : 0));
-        SmartDashboard.putNumber("Drive Back Right", backRightOutput * (Constants.driveBackRightInverted.getInt() == 1 ? -1 : 0));
     }
 
 
@@ -246,17 +245,7 @@ public class DriveTrain extends SHARPSubsystem
         x = rotated[0];
         y = rotated[1];
 
-        double wheelSpeeds[] = new double[4];
-        wheelSpeeds[0] = x + y + rotation;
-        wheelSpeeds[1] = -x + y - rotation;
-        wheelSpeeds[2] = -x + y + rotation;
-        wheelSpeeds[3] = x + y - rotation;
-
-        Util.normalize(wheelSpeeds);
-
-        spammer.info(wheelSpeeds[0] + ", " + wheelSpeeds[1] + ", " + wheelSpeeds[2] + ", " + wheelSpeeds[3]);
-
-        setDriveMotors(wheelSpeeds[0], wheelSpeeds[1], wheelSpeeds[2], wheelSpeeds[3]);
+        stockMecnaumDrive(x, y, rotation, 0);
     }
 
     public void mecanumDrive_Orientation(double x, double y, double angle)
@@ -397,21 +386,25 @@ public class DriveTrain extends SHARPSubsystem
     {
         changeControlMode(CANTalon.ControlMode.Position);
 
-        frontLeftTarget += frontLeftTalon.getEncPosition();
-        frontRightTarget += frontRightTalon.getEncPosition();
-        backLeftTarget += backLeftTalon.getEncPosition();
-        backRightTarget += backRightTalon.getEncPosition();
+        frontLeftTalon.setPosition(0);
+        frontRightTalon.setPosition(0);
+        backLeftTalon.setPosition(0);
+        backRightTalon.setPosition(0);
 
         frontLeftTalon.set(frontLeftTarget);
         frontRightTalon.set(frontRightTarget);
         backLeftTalon.set(backLeftTarget);
         backRightTalon.set(backRightTarget);
+
+        log.info("Drive Encoder Targets: " + frontLeftTarget + ", " + frontRightTarget + ", " + backLeftTarget + ", " + backRightTarget);
     }
 
     public boolean atDriveTarget()
     {
         if (frontLeftTalon.getControlMode() != CANTalon.ControlMode.Position || frontRightTalon.getControlMode() != CANTalon.ControlMode.Position || backLeftTalon.getControlMode() != CANTalon.ControlMode.Position || backRightTalon.getControlMode() != CANTalon.ControlMode.Position)
         {
+            log.info("Checked atDriveTarget, but one of the Talons was set to the wrong mode.");
+
             return false;
         }
 

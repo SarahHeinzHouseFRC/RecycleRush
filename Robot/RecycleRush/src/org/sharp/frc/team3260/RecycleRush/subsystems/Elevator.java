@@ -43,11 +43,20 @@ public class Elevator extends SHARPSubsystem
 
         elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
+        elevatorTalon.setProfile(1);
+
+        elevatorTalon.setPID(0.0009105, 0.0, 0.0);
+
         changeElevatorMode(false);
     }
 
     public void changeElevatorMode(boolean useEncoder)
     {
+        if (this.useEncoder == useEncoder && ((useEncoder && getControlMode() == CANTalon.ControlMode.Position) || (!useEncoder && getControlMode() == CANTalon.ControlMode.PercentVbus)))
+        {
+            return;
+        }
+
         this.useEncoder = useEncoder;
 
         if (!this.useEncoder)
@@ -68,9 +77,9 @@ public class Elevator extends SHARPSubsystem
 
             elevatorTalon.set(0.0);
 
-            elevatorTalon.set(elevatorTalon.getPosition());
-
             elevatorTalon.setProfile(0);
+
+            elevatorTalon.setPID(0.00091054, 0, 0);
 
             elevatorTalon.enableControl();
 
@@ -99,13 +108,6 @@ public class Elevator extends SHARPSubsystem
         {
             setElevator(-speed);
         }
-
-        if (elevatorTalon.isRevLimitSwitchClosed())
-        {
-            currentZero = elevatorTalon.getEncPosition();
-
-            log.info(currentZero + "");
-        }
     }
 
     public void setElevator(int setpoint)
@@ -126,7 +128,7 @@ public class Elevator extends SHARPSubsystem
     {
         log.info("Received new setpoint " + setpoint.positionName + " with encoder value " + setpoint.encoderValue);
 
-        elevatorTalon.set(setpoint.encoderValue - currentZero);
+        elevatorTalon.set(setpoint.encoderValue);
     }
 
     public boolean atSetpoint()
@@ -165,6 +167,19 @@ public class Elevator extends SHARPSubsystem
         return elevatorTalon.getEncPosition();
     }
 
+    public void checkLimitSwitch()
+    {
+        if (elevatorTalon.isRevLimitSwitchClosed())
+        {
+            elevatorTalon.setPosition(0.0);
+        }
+    }
+
+    public CANTalon.ControlMode getControlMode()
+    {
+        return elevatorTalon.getControlMode();
+    }
+
     public static class ElevatorPosition
     {
         private static final HashMap<Integer, ElevatorPosition> positions = new HashMap<>();
@@ -174,8 +189,8 @@ public class Elevator extends SHARPSubsystem
 
         public static final ElevatorPosition GROUND = new ElevatorPosition(0, "GROUND", 100);
         public static final ElevatorPosition TWO_TOTE = new ElevatorPosition(2, "TWO_TOTES", 1300);
-        public static final ElevatorPosition RECYCLING_CAN = new ElevatorPosition(3, "RECYCLING_CAN", 100);
-        public static final ElevatorPosition THREE_TOTES = new ElevatorPosition(4, "THREE_TOTES", 100);
+        public static final ElevatorPosition RECYCLING_CAN = new ElevatorPosition(3, "RECYCLING_CAN", 1300);
+        public static final ElevatorPosition THREE_TOTES = new ElevatorPosition(4, "THREE_TOTES", 2600);
         public static final ElevatorPosition TOP = new ElevatorPosition(5, "TOP", 6200);
 
         public ElevatorPosition(int index, String positionName, int encoderValue)
