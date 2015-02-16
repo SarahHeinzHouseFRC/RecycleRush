@@ -25,7 +25,7 @@ public class Elevator extends SHARPSubsystem
 
         instance = this;
 
-        elevatorTalon = new CANTalon(Constants.elevatorTalonID.getInt());
+        elevatorTalon = new CANTalon(Constants.elevatorTalonID.getInt(), 1);
 
         elevatorTalon.enableBrakeMode(true);
 
@@ -38,6 +38,10 @@ public class Elevator extends SHARPSubsystem
         elevatorTalon.setProfile(1);
 
         elevatorTalon.setPID(0.93239296, 0.0, 0.0);
+
+        elevatorTalon.setReverseSoftLimit(ElevatorPosition.GROUND.encoderValue);
+
+        elevatorTalon.setForwardSoftLimit(ElevatorPosition.TOP.encoderValue);
 
         changeElevatorMode(false);
     }

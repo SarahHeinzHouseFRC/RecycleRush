@@ -45,22 +45,20 @@ public class DriveTrain extends SHARPSubsystem
         compressor = new Compressor(0);
         compressor.start();
 
-        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt());
-        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt());
-        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt());
-        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt());
+        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), 1);
+        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), 1);
+        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), 1);
+        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt(), 1);
+
+        frontLeftTalon.setVoltageRampRate(6);
+        frontRightTalon.setVoltageRampRate(6);
+        backLeftTalon.setVoltageRampRate(6);
+        backRightTalon.setVoltageRampRate(6);
 
         frontLeftTalon.enableBrakeMode(true);
         frontRightTalon.enableBrakeMode(true);
         backLeftTalon.enableBrakeMode(true);
         backRightTalon.enableBrakeMode(true);
-
-        robotDrive = new RobotDrive(frontLeftTalon, backLeftTalon, frontRightTalon, backRightTalon);
-        robotDrive.setSafetyEnabled(false);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, Constants.driveFrontLeftInverted.getInt() == 1);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, Constants.driveBackLeftInverted.getInt() == 1);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, Constants.driveFrontRightInverted.getInt() == 1);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, Constants.driveBackRightInverted.getInt() == 1);
 
         frontLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
         frontRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
@@ -73,6 +71,13 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.reverseSensor(true);
 
         zeroEncoders();
+
+        robotDrive = new RobotDrive(frontLeftTalon, backLeftTalon, frontRightTalon, backRightTalon);
+        robotDrive.setSafetyEnabled(false);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, Constants.driveFrontLeftInverted.getInt() == 1);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, Constants.driveBackLeftInverted.getInt() == 1);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, Constants.driveFrontRightInverted.getInt() == 1);
+        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, Constants.driveBackRightInverted.getInt() == 1);
 
         try
         {
