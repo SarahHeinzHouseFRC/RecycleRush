@@ -1,5 +1,6 @@
 package org.sharp.frc.team3260.RecycleRush;
 
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -14,16 +15,21 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class ScriptedAutonomous extends CommandGroup
+public class ScriptedAutonomous
 {
     private static final Log log = new Log("ScriptedAutonomous", Log.ATTRIBUTE_TIME);
 
-    private boolean successful;
+    private CommandGroup commandGroup;
+
+    private boolean commandsLoaded;
 
     public ScriptedAutonomous()
     {
-        successful = true;
+        load();
+    }
 
+    private boolean loadCSV()
+    {
         try
         {
             File file = new File("//home//lvuser//autonomousVariables.csv"); //need to make sure if this is the correct path
@@ -142,7 +148,7 @@ public class ScriptedAutonomous extends CommandGroup
                 }
                 else
                 {
-                    successful = false;
+                    return false;
                 }
             }
         }
@@ -150,15 +156,46 @@ public class ScriptedAutonomous extends CommandGroup
         {
             e.printStackTrace();
 
-            successful = false;
+            return false;
         }
 
-        getLog().info("Autonomous loading was " + (successful ? "successful." : "not successful."));
+        return true;
     }
 
-    public boolean commandWasSuccessFul()
+    public void load()
     {
-        return successful;
+        commandGroup = new CommandGroup();
+
+        commandsLoaded = loadCSV();
+
+        getLog().info("Autonomous loading was " + (commandsLoaded ? "successful." : "not successful."));
+
+        if(!commandsLoaded)
+        {
+            commandGroup = new BasicAutoCommandGroup();
+        }
+    }
+
+    private void addSequential(Command command)
+    {
+        commandGroup.addSequential(command);
+    }
+
+    private void addSequential(Command command, double timeout)
+    {
+        commandGroup.addSequential(command, timeout);
+    }
+
+    public CommandGroup getCommandGroup()
+    {
+        log.info("Retrieving Autonomous Command Group." + (loadedSuccessfully() ? "" : " Loading failed, Basic Auto Command Group substituted."));
+
+        return commandGroup;
+    }
+
+    public boolean loadedSuccessfully()
+    {
+        return commandsLoaded;
     }
 
     public static Log getLog()

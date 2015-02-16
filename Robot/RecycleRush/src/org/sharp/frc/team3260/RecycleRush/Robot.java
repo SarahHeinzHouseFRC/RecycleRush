@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.commands.*;
+import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
@@ -14,11 +15,11 @@ import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 public class Robot extends IterativeRobot
 {
-    private CommandGroup autonomousCommandGroup;
-
     private static final Log log = new Log("RobotBase", Log.ATTRIBUTE_TIME);
 
     private static Robot instance;
+
+    private ScriptedAutonomous scriptedAutonomous;
 
     public Robot()
     {
@@ -53,31 +54,15 @@ public class Robot extends IterativeRobot
         }
         catch (Exception e)
         {
-            log.info("Starting Camera Server failed with exception " + e.getMessage());
+            log.error("Starting Camera Server failed with exception " + e.getMessage());
         }
+
+        scriptedAutonomous = new ScriptedAutonomous();
     }
 
     public void autonomousInit()
     {
-        log.info("Loading Autonomous Commands from CSV...");
-        autonomousCommandGroup = new ScriptedAutonomous();
-
-        if (autonomousCommandGroup.getClass() == ScriptedAutonomous.class && ((ScriptedAutonomous) autonomousCommandGroup).commandWasSuccessFul())
-        {
-            log.info("Scripted Autonomous Loaded Successfully.");
-
-            autonomousCommandGroup.start();
-        }
-        else
-        {
-            log.info("Scripted Autonomous Loading Failed.");
-
-            BasicAutoCommandGroup basicAuto = new BasicAutoCommandGroup();
-
-            basicAuto.start();
-
-            autonomousCommandGroup = basicAuto;
-        }
+        scriptedAutonomous.getCommandGroup().start();
     }
 
     public void autonomousPeriodic()
@@ -103,14 +88,18 @@ public class Robot extends IterativeRobot
 
     public void disabledInit()
     {
-        if (autonomousCommandGroup != null)
+        if(scriptedAutonomous.getCommandGroup() != null)
         {
-            autonomousCommandGroup.cancel();
+            scriptedAutonomous.getCommandGroup().cancel();
         }
     }
 
     public void disabledPeriodic()
     {
+        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
+        {
+            scriptedAutonomous.load();
+        }
     }
 
     public Log getLogger()
