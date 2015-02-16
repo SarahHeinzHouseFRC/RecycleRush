@@ -136,7 +136,7 @@ public class Elevator extends SHARPSubsystem
 
     public void stop()
     {
-        if(getControlMode() == CANTalon.ControlMode.PercentVbus)
+        if (getControlMode() == CANTalon.ControlMode.PercentVbus)
         {
             up(0.0);
         }
@@ -172,17 +172,19 @@ public class Elevator extends SHARPSubsystem
         return elevatorTalon.getEncPosition();
     }
 
-    public void checkLimitSwitch()
+    public void setZero()
     {
-        if (elevatorTalon.isRevLimitSwitchClosed())
-        {
-            elevatorTalon.setPosition(0.0);
-        }
+        elevatorTalon.setPosition(0.0);
     }
 
     public CANTalon.ControlMode getControlMode()
     {
         return elevatorTalon.getControlMode();
+    }
+
+    public CANTalon getTalon()
+    {
+        return elevatorTalon;
     }
 
     public static class ElevatorPosition

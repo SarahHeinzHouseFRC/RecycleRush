@@ -17,7 +17,7 @@ import java.util.*;
 public class ScriptedAutonomous extends CommandGroup
 {
     private static final Log log = new Log("ScriptedAutonomous", Log.ATTRIBUTE_TIME);
-    
+
     private boolean successful;
 
     public ScriptedAutonomous()
@@ -46,11 +46,11 @@ public class ScriptedAutonomous extends CommandGroup
 
             // run through each key add its values to the vector
 
-                csvFileFormat = CSVFormat.DEFAULT.withHeader(headerArray).withSkipHeaderRecord();
+            csvFileFormat = CSVFormat.DEFAULT.withHeader(headerArray).withSkipHeaderRecord();
 
-                csvFileParser = new CSVParser(new FileReader(file), csvFileFormat);
+            csvFileParser = new CSVParser(new FileReader(file), csvFileFormat);
 
-                csvRecords = (List) csvFileParser.getRecords();
+            csvRecords = (List) csvFileParser.getRecords();
 
             if (csvRecords != null)
             {
@@ -67,7 +67,7 @@ public class ScriptedAutonomous extends CommandGroup
                             mappedByHeader.get(header).add(csvRecords.get(i).get(header));
                         }
                     }
-                    
+
                     for (int i = 0; i < mappedByHeader.get("ID").size(); i++)
                     {
                         /* Add the ID's and process their given variables. */

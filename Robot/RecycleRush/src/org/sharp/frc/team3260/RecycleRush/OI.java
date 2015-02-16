@@ -1,23 +1,20 @@
 package org.sharp.frc.team3260.RecycleRush;
 
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import org.sharp.frc.team3260.RecycleRush.commands.CloseGripperCommand;
-import org.sharp.frc.team3260.RecycleRush.commands.ElevatorToSetpointCommand;
-import org.sharp.frc.team3260.RecycleRush.commands.OpenGripperCommand;
-import org.sharp.frc.team3260.RecycleRush.commands.SwitchGamepadsCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.joystick.triggers.AxisButton;
+import org.sharp.frc.team3260.RecycleRush.joystick.triggers.TalonLimitSwitchButton;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
-import org.sharp.frc.team3260.RecycleRush.subsystems.SHARPSubsystem;
 
 public class OI
 {
     private static OI instance;
 
     public SHARPGamepad mainGamepad, manipulatorGamepad;
+
+    public Button elevatorTalonReverseLimitSwitchButton;
 
     public Button mainGamepadSelectButton, manipulatorGamepadSelectButton;
 
@@ -27,6 +24,8 @@ public class OI
 
     public OI()
     {
+        elevatorTalonReverseLimitSwitchButton = new TalonLimitSwitchButton(Elevator.getInstance().getTalon(), false);
+
         mainGamepad = new SHARPGamepad(Constants.mainGamepadID.getInt());
         manipulatorGamepad = new SHARPGamepad(Constants.manipulatorGamepadID.getInt());
 
@@ -40,6 +39,8 @@ public class OI
         manipulatorGamepadB = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_B);
         manipulatorGamepadX = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_X);
         manipulatorGamepadY = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_Y);
+
+        elevatorTalonReverseLimitSwitchButton.whenPressed(new ZeroElevatorCommand());
 
         mainGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
         manipulatorGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());

@@ -3,7 +3,6 @@ package org.sharp.frc.team3260.RecycleRush.utils.logs;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -46,13 +45,13 @@ public class Log
 
     public static void createFlashDriveLog()
     {
-        if(!failedToCreateFlashDriveLog && flashDriveLog == null)
+        if (!failedToCreateFlashDriveLog && flashDriveLog == null)
         {
             try
             {
                 File flashDriveLogFile = new File("//home//lvuser//log.txt");
 
-                if(!flashDriveLogFile.exists())
+                if (!flashDriveLogFile.exists())
                 {
                     flashDriveLogFile.createNewFile();
                 }

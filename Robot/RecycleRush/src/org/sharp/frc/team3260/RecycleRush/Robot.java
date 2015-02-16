@@ -1,6 +1,5 @@
 package org.sharp.frc.team3260.RecycleRush;
 
-import com.ni.vision.NIVision;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -20,12 +19,6 @@ public class Robot extends IterativeRobot
     private static final Log log = new Log("RobotBase", Log.ATTRIBUTE_TIME);
 
     private static Robot instance;
-
-    int session;
-
-    NIVision.Image frame;
-
-    boolean hasCamera = false;
 
     public Robot()
     {
@@ -50,16 +43,15 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("SHARPDrive", new SHARPDriveCommand());
         SmartDashboard.putData("Field Centric Mecanum Drive", new FieldCentricMecanumDriveCommand());
         SmartDashboard.putData("FIRST Mecanum Drive", new FIRSTMecanumDriveCommand());
-        SmartDashboard.putData("Rotate To 180", new RotateToHeadingCommand(180, 5, false));
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
 
         log.info("Attempting to start Camera Server...");
         try
         {
-            CameraServer.getInstance().setQuality(50);
+            CameraServer.getInstance().setQuality(30);
             CameraServer.getInstance().startAutomaticCapture("cam0");
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.info("Starting Camera Server failed with exception " + e.getMessage());
         }
@@ -91,8 +83,6 @@ public class Robot extends IterativeRobot
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-
-        Elevator.getInstance().checkLimitSwitch();
     }
 
     public void teleopInit()
@@ -104,8 +94,6 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
 
         OI.getInstance().checkControls();
-
-        Elevator.getInstance().checkLimitSwitch();
     }
 
     public void testPeriodic()
