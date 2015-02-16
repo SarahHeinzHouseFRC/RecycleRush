@@ -269,49 +269,6 @@ public class DriveTrain extends SHARPSubsystem
         stockMecanumDrive(x, y, rotation, 0);
     }
 
-    public void mecanumDrive_Orientation(double x, double y, double angle)
-    {
-        if (!rotationController.isEnable() || rotationController.getSetpoint() != angle)
-        {
-            rotationController.setSetpoint(angle);
-            rotationController.enable();
-        }
-
-        mecanumDrive_Cartesian0(x, y, rotationControllerOutput, getIMU().getYaw());
-    }
-
-    public void mecanumDrive_Cartesian(GenericHID stick)
-    {
-        mecanumDrive_Cartesian(stick.getX(), stick.getY(), 0);
-    }
-
-    /**
-     * @param magnitude The speed that the robot should drive in a given
-     *                  direction.
-     * @param direction the direction the robot should drive in degrees,
-     *                  independent of rotation
-     * @param rotation  The rate of rotation for the robot that is completely
-     *                  independent of the magnitude or direction. [-1.0..1.0]
-     */
-    public void mecanumDrive_Polar(double magnitude, double direction, double rotation)
-    {
-        magnitude = Util.limit(magnitude) * Math.sqrt(2.0);
-
-        double dirInRad = (direction + 45.0) * Math.PI / 180.0;
-        double cosD = Math.cos(dirInRad);
-        double sinD = Math.sin(dirInRad);
-
-        double wheelSpeeds[] = new double[4];
-        wheelSpeeds[0] = (sinD * magnitude + rotation);
-        wheelSpeeds[1] = (cosD * magnitude - rotation);
-        wheelSpeeds[2] = (cosD * magnitude + rotation);
-        wheelSpeeds[3] = (sinD * magnitude - rotation);
-
-        Util.normalize(wheelSpeeds);
-
-        setDriveMotors(wheelSpeeds[0], wheelSpeeds[1], wheelSpeeds[2], wheelSpeeds[3]);
-    }
-
     /**
      * Moves the robot sideways at the specified speed.
      *
@@ -342,6 +299,13 @@ public class DriveTrain extends SHARPSubsystem
             if (rotationController.getSetpoint() != rotationTarget)
             {
                 rotationController.setSetpoint(rotationTarget);
+            }
+
+            if(rotationController.onTarget())
+            {
+                rotatingToTarget = false;
+
+                return 0.0;
             }
 
             return rotationControllerOutput;
