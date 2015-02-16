@@ -2,8 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8bd1c0cf-9493-4703-a85b-86818c8d73a3" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\NetConsole\NetConsole GUI\NetConsole GUI\obj\Debug\NetConsole GUI.pdb" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\Robot\RecycleRush\.idea\workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\CSVTEst\CSVTEst.iml" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\CSVTEst\data\csv.csv" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\CSVTEst\libs\commons-csv-1.1.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\CSVTEst\src\CSVParserTest.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\Talon SRX\test.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\gradle\wrapper\gradle-wrapper.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\gradle\wrapper\gradle-wrapper.properties" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\gradlew" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\gradlew.bat" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored mask="workspace.xml" />
     <ignored path="build/" />
@@ -1074,7 +1082,7 @@
       <updated>1420591553824</updated>
       <workItem from="1420591671358" duration="2329000" />
       <workItem from="1423960222002" duration="14095000" />
-      <workItem from="1424044476503" duration="3854000" />
+      <workItem from="1424044476503" duration="4209000" />
     </task>
     <task id="LOCAL-00001" summary="Changing operator interface">
       <created>1424030701590</created>
@@ -1112,11 +1120,17 @@
       <option name="project" value="LOCAL" />
       <updated>1424048584144</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Removing workspace.xml">
+      <created>1424048721602</created>
+      <option name="number" value="00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1424048721602</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="20318000" />
+    <option name="totallyTimeSpent" value="20673000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -1203,7 +1217,8 @@
     <MESSAGE value="Talon limit switch trigger to zero elevator, new file logging capability" />
     <MESSAGE value="Changed name of IdleCommand to make its purpose more clear" />
     <MESSAGE value="Additional NetConsole text highlight options" />
-    <option name="LAST_COMMIT_MESSAGE" value="Additional NetConsole text highlight options" />
+    <MESSAGE value="Removing workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Removing workspace.xml" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
