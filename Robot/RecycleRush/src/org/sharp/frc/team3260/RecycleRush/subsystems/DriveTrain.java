@@ -8,12 +8,9 @@ import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.commands.FIRSTMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
-import org.sharp.frc.team3260.RecycleRush.utils.logs.ThrottledLog;
 
 public class DriveTrain extends SHARPSubsystem
 {
-    protected static final ThrottledLog spammer = new ThrottledLog("DriveTrain", 0, 2000);
-
     protected static DriveTrain instance;
 
     private CANTalon frontLeftTalon, frontRightTalon, backLeftTalon, backRightTalon;
@@ -25,7 +22,7 @@ public class DriveTrain extends SHARPSubsystem
 
     protected double rotationControllerP = 0.0075,
             rotationControllerI = 0.0,
-            rotationControllerD = 0.0,
+            rotationControllerD = 0.001,
             rotationControllerF = 0.0;
 
     protected double gyroOffset = 0.0;
@@ -60,7 +57,6 @@ public class DriveTrain extends SHARPSubsystem
 
         robotDrive = new RobotDrive(frontLeftTalon, backLeftTalon, frontRightTalon, backRightTalon);
         robotDrive.setSafetyEnabled(false);
-        robotDrive.setExpiration(0.1);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, Constants.driveFrontLeftInverted.getInt() == 1);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, Constants.driveBackLeftInverted.getInt() == 1);
         robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, Constants.driveFrontRightInverted.getInt() == 1);
@@ -98,6 +94,10 @@ public class DriveTrain extends SHARPSubsystem
             rotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), output -> rotationControllerOutput = output);
 
             rotationController.setPercentTolerance(1);
+
+            rotationController.setContinuous();
+
+            rotationController.setInputRange(-180, 180);
 
             SmartDashboard.putData("Rotation Controller", rotationController);
         }
@@ -424,7 +424,7 @@ public class DriveTrain extends SHARPSubsystem
     {
         if (frontLeftTalon.getControlMode() != CANTalon.ControlMode.Position || frontRightTalon.getControlMode() != CANTalon.ControlMode.Position || backLeftTalon.getControlMode() != CANTalon.ControlMode.Position || backRightTalon.getControlMode() != CANTalon.ControlMode.Position)
         {
-            log.info("Checked atDriveTarget, but one of the Talons was set to the wrong mode.");
+            log.warn("Checked atDriveTarget, but one of the Talons was set to the wrong mode.");
 
             return false;
         }

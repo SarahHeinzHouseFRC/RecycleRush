@@ -61,6 +61,7 @@ public class RotateToHeadingCommand extends Command
     @Override
     protected void end()
     {
+        DriveTrain.getInstance().setRotationTarget(DriveTrain.getInstance().getIMU().getYaw());
     }
 
     @Override
