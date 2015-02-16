@@ -13,18 +13,20 @@ public class OpenGripperCommand extends Command
     @Override
     protected void initialize()
     {
+        setTimeout(0.1);
+
+        Gripper.getInstance().openGripper();
     }
 
     @Override
     protected void execute()
     {
-        Gripper.getInstance().openGripper();
     }
 
     @Override
     protected boolean isFinished()
     {
-        return true;
+        return isTimedOut();
     }
 
     @Override
