@@ -111,7 +111,7 @@ public class ScriptedAutonomous extends CommandGroup
 
                             case 5:
                                 getLog().info("Adding IdleCommand command, time: " + time);
-                                addSequential(new IdleCommand(time));
+                                addSequential(new RobotIdleCommand(time));
                                 break;
 
                             //open tote

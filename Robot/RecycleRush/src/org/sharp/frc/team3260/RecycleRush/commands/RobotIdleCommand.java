@@ -6,11 +6,11 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
 
-public class IdleCommand extends Command
+public class RobotIdleCommand extends Command
 {
     double idleTime;
 
-    public IdleCommand(double timeToIdle)
+    public RobotIdleCommand(double timeToIdle)
     {
         requires(DriveTrain.getInstance());
         requires(Elevator.getInstance());
