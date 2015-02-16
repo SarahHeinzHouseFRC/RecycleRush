@@ -80,11 +80,13 @@ public class ScriptedAutonomous
                         int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
                         double distance, time;
                         int elevatorPosition, degreeToRotate;
+                        boolean zeroGyro;
 
                         distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
                         time = Double.parseDouble(mappedByHeader.get("Time Out").get(i));
                         elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
                         degreeToRotate = Integer.parseInt(mappedByHeader.get("Degree to Rotate").get(i));
+                        zeroGyro = Integer.parseInt(mappedByHeader.get("Zero Gyro").get(i)) != 0;
 
                         switch (currentID)
                         {
@@ -107,12 +109,14 @@ public class ScriptedAutonomous
                             case 2:
                                 getLog().info("Adding RotateToHeading command, angle: " + degreeToRotate);
                                 addSequential(new RotateToHeadingCommand((double) -degreeToRotate, true));
+                                if(zeroGyro) addSequential(new ZeroGyroCommand());
                                 break;
 
                             //rotate left
                             case -2:
                                 getLog().info("Adding RotateToHeading command, angle: " + degreeToRotate);
                                 addSequential(new RotateToHeadingCommand((double) degreeToRotate, true));
+                                if(zeroGyro) addSequential(new ZeroGyroCommand());
                                 break;
 
                             case 5:
