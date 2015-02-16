@@ -118,9 +118,18 @@ namespace NetConsole_GUI
 
             txt_Received.Select(startPos, txt_Received.TextLength);
 
-            if(text.ToLower().Contains("error") || text.ToLower().Contains("exception"))
+            if(text.ToLower().Contains("severe"))
+            {
+                txt_Received.SelectionColor = Color.Black;
+                txt_Received.SelectionBackColor = Color.Red;
+            }
+            else if(text.ToLower().Contains("error") || text.ToLower().Contains("exception"))
             {
                 txt_Received.SelectionColor = Color.Red;
+            }
+            else if(text.ToLower().Contains("warn"))
+            {
+                txt_Received.SelectionColor = Color.Orange;
             }
         }
 
