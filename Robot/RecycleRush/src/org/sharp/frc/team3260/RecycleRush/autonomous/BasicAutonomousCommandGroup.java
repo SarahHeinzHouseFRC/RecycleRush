@@ -1,11 +1,11 @@
-package org.sharp.frc.team3260.RecycleRush;
+package org.sharp.frc.team3260.RecycleRush.autonomous;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.sharp.frc.team3260.RecycleRush.commands.RobotIdleCommand;
 
-public class BasicAutoCommandGroup extends CommandGroup
+public class BasicAutonomousCommandGroup extends CommandGroup
 {
-    public BasicAutoCommandGroup()
+    public BasicAutonomousCommandGroup()
     {
         addSequential(new RobotIdleCommand(15));
     }

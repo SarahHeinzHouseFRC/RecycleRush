@@ -23,31 +23,26 @@ public class Util
     {
         String content = "";
 
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName)))
+        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName)))
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder stringBuilder = new StringBuilder();
 
-            String line = br.readLine();
+            String line = bufferedReader.readLine();
 
             while (line != null)
             {
-                sb.append(line);
-                sb.append(System.lineSeparator());
-                line = br.readLine();
+                stringBuilder.append(line);
+                stringBuilder.append(System.lineSeparator());
+                line = bufferedReader.readLine();
             }
 
-            content = sb.toString();
-        }
-        catch (FileNotFoundException e)
-        {
-            e.printStackTrace();
+            content = stringBuilder.toString();
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
 
-        System.out.println("Filename:" + fileName + "\t#:" + content.length());
         return content;
     }
 
@@ -57,20 +52,20 @@ public class Util
      */
     public static String[] split(String input, String delimiter)
     {
-        Vector node = new Vector();
+        Vector nodes = new Vector();
         int index = input.indexOf(delimiter);
         while (index >= 0)
         {
-            node.addElement(input.substring(0, index));
+            nodes.addElement(input.substring(0, index));
             input = input.substring(index + delimiter.length());
             index = input.indexOf(delimiter);
         }
-        node.addElement(input);
+        nodes.addElement(input);
 
-        String[] retString = new String[node.size()];
-        for (int i = 0; i < node.size(); ++i)
+        String[] retString = new String[nodes.size()];
+        for (int i = 0; i < nodes.size(); ++i)
         {
-            retString[i] = (String) node.elementAt(i);
+            retString[i] = (String) nodes.elementAt(i);
         }
 
         return retString;
@@ -80,7 +75,7 @@ public class Util
     {
         try
         {
-            double d = Double.parseDouble(str);
+            Double.parseDouble(str);
 
             return true;
         }
@@ -88,48 +83,6 @@ public class Util
         {
             return false;
         }
-    }
-
-    public static String toJson(Hashtable data)
-    {
-        return toJson(data, 0);
-    }
-
-    public static String toJson(Hashtable data, int levels)
-    {
-        String res = "{\n";
-
-        for (Enumeration en = data.keys(); en.hasMoreElements(); )
-        {
-            String key = (String) en.nextElement();
-            res += "\t\"" + key + "\": ";
-
-            try
-            {
-                Hashtable nestedData = (Hashtable) data.get(key);
-                for (int i = 0; i < levels; i++)
-                {
-                    res += "\t";
-                }
-                res += toJson(nestedData, levels + 2);
-            }
-            catch (ClassCastException e)
-            {
-                String value = data.get(key).toString();
-                if (Util.isNumber(value))
-                {
-                    res += value;
-                }
-                else
-                {
-                    res += "\"" + value + "\"";
-                }
-            }
-
-            res += en.hasMoreElements() ? ",\n" : "\n";
-        }
-        res += "}";
-        return res;
     }
 
     /**

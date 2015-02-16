@@ -1,4 +1,4 @@
-package org.sharp.frc.team3260.RecycleRush;
+package org.sharp.frc.team3260.RecycleRush.autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
@@ -176,7 +176,7 @@ public class ScriptedAutonomous
 
         if(!commandsLoaded)
         {
-            commandGroup = new BasicAutoCommandGroup();
+            commandGroup = new BasicAutonomousCommandGroup();
         }
     }
 
