@@ -7,15 +7,9 @@ import org.sharp.frc.team3260.RecycleRush.commands.ElevatorWithJoystickCommand;
 
 import java.util.HashMap;
 
-/**
- * TODO: Elevator sensors
- * TODO: Elevator control methods
- * TODO: Elevator operator interface
- * TODO: Elevator automation commands
- */
 public class Elevator extends SHARPSubsystem
 {
-    private static final int ELEVATOR_TOLERANCE = 50;
+    private static final int ELEVATOR_TOLERANCE = 100;
 
     protected static Elevator instance;
 
