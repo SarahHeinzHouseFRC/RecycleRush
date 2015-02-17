@@ -10,9 +10,9 @@ public class FileLog extends PrintStream
 {
     protected static HashMap<String, FileLog> instances = new HashMap<>();
 
-    private FileLog(File file) throws FileNotFoundException
+    private FileLog(FileOutputStream fileOutputStream) throws FileNotFoundException
     {
-        super(new FileOutputStream(file));
+        super(fileOutputStream);
     }
 
     public static FileLog getInstance(File file) throws FileNotFoundException
@@ -21,7 +21,9 @@ public class FileLog extends PrintStream
 
         if (!instances.containsKey(fileName))
         {
-            instances.put(fileName, new FileLog(file));
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+            instances.put(fileName, new FileLog(fileOutputStream));
         }
 
         return instances.get(fileName);

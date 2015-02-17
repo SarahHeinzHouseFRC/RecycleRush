@@ -1,12 +1,9 @@
 package org.sharp.frc.team3260.RecycleRush.utils.logs;
 
-import org.sharp.frc.team3260.RecycleRush.Robot;
-
 import java.io.File;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Log
@@ -21,15 +18,22 @@ public class Log
     public static final LogLevel ERROR = new LogLevel("ERROR");
     public static final LogLevel SEVERE = new LogLevel("SEVERE");
     protected static final int ATTRIBUTE_DEFAULT = ATTRIBUTE_TIME;
-    public static ArrayList<String> backlog = new ArrayList<>();
-    public DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+    private static DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
+    private static DateFormat fileDateFormat = new SimpleDateFormat("d MMM yyyy HH-mm-ss");
 
     protected int attr;
     protected String name;
 
     public Log(String name, int attributes)
     {
-        createFlashDriveLog();
+        try
+        {
+            createFlashDriveLog();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         this.attr = attributes;
         this.name = name;
@@ -37,7 +41,14 @@ public class Log
 
     public Log(String name)
     {
-        createFlashDriveLog();
+        try
+        {
+            createFlashDriveLog();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
 
         this.attr = ATTRIBUTE_DEFAULT;
         this.name = name;
@@ -49,12 +60,7 @@ public class Log
         {
             try
             {
-                File flashDriveLogFile = new File("//home//lvuser//log.txt");
-
-                if (!flashDriveLogFile.exists())
-                {
-                    flashDriveLogFile.createNewFile();
-                }
+                File flashDriveLogFile = new File("//U//" + getFileDate() + ".log.txt");
 
                 flashDriveLog = FileLog.getInstance(flashDriveLogFile);
             }
@@ -62,12 +68,14 @@ public class Log
             {
                 failedToCreateFlashDriveLog = true;
 
-                Robot.getInstance().getLogger().warn("Failed to create flash drive log, exception: " + e.getMessage());
+                e.printStackTrace();
             }
         }
     }
 
-    String getTime()
+    private static String getFileDate() { return fileDateFormat.format(new Date()); }
+
+    private static String getTime()
     {
         return dateFormat.format(new Date());
     }
@@ -93,14 +101,18 @@ public class Log
         String ts = builder.toString();
 
         ps.println(ts);
-
-        backlog.add(ts);
     }
 
     public void log(String message, LogLevel level)
     {
         log(message, level.getName().toUpperCase(), level.getPrintSteam());
-        log(message, level.getName().toLowerCase(), flashDriveLog);
+
+        if(!failedToCreateFlashDriveLog)
+        {
+            log(message, level.getName().toLowerCase(), flashDriveLog);
+
+            flashDriveLog.flush();
+        }
     }
 
     public void info(String message)

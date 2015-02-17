@@ -45,15 +45,10 @@ public class DriveTrain extends SHARPSubsystem
         compressor = new Compressor(0);
         compressor.start();
 
-        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), 1);
-        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), 1);
-        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), 1);
-        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt(), 1);
-
-        frontLeftTalon.setVoltageRampRate(6);
-        frontRightTalon.setVoltageRampRate(6);
-        backLeftTalon.setVoltageRampRate(6);
-        backRightTalon.setVoltageRampRate(6);
+        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), 5);
+        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), 5);
+        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), 5);
+        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt(), 5);
 
         frontLeftTalon.enableBrakeMode(true);
         frontRightTalon.enableBrakeMode(true);
@@ -160,25 +155,25 @@ public class DriveTrain extends SHARPSubsystem
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontLeftTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                frontLeftTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
+                frontLeftTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontRightTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                frontRightTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
+                frontRightTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backLeftTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                backLeftTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
+                backLeftTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backRightTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                backRightTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
+                backRightTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 backRightTalon.enableControl();
 
                 log.info("ControlMode changed to " + controlMode.name());
@@ -398,7 +393,7 @@ public class DriveTrain extends SHARPSubsystem
             return false;
         }
 
-        return talonOnTarget(frontLeftTalon, 200) && talonOnTarget(backLeftTalon, 200) && talonOnTarget(frontRightTalon, 200) && talonOnTarget(backRightTalon, 200);
+        return talonOnTarget(frontLeftTalon, 250) && talonOnTarget(backLeftTalon, 250) && talonOnTarget(frontRightTalon, 250) && talonOnTarget(backRightTalon, 250);
     }
 
     protected boolean talonOnTarget(CANTalon talon, double tolerance)

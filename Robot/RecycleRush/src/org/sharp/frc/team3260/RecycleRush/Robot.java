@@ -27,10 +27,6 @@ public class Robot extends IterativeRobot
         {
             instance = this;
         }
-        else
-        {
-            return;
-        }
     }
 
     public void robotInit()
@@ -54,10 +50,17 @@ public class Robot extends IterativeRobot
         }
         catch (Exception e)
         {
-            log.error("Starting Camera Server failed with exception " + e.getMessage());
+            log.error("Starting Camera Server failed with exception " + e.toString());
         }
 
-        scriptedAutonomous = new ScriptedAutonomous();
+        try
+        {
+            scriptedAutonomous = new ScriptedAutonomous();
+        }
+        catch(Exception e)
+        {
+            log.error("Failed to load ScriptedAutonomous, exception: " + e.toString());
+        }
     }
 
     public void autonomousInit()
@@ -99,6 +102,11 @@ public class Robot extends IterativeRobot
         if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
         {
             scriptedAutonomous.load();
+
+            while(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
+            {
+
+            }
         }
     }
 

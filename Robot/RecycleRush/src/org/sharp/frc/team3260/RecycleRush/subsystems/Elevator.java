@@ -9,7 +9,7 @@ import java.util.HashMap;
 
 public class Elevator extends SHARPSubsystem
 {
-    private static final int ELEVATOR_TOLERANCE = 100;
+    private static final int ELEVATOR_TOLERANCE = 200;
 
     protected static Elevator instance;
 
@@ -25,7 +25,7 @@ public class Elevator extends SHARPSubsystem
 
         instance = this;
 
-        elevatorTalon = new CANTalon(Constants.elevatorTalonID.getInt(), 1);
+        elevatorTalon = new CANTalon(Constants.elevatorTalonID.getInt(), 5);
 
         elevatorTalon.enableBrakeMode(true);
 
@@ -37,7 +37,7 @@ public class Elevator extends SHARPSubsystem
 
         elevatorTalon.setProfile(1);
 
-        elevatorTalon.setPID(0.93239296, 0.0, 0.0);
+        elevatorTalon.setPID(0.95, 0.0, 0.0);
 
         elevatorTalon.setReverseSoftLimit(ElevatorPosition.GROUND.encoderValue);
 
@@ -129,7 +129,7 @@ public class Elevator extends SHARPSubsystem
 
     public boolean atSetpoint()
     {
-        return (!useEncoder || (Math.abs(elevatorTalon.getPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE));
+        return (!useEncoder || (Math.abs(elevatorTalon.getPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE) || (elevatorTalon.getSetpoint() < 0 && elevatorTalon.isRevLimitSwitchClosed()));
     }
 
     public void stop()

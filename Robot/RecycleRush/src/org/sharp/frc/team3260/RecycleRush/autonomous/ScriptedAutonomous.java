@@ -70,6 +70,7 @@ public class ScriptedAutonomous
                             {
                                 mappedByHeader.put(header, new ArrayList<>());
                             }
+
                             mappedByHeader.get(header).add(csvRecords.get(i).get(header));
                         }
                     }
@@ -78,7 +79,7 @@ public class ScriptedAutonomous
                     {
                         /* Add the ID's and process their given variables. */
                         int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
-                        double distance, time;
+                        double distance, time, timeout;
                         int elevatorPosition, degreeToRotate;
                         boolean zeroGyro;
 
@@ -87,6 +88,7 @@ public class ScriptedAutonomous
                         elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
                         degreeToRotate = Integer.parseInt(mappedByHeader.get("Degree to Rotate").get(i));
                         zeroGyro = Integer.parseInt(mappedByHeader.get("Zero Gyro").get(i)) != 0;
+                        timeout = Double.parseDouble(mappedByHeader.get("Command Timeout").get(i));
 
                         switch (currentID)
                         {
@@ -95,28 +97,34 @@ public class ScriptedAutonomous
                                 //18.85 inches per rotation
                                 //163 tick per ft
                                 //0.07 inches per tick
-                                getLog().info("Adding DriveDistance command, distance: " + distance);
-                                addSequential(new DriveDistanceCommand(distance));
+                                getLog().info("Adding DriveDistance command, distance: " + distance + " - timeout: " + timeout / 1000);
+                                addSequential(new DriveDistanceCommand(distance, timeout / 1000));
                                 break;
 
                             //drive backward
                             case -1:
-                                getLog().info("Adding DriveDistance command, distance: " + distance);
-                                addSequential(new DriveDistanceCommand(-distance));
+                                getLog().info("Adding DriveDistance command, distance: " + -distance + " - timeout: " + timeout / 1000);
+                                addSequential(new DriveDistanceCommand(-distance, timeout / 1000));
                                 break;
 
                             //rotate right
                             case 2:
                                 getLog().info("Adding RotateToHeading command, angle: " + degreeToRotate);
                                 addSequential(new RotateToHeadingCommand((double) -degreeToRotate, true));
-                                if(zeroGyro) addSequential(new ZeroGyroCommand());
+                                if (zeroGyro)
+                                {
+                                    addSequential(new ZeroGyroCommand());
+                                }
                                 break;
 
                             //rotate left
                             case -2:
                                 getLog().info("Adding RotateToHeading command, angle: " + degreeToRotate);
                                 addSequential(new RotateToHeadingCommand((double) degreeToRotate, true));
-                                if(zeroGyro) addSequential(new ZeroGyroCommand());
+                                if (zeroGyro)
+                                {
+                                    addSequential(new ZeroGyroCommand());
+                                }
                                 break;
 
                             case 5:
@@ -174,10 +182,12 @@ public class ScriptedAutonomous
 
         getLog().info("Autonomous loading was " + (commandsLoaded ? "successful." : "not successful."));
 
-        if(!commandsLoaded)
+        if (!commandsLoaded)
         {
             commandGroup = new BasicAutonomousCommandGroup();
         }
+
+        commandGroup = new BasicAutonomousCommandGroup();
     }
 
     private void addSequential(Command command)
