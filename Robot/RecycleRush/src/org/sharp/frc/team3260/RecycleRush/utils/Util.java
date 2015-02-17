@@ -5,10 +5,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
 
-/*
- * Utilities that we stole from a bunch of random teams
- * #YOLO
- */
 public class Util
 {
     // Prevent this class from being instantiated.
@@ -68,20 +64,6 @@ public class Util
         return retString;
     }
 
-    public static boolean isNumber(String str)
-    {
-        try
-        {
-            Double.parseDouble(str);
-
-            return true;
-        }
-        catch(NumberFormatException e)
-        {
-            return false;
-        }
-    }
-
     /**
      * Limits a value to the -1.0 to +1.0 range.
      *
@@ -120,57 +102,8 @@ public class Util
         return out;
     }
 
-    /**
-     * Normalize all wheel speeds if the magnitude of any wheel is greater than
-     * 1.0.
-     *
-     * @param wheelSpeeds the array of wheel speeds to normalize
-     */
-    public static void normalize(double wheelSpeeds[])
-    {
-        double maxMagnitude = Math.abs(wheelSpeeds[0]);
-
-        // Loops through each number to find the biggest absolute value.
-        for(int i = 1; i < wheelSpeeds.length; i++)
-        {
-            double temp = Math.abs(wheelSpeeds[i]);
-            if(maxMagnitude < temp)
-            {
-                maxMagnitude = temp;
-            }
-        }
-
-        // If the maximum is greater than 1.0, reduce all the values down
-        // proportionally so the maximum becomes 1.0.
-        if(maxMagnitude > 1.0)
-        {
-            for(int i = 0; i < wheelSpeeds.length; i++)
-            {
-                wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
-            }
-        }
-    }
-
     public static double limit(double val, double limit)
     {
         return (Math.abs(val) < Math.abs(limit)) ? val : (val < 0 ? -limit : limit);
-    }
-
-    /**
-     * Returns the arithmetic mean of the array.
-     *
-     * @param vals values to find average of
-     * @return the mean value
-     */
-    public static double mean(double[] vals)
-    {
-        double sum = 0;
-
-        for(int x = 0; x < vals.length; x++)
-        {
-            sum += vals[x];
-        }
-
-        return sum / (double) vals.length;
     }
 }
