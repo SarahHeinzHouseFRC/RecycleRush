@@ -275,16 +275,6 @@ public class DriveTrain extends SHARPSubsystem
     }
 
     /**
-     * Moves the robot sideways at the specified speed.
-     *
-     * @param speed The speed and direction to crab (negative = left, positive = right)
-     */
-    public void crab(double speed)
-    {
-        mecanumDrive_Cartesian(speed, 0, 0);
-    }
-
-    /**
      * Gets the corrected rotation speed based on the gyro heading and the
      * expected rate of rotation. If the rotation rate is above a threshold, the
      * gyro correction is turned off.
@@ -294,16 +284,18 @@ public class DriveTrain extends SHARPSubsystem
      */
     private double getRotationPID(double rotationSpeed)
     {
+        if(rotationController.getSetpoint() != rotationTarget && rotatingToTarget)
+        {
+            rotatingToTarget = false;
+            
+            rotationController.setSetpoint(getIMU().getYaw());
+        }
+        
         if(rotatingToTarget)
         {
             if(!rotationController.isEnable())
             {
                 rotationController.enable();
-            }
-
-            if(rotationController.getSetpoint() != rotationTarget)
-            {
-                rotationController.setSetpoint(rotationTarget);
             }
 
             if(rotationController.onTarget())

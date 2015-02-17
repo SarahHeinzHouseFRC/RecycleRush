@@ -118,6 +118,8 @@ public class Robot extends IterativeRobot
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
+
+        SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
     }
 
     public void teleopInit()
@@ -129,6 +131,8 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
 
         OI.getInstance().checkControls();
+
+        SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
     }
 
     public void testPeriodic()
@@ -194,6 +198,8 @@ public class Robot extends IterativeRobot
         {
             scriptedAutonomous.load();
         }
+
+        SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
     }
 
     public Log getLogger()

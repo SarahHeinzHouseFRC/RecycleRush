@@ -38,15 +38,13 @@ public class FIRSTMecanumDriveCommand extends Command
 
         forward = Math.abs(forward) > ROTATION_DEADBAND ? forward : 0;
 
-        if(DriveTrain.getInstance().getIMU() == null)
+        if(DriveTrain.getInstance().getIMU() == null || OI.getInstance().getMainGamepad().getRawButton(SHARPGamepad.BUTTON_LEFT_JOYSTICK))
         {
             DriveTrain.getInstance().stockMecanumDrive(strafe, forward, rotation, 0);
         }
         else
         {
             DriveTrain.getInstance().stockMecanumDrive(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw());
-
-            SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
         }
     }
 
