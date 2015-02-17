@@ -58,11 +58,21 @@ public class Robot extends IterativeRobot
         log.info("Indexing Autonomous Options...");
 
         File[] listOfAutoFiles = new File("//home//lvuser//autonomous").listFiles();
-        autoChooser.addDefault(listOfAutoFiles[0].getName(),new String(listOfAutoFiles[0].getName()));
-        for (File autoOption : listOfAutoFiles){
-            autoChooser.addObject(autoOption.getName(), new String(autoOption.getName()));
+        if(listOfAutoFiles != null)
+        {
+            for(File autoOption : listOfAutoFiles)
+            {
+                if(autoChooser.getSelected() == null)
+                {
+                    autoChooser.addDefault(autoOption.getName(), autoOption.getName());
+                }
+                else
+                {
+                    autoChooser.addObject(autoOption.getName(), autoOption.getName());
+                }
+            }
         }
-        SmartDashboard.putData("Auto Chooser",autoChooser);
+        SmartDashboard.putData("Auto Chooser", autoChooser);
 
         log.info("Attempting to start Camera Server...");
         try

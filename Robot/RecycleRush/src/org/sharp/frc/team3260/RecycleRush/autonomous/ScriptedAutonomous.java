@@ -28,13 +28,20 @@ public class ScriptedAutonomous
     {
         load();
     }
+
     private boolean loadCSV()
     {
         try
         {
             File file;
-            if(pathToCSV == null)  file = new File("//home//lvuser//autonomousVariables.csv"); //need to make sure if this is the correct path
-            else file = new File(pathToCSV);
+            if(pathToCSV == null)
+            {
+                file = new File("//home//lvuser//autonomousVariables.csv"); //need to make sure if this is the correct path
+            }
+            else
+            {
+                file = new File(pathToCSV);
+            }
             FileReader fileReader = new FileReader(file);
 
             BufferedReader reader = new BufferedReader(fileReader);
@@ -173,10 +180,12 @@ public class ScriptedAutonomous
         return true;
     }
 
-    public void setPathToCSV(String path){
+    public void setPathToCSV(String path)
+    {
 
         pathToCSV = path;
     }
+
     public void load()
     {
         commandGroup = new CommandGroup();
