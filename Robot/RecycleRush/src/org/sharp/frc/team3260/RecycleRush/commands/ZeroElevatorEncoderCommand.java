@@ -3,9 +3,9 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 
-public class ZeroElevatorCommand extends Command
+public class ZeroElevatorEncoderCommand extends Command
 {
-    public ZeroElevatorCommand()
+    public ZeroElevatorEncoderCommand()
     {
         requires(Elevator.getInstance());
     }

@@ -40,7 +40,7 @@ public class OI
         manipulatorGamepadX = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_X);
         manipulatorGamepadY = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_Y);
 
-        elevatorTalonReverseLimitSwitchButton.whenPressed(new ZeroElevatorCommand());
+        elevatorTalonReverseLimitSwitchButton.whenPressed(new ZeroElevatorEncoderCommand());
 
         mainGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
         manipulatorGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());

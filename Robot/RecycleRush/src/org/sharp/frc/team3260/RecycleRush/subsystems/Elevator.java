@@ -37,7 +37,7 @@ public class Elevator extends SHARPSubsystem
 
         elevatorTalon.setProfile(1);
 
-        elevatorTalon.setPID(1.0, 0.0, 0.01);
+        elevatorTalon.setPID(1.2, 0.0, 0.01);
 
         elevatorTalon.setReverseSoftLimit(ElevatorPosition.GROUND.encoderValue);
 
