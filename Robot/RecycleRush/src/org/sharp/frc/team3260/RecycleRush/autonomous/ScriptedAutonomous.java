@@ -22,9 +22,15 @@ public class ScriptedAutonomous
     private CommandGroup commandGroup;
 
     private boolean commandsLoaded;
+    String pathToDesiredCSV;
 
     public ScriptedAutonomous()
     {
+        load();
+    }
+    public ScriptedAutonomous(String pathToCsv)
+    {
+        pathToDesiredCSV = pathToCsv;
         load();
     }
 
@@ -32,8 +38,10 @@ public class ScriptedAutonomous
     {
         try
         {
-            File file = new File("//home//lvuser//autonomousVariables.csv"); //need to make sure if this is the correct path
-
+            File file;
+            if(pathToDesiredCSV == null)file = new File("//home//lvuser//autonomousVariables.csv"); // need to create a default script
+            else file = new File(pathToDesiredCSV);
+                 //need to make sure if this is the correct path
             FileReader fileReader = new FileReader(file);
 
             BufferedReader reader = new BufferedReader(fileReader);

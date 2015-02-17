@@ -2,8 +2,10 @@ package org.sharp.frc.team3260.RecycleRush;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
 import org.sharp.frc.team3260.RecycleRush.commands.*;
@@ -13,6 +15,8 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
+import java.io.File;
+
 public class Robot extends IterativeRobot
 {
     private static final Log log = new Log("RobotBase", Log.ATTRIBUTE_TIME);
@@ -20,6 +24,7 @@ public class Robot extends IterativeRobot
     private static Robot instance;
 
     private ScriptedAutonomous scriptedAutonomous;
+    private SendableChooser autoChooser;
 
     public Robot()
     {
@@ -46,6 +51,15 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("FIRST Mecanum Drive", new FIRSTMecanumDriveCommand());
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
 
+        log.info("Indexing SmartDashbord autonomous options...");
+        File[] listOfAutoFiles = new File("//home//lvuser//autonomous").listFiles();
+
+        autoChooser.addDefault(listOfAutoFiles[0].getName(),new ScriptedAutonomous(listOfAutoFiles[0].getName()));
+        for (File autoOption : listOfAutoFiles){
+            autoChooser.addObject(autoOption.getName(), new ScriptedAutonomous(autoOption.getName()));
+        }
+        SmartDashboard.putData("Auto Chooser",autoChooser);
+
         log.info("Attempting to start Camera Server...");
         try
         {
@@ -57,12 +71,13 @@ public class Robot extends IterativeRobot
             log.error("Starting Camera Server failed with exception " + e.getMessage());
         }
 
-        scriptedAutonomous = new ScriptedAutonomous();
+        //scriptedAutonomous = new ScriptedAutonomous(); commenting this to run the autochooser
     }
 
     public void autonomousInit()
     {
         scriptedAutonomous.getCommandGroup().start();
+        scriptedAutonomous = (ScriptedAutonomous) autoChooser.getSelected();
     }
 
     public void autonomousPeriodic()
