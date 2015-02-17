@@ -109,9 +109,9 @@ public class Robot extends IterativeRobot
 
     public void disabledPeriodic()
     {
+        scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
         if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
         {
-            scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
             scriptedAutonomous.load();
         }
     }

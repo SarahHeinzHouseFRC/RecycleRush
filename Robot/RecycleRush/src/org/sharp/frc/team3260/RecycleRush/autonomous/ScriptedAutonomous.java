@@ -28,11 +28,6 @@ public class ScriptedAutonomous
     {
         load();
     }
-    public ScriptedAutonomous(String pathToCSV){
-        this.pathToCSV = pathToCSV;
-        load();
-    }
-
     private boolean loadCSV()
     {
         try
@@ -172,6 +167,10 @@ public class ScriptedAutonomous
         return true;
     }
 
+    public void setPathToCSV(String path){
+
+        pathToCSV = path;
+    }
     public void load()
     {
         commandGroup = new CommandGroup();
