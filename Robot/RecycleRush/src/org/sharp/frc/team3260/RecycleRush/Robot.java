@@ -7,14 +7,19 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
-import org.sharp.frc.team3260.RecycleRush.commands.*;
+import org.sharp.frc.team3260.RecycleRush.commands.FIRSTMecanumDriveCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyroCommand;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
+import org.sharp.frc.team3260.RecycleRush.utils.Util;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 import java.io.File;
+import java.io.FileWriter;
 
 public class Robot extends IterativeRobot
 {
@@ -27,7 +32,7 @@ public class Robot extends IterativeRobot
 
     public Robot()
     {
-        if (instance == null)
+        if(instance == null)
         {
             instance = this;
         }
@@ -51,13 +56,18 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
 
         log.info("Indexing Autonomous Options...");
-
         File[] listOfAutoFiles = new File("//home//lvuser//autonomous").listFiles();
-        autoChooser.addDefault(listOfAutoFiles[0].getName(),new ScriptedAutonomous(listOfAutoFiles[0].getName()));
-        for (File autoOption : listOfAutoFiles){
-            autoChooser.addObject(autoOption.getName(), new ScriptedAutonomous(autoOption.getName()));
+        if(listOfAutoFiles != null)
+        {
+            autoChooser.addDefault(listOfAutoFiles[0].getName(), new ScriptedAutonomous(listOfAutoFiles[0].getName()));
+
+            for(File autoOption : listOfAutoFiles)
+            {
+                autoChooser.addObject(autoOption.getName(), new ScriptedAutonomous(autoOption.getName()));
+            }
         }
-        SmartDashboard.putData("Auto Chooser",autoChooser);
+
+        SmartDashboard.putData("Auto Chooser", autoChooser);
 
         log.info("Attempting to start Camera Server...");
         try
@@ -65,17 +75,39 @@ public class Robot extends IterativeRobot
             CameraServer.getInstance().setQuality(30);
             CameraServer.getInstance().startAutomaticCapture("cam0");
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("Starting Camera Server failed with exception " + e.getMessage());
         }
 
         scriptedAutonomous = new ScriptedAutonomous();
+
+        log.info("Attempting to load Elevator state from previous run...");
+        try
+        {
+            String elevatorPositionString = Util.getFile("//media//sda1//Elevator Position.txt");
+            
+            int elevatorPosition = Integer.parseInt(elevatorPositionString);
+            
+            if(elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
+            {
+                Elevator.getInstance().setElevatorPosition(elevatorPosition);
+            }
+
+            if(Elevator.getInstance().getTalon().isRevLimitSwitchClosed())
+            {
+                Elevator.getInstance().setElevatorPosition(0);
+            }
+        }
+        catch(Exception e)
+        {
+            log.error("Failed to load Elevator state, exception: " + e.toString());
+        }
     }
 
     public void autonomousInit()
     {
-        scriptedAutonomous = (ScriptedAutonomous)autoChooser.getSelected();
+        scriptedAutonomous = (ScriptedAutonomous) autoChooser.getSelected();
         scriptedAutonomous.getCommandGroup().start();
     }
 
@@ -105,6 +137,45 @@ public class Robot extends IterativeRobot
         if(scriptedAutonomous.getCommandGroup() != null)
         {
             scriptedAutonomous.getCommandGroup().cancel();
+        }
+
+        int elevatorPosition = Elevator.getInstance().getPosition();
+
+        log.info("Attempting to save Elevator position of " + elevatorPosition + " to flash drive");
+
+        if(elevatorPosition < 0)
+        {
+            log.warn("Not saving Elevator position, value less than zero.");
+        }
+        else if(elevatorPosition > Elevator.ElevatorPosition.TOP.encoderValue)
+        {
+            log.warn("Not saving Elevator position, value less than maximum.");
+        }
+        else
+        {
+            try
+            {
+                File elevatorPositionFile = new File("//media//sda1//Elevator Position.txt");
+
+                elevatorPositionFile.delete();
+            }
+            catch(Exception e)
+            {
+                log.warn("Deleting /media/sda1/Elevator Position.txt failed.");
+            }
+
+            try
+            {
+                File elevatorPositionFile = new File("//media//sda1//Elevator Position.txt");
+
+                FileWriter fileWriter = new FileWriter(elevatorPositionFile, false);
+                fileWriter.write(elevatorPosition);
+                fileWriter.close();
+            }
+            catch(Exception e)
+            {
+                log.error("Saving /media/sda1/Elevator Position.txt failed, exception: " + e.toString());
+            }
         }
     }
 

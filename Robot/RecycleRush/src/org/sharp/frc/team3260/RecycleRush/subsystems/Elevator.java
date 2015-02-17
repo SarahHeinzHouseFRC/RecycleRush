@@ -172,7 +172,7 @@ public class Elevator extends SHARPSubsystem
 
     public void setZero()
     {
-        elevatorTalon.setPosition(0.0);
+        setElevatorPosition(0);
     }
 
     public CANTalon.ControlMode getControlMode()
@@ -183,6 +183,13 @@ public class Elevator extends SHARPSubsystem
     public CANTalon getTalon()
     {
         return elevatorTalon;
+    }
+
+    public void setElevatorPosition(int elevatorPosition)
+    {
+        log.info("Elevator encoder value changed to " + elevatorPosition + ".");
+        
+        elevatorTalon.setPosition(elevatorPosition);
     }
 
     public static class ElevatorPosition
