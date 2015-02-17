@@ -123,6 +123,7 @@ public class Robot extends IterativeRobot
         Scheduler.getInstance().run();
 
         SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
+        DriveTrain.getInstance().showPressure();
     }
 
     public void teleopInit()
@@ -136,6 +137,7 @@ public class Robot extends IterativeRobot
         OI.getInstance().checkControls();
 
         SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
+        DriveTrain.getInstance().showPressure();
     }
 
     public void testPeriodic()
@@ -203,6 +205,7 @@ public class Robot extends IterativeRobot
         }
 
         SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
+        DriveTrain.getInstance().showPressure();
     }
 
     public Log getLogger()

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
+import org.sharp.frc.team3260.RecycleRush.SHARPPressureTransducer;
 import org.sharp.frc.team3260.RecycleRush.commands.FIRSTMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
@@ -17,6 +18,7 @@ public class DriveTrain extends SHARPSubsystem
     private RobotDrive robotDrive;
 
     private Compressor compressor;
+    private SHARPPressureTransducer transducer;
 
     private IMUAdvanced imu;
 
@@ -45,6 +47,8 @@ public class DriveTrain extends SHARPSubsystem
         compressor = new Compressor(0);
         compressor.start();
 
+        transducer = new SHARPPressureTransducer(1);
+        
         frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), 5);
         frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), 5);
         backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), 5);
@@ -388,6 +392,11 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.ClearIaccum();
     }
 
+    public void showPressure()
+    {
+        SmartDashboard.putNumber("Pressure", transducer.getPSI());
+    }
+    
     public static DriveTrain getInstance()
     {
         if(instance == null)
