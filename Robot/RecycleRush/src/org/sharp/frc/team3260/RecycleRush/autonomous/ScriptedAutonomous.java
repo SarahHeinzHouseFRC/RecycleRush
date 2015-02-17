@@ -57,7 +57,7 @@ public class ScriptedAutonomous
             String line = reader.readLine();
             List<String> headers = Arrays.asList(line.split(","));
 
-            Map<String, List<String>> mappedByHeader = new HashMap<String, List<String>>();
+            Map<String, List<String>> mappedByHeader = new HashMap<>();
 
             CSVParser csvFileParser;
             CSVFormat csvFileFormat;
@@ -87,6 +87,7 @@ public class ScriptedAutonomous
                             {
                                 mappedByHeader.put(header, new ArrayList<>());
                             }
+                            
                             mappedByHeader.get(header).add(csvRecords.get(i).get(header));
                         }
                     }
