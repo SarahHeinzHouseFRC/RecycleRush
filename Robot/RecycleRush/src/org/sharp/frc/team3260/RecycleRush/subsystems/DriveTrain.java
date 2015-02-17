@@ -105,6 +105,11 @@ public class DriveTrain extends SHARPSubsystem
 
     public void changeControlMode(CANTalon.ControlMode controlMode)
     {
+        frontLeftTalon.ClearIaccum();
+        frontRightTalon.ClearIaccum();
+        backLeftTalon.ClearIaccum();
+        backRightTalon.ClearIaccum();
+        
         switch(controlMode)
         {
             case PercentVbus:
