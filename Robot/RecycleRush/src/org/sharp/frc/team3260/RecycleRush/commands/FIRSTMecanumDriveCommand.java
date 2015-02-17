@@ -3,7 +3,6 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
@@ -12,7 +11,7 @@ public class FIRSTMecanumDriveCommand extends Command
 {
     Joystick driveJoystick = OI.getInstance().getMainGamepad();
 
-    public double ROTATION_DEADBAND = 0.1;
+    public double JOYSTICK_DEADBAND = 0.1;
 
     public FIRSTMecanumDriveCommand()
     {
@@ -32,11 +31,11 @@ public class FIRSTMecanumDriveCommand extends Command
         double forward = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
         double rotation = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X);
 
-        rotation = Math.abs(rotation) > ROTATION_DEADBAND ? rotation : 0;
+        rotation = Math.abs(rotation) > JOYSTICK_DEADBAND ? rotation : 0;
 
-        strafe = Math.abs(strafe) > ROTATION_DEADBAND ? strafe : 0;
+        strafe = Math.abs(strafe) > JOYSTICK_DEADBAND ? strafe : 0;
 
-        forward = Math.abs(forward) > ROTATION_DEADBAND ? forward : 0;
+        forward = Math.abs(forward) > JOYSTICK_DEADBAND ? forward : 0;
 
         if(DriveTrain.getInstance().getIMU() == null || OI.getInstance().getMainGamepad().getRawButton(SHARPGamepad.BUTTON_LEFT_JOYSTICK))
         {
