@@ -57,7 +57,7 @@ public class Robot extends IterativeRobot
 
         log.info("Indexing Autonomous Options...");
 
-        File[] listOfAutoFiles = new File("//home//lvuser//autonomous").listFiles();
+        File[] listOfAutoFiles = new File("//media//sda1//autonomous//").listFiles();
         if(listOfAutoFiles != null)
         {
             for(File autoOption : listOfAutoFiles)
@@ -185,7 +185,11 @@ public class Robot extends IterativeRobot
 
     public void disabledPeriodic()
     {
-        scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
+        if(!scriptedAutonomous.getPathToCSV().equals(autoChooser.getSelected().toString()))
+        {
+            scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
+        }
+        
         if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
         {
             scriptedAutonomous.load();
