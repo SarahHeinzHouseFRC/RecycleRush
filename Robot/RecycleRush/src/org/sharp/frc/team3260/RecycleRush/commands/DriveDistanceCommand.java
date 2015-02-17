@@ -33,6 +33,8 @@ public class DriveDistanceCommand extends Command
         DriveTrain.getInstance().getLogger().info("DriveDistanceCommand initiated, distance set to " + distance + ", timeout is " + timeout + " seconds.");
 
         DriveTrain.getInstance().zeroEncoders();
+        
+        DriveTrain.getInstance().clearAccumulatedI();
 
         DriveTrain.getInstance().setDriveEncoderTargets(distance, -distance, distance, -distance);
     }

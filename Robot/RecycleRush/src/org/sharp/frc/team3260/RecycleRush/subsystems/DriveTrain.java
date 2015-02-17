@@ -105,11 +105,6 @@ public class DriveTrain extends SHARPSubsystem
 
     public void changeControlMode(CANTalon.ControlMode controlMode)
     {
-        frontLeftTalon.ClearIaccum();
-        frontRightTalon.ClearIaccum();
-        backLeftTalon.ClearIaccum();
-        backRightTalon.ClearIaccum();
-        
         switch(controlMode)
         {
             case PercentVbus:
@@ -383,6 +378,14 @@ public class DriveTrain extends SHARPSubsystem
     protected boolean talonOnTarget(CANTalon talon, double tolerance)
     {
         return (Math.abs(talon.getSetpoint() - talon.getPosition()) < tolerance);
+    }
+    
+    public void clearAccumulatedI()
+    {
+        frontLeftTalon.ClearIaccum();
+        frontRightTalon.ClearIaccum();
+        backLeftTalon.ClearIaccum();
+        backRightTalon.ClearIaccum();
     }
 
     public static DriveTrain getInstance()
