@@ -57,22 +57,7 @@ public class Robot extends IterativeRobot
 
         log.info("Indexing Autonomous Options...");
 
-        File[] listOfAutoFiles = new File("//U//autonomous//").listFiles();
-        if(listOfAutoFiles != null)
-        {
-            for(File autoOption : listOfAutoFiles)
-            {
-                if(autoChooser.getSelected() == null)
-                {
-                    autoChooser.addDefault(autoOption.getName(), autoOption.getName());
-                }
-                else
-                {
-                    autoChooser.addObject(autoOption.getName(), autoOption.getName());
-                }
-            }
-        }
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        loadAutonomousChooser();
 
         log.info("Attempting to start Camera Server...");
         try
@@ -201,11 +186,35 @@ public class Robot extends IterativeRobot
         
         if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
         {
+            loadAutonomousChooser();
+            
             scriptedAutonomous.load();
         }
 
         SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
         DriveTrain.getInstance().showPressure();
+    }
+    
+    private void loadAutonomousChooser()
+    {
+        autoChooser = new SendableChooser();
+        
+        File[] listOfAutoFiles = new File("//U//autonomous//").listFiles();
+        if(listOfAutoFiles != null)
+        {
+            for(File autoOption : listOfAutoFiles)
+            {
+                if(autoChooser.getSelected() == null)
+                {
+                    autoChooser.addDefault(autoOption.getName(), autoOption.getName());
+                }
+                else
+                {
+                    autoChooser.addObject(autoOption.getName(), autoOption.getName());
+                }
+            }
+        }
+        SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
     public Log getLogger()
