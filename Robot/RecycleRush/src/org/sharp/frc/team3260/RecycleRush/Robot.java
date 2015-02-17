@@ -91,6 +91,8 @@ public class Robot extends IterativeRobot
 
     public void disabledInit()
     {
+        log.info("Entered Disabled mode.");
+
         if(scriptedAutonomous.getCommandGroup() != null)
         {
             scriptedAutonomous.getCommandGroup().cancel();
@@ -102,11 +104,6 @@ public class Robot extends IterativeRobot
         if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
         {
             scriptedAutonomous.load();
-
-            while(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
-            {
-
-            }
         }
     }
 

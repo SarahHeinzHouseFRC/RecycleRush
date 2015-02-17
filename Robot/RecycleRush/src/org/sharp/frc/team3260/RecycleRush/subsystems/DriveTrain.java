@@ -20,9 +20,9 @@ public class DriveTrain extends SHARPSubsystem
 
     private IMUAdvanced imu;
 
-    protected double rotationControllerP = 0.0075,
+    protected double rotationControllerP = 0.0065,
             rotationControllerI = 0.0,
-            rotationControllerD = 0.001,
+            rotationControllerD = 0.01,
             rotationControllerF = 0.0;
 
     protected double gyroOffset = 0.0;

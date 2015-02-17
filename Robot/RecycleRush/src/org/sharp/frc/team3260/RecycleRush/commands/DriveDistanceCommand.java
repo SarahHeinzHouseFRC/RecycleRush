@@ -43,6 +43,11 @@ public class DriveDistanceCommand extends Command
 
     protected boolean isFinished()
     {
+        if(isTimedOut())
+        {
+            DriveTrain.getInstance().getLogger().warn("DriveDistanceCommand ran out of time.");
+        }
+
         return isTimedOut() || DriveTrain.getInstance().atDriveTarget();
     }
 

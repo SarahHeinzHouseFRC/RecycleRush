@@ -40,6 +40,8 @@ public class RotateToHeadingCommand extends Command
     @Override
     protected void initialize()
     {
+        DriveTrain.getInstance().getLogger().info("Initializing RotateToHeadingCommand, angle: " + rotationTarget);
+
         DriveTrain.getInstance().setRotationTarget(rotationTarget);
     }
 

@@ -30,6 +30,8 @@ public class ScriptedAutonomous
 
     private boolean loadCSV()
     {
+        addSequential(new ZeroGyroCommand());
+
         try
         {
             File file = new File("//home//lvuser//autonomousVariables.csv"); //need to make sure if this is the correct path
@@ -186,8 +188,6 @@ public class ScriptedAutonomous
         {
             commandGroup = new BasicAutonomousCommandGroup();
         }
-
-        commandGroup = new BasicAutonomousCommandGroup();
     }
 
     private void addSequential(Command command)

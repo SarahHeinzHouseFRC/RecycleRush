@@ -13,6 +13,8 @@ public class CloseGripperCommand extends Command
     @Override
     protected void initialize()
     {
+        setTimeout(0.1);
+
         Gripper.getInstance().closeGripper();
     }
 
@@ -24,7 +26,7 @@ public class CloseGripperCommand extends Command
     @Override
     protected boolean isFinished()
     {
-        return true;
+        return isTimedOut();
     }
 
     @Override

@@ -39,8 +39,6 @@ public class Elevator extends SHARPSubsystem
 
         elevatorTalon.setPID(0.95, 0.0, 0.0);
 
-        elevatorTalon.setReverseSoftLimit(ElevatorPosition.GROUND.encoderValue);
-
         elevatorTalon.setForwardSoftLimit(ElevatorPosition.TOP.encoderValue);
 
         changeElevatorMode(false);
@@ -129,7 +127,7 @@ public class Elevator extends SHARPSubsystem
 
     public boolean atSetpoint()
     {
-        return (!useEncoder || (Math.abs(elevatorTalon.getPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE) || (elevatorTalon.getSetpoint() < 0 && elevatorTalon.isRevLimitSwitchClosed()));
+        return (!useEncoder || (Math.abs(elevatorTalon.getPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE));
     }
 
     public void stop()

@@ -7,7 +7,7 @@ public class ZeroElevatorCommand extends Command
 {
     public ZeroElevatorCommand()
     {
-        requires(Elevator.getInstance());
+
     }
 
     @Override

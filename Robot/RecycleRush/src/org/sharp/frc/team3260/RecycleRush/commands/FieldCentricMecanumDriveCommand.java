@@ -1,6 +1,7 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +22,8 @@ public class FieldCentricMecanumDriveCommand extends Command
 
     protected void initialize()
     {
+        DriveTrain.getInstance().getLogger().info("Started FieldCentricMecanumDriveCommand.");
+
         DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
     }
 
