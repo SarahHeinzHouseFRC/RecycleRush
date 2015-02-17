@@ -96,7 +96,7 @@ public class ScriptedAutonomous
                     {
                         /* Add the ID's and process their given variables. */
                         int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
-                        double distance, time;
+                        double distance, time, timeout;
                         int elevatorPosition, degreeToRotate;
                         boolean zeroGyro;
 
@@ -105,6 +105,7 @@ public class ScriptedAutonomous
                         elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
                         degreeToRotate = Integer.parseInt(mappedByHeader.get("Degree to Rotate").get(i));
                         zeroGyro = Integer.parseInt(mappedByHeader.get("Zero Gyro").get(i)) != 0;
+                        timeout = Double.parseDouble(mappedByHeader.get("Command Timeout").get(i));
 
                         switch(currentID)
                         {
@@ -114,14 +115,27 @@ public class ScriptedAutonomous
                                 //163 tick per ft
                                 //0.07 inches per tick
                                 numCommandsAdded++;
-                                addSequential(new DriveDistanceCommand(distance));
+                                if(timeout != 0)
+                                {
+                                    addSequential(new DriveDistanceCommand(distance, timeout / 1000));
+                                }
+                                else
+                                {
+                                    addSequential(new DriveDistanceCommand(distance));
+                                }
                                 break;
 
                             //drive backward
                             case -1:
                                 numCommandsAdded++;
-                                addSequential(new DriveDistanceCommand(-distance));
-                                break;
+                                if(timeout != 0)
+                                {
+                                    addSequential(new DriveDistanceCommand(-distance, timeout / 1000));
+                                }
+                                else
+                                {
+                                    addSequential(new DriveDistanceCommand(-distance));
+                                }                                break;
 
                             //rotate right
                             case 2:

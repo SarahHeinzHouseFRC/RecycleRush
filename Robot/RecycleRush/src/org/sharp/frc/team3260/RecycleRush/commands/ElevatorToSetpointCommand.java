@@ -51,7 +51,7 @@ public class ElevatorToSetpointCommand extends Command
     {
         if(isTimedOut())
         {
-            Elevator.getInstance().getLogger().severe("Elevator timed out en route to " + setpoint.positionName + ".");
+            Elevator.getInstance().getLogger().warn("Elevator timed out en route to " + setpoint.positionName + ".");
         }
         else
         {

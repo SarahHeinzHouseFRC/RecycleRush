@@ -45,15 +45,10 @@ public class DriveTrain extends SHARPSubsystem
         compressor = new Compressor(0);
         compressor.start();
 
-        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), 1);
-        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), 1);
-        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), 1);
-        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt(), 1);
-
-        frontLeftTalon.setVoltageRampRate(6);
-        frontRightTalon.setVoltageRampRate(6);
-        backLeftTalon.setVoltageRampRate(6);
-        backRightTalon.setVoltageRampRate(6);
+        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), 5);
+        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), 5);
+        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), 5);
+        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt(), 5);
 
         frontLeftTalon.enableBrakeMode(true);
         frontRightTalon.enableBrakeMode(true);
@@ -160,25 +155,25 @@ public class DriveTrain extends SHARPSubsystem
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontLeftTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                frontLeftTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
+                frontLeftTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontRightTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                frontRightTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
+                frontRightTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backLeftTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                backLeftTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
+                backLeftTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backRightTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                backRightTalon.setPID(0.85, 0, 0, 0, 0, 6, 0);
+                backRightTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 backRightTalon.enableControl();
 
                 log.info("ControlMode changed to " + controlMode.name());
@@ -233,7 +228,6 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.set(backRightOutput * (Constants.driveBackRightInverted.getInt() == 1 ? -1 : 0));
     }
 
-
     /**
      * @param x         The speed that the robot should drive in the X direction. [-1.0..1.0]
      * @param y         The speed that the robot should drive in the Y direction.
@@ -251,18 +245,6 @@ public class DriveTrain extends SHARPSubsystem
     public void stockMecanumDrive(double x, double y, double rotation, double gyroAngle)
     {
         robotDrive.mecanumDrive_Cartesian(x, y, rotation, gyroAngle);
-    }
-
-    /**
-     * @param x        The speed that the robot should drive in the X direction. [-1.0..1.0]
-     * @param y        The speed that the robot should drive in the Y direction.
-     *                 This input is inverted to match the forward == -1.0 that joysticks produce. [-1.0..1.0]
-     * @param rotation The rate of rotation for the robot that is completely independent of
-     *                 the translation. [-1.0..1.0]
-     */
-    public void mecanumDrive_Cartesian(double x, double y, double rotation)
-    {
-        mecanumDrive_Cartesian(x, y, rotation, getIMU().getYaw() - gyroOffset);
     }
 
     private void mecanumDrive_Cartesian0(double x, double y, double rotation, double gyroAngle)
