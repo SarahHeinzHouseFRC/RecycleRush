@@ -53,9 +53,9 @@ public class Robot extends IterativeRobot
         log.info("Indexing Autonomous Options...");
 
         File[] listOfAutoFiles = new File("//home//lvuser//autonomous").listFiles();
-        autoChooser.addDefault(listOfAutoFiles[0].getName(),new ScriptedAutonomous(listOfAutoFiles[0].getName()));
+        autoChooser.addDefault(listOfAutoFiles[0].getName(),new String(listOfAutoFiles[0].getName()));
         for (File autoOption : listOfAutoFiles){
-            autoChooser.addObject(autoOption.getName(), new ScriptedAutonomous(autoOption.getName()));
+            autoChooser.addObject(autoOption.getName(), new String(autoOption.getName()));
         }
         SmartDashboard.putData("Auto Chooser",autoChooser);
 
@@ -75,7 +75,6 @@ public class Robot extends IterativeRobot
 
     public void autonomousInit()
     {
-        scriptedAutonomous = (ScriptedAutonomous)autoChooser.getSelected();
         scriptedAutonomous.getCommandGroup().start();
     }
 
@@ -112,6 +111,7 @@ public class Robot extends IterativeRobot
     {
         if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
         {
+            scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
             scriptedAutonomous.load();
         }
     }
