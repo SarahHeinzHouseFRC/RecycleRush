@@ -54,7 +54,36 @@ public class Log
         this.name = name;
     }
 
-    public static void createFlashDriveLog()
+    public static void deleteOldLogFiles()
+    {
+        try
+        {
+            long curTime = new Date().getTime();
+
+            File logDirectory = new File("//U//Logs//");
+
+            if(logDirectory.isDirectory())
+            {
+                File[] logs = logDirectory.listFiles();
+
+                for(File curLog : logs)
+                {
+                    long diff = curTime - curLog.lastModified();
+
+                    if(diff > 1 * 24 * 60 * 60 * 1000)
+                    {
+                        curLog.delete();
+                    }
+                }
+            }
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private static void createFlashDriveLog()
     {
         if(!failedToCreateFlashDriveLog && flashDriveLog == null)
         {
@@ -114,7 +143,7 @@ public class Log
     public void log(String message, LogLevel level)
     {
         log(message, level.getName().toUpperCase(), level.getPrintSteam());
-        
+
         if(!failedToCreateFlashDriveLog)
         {
             log(message, level.getName().toLowerCase(), flashDriveLog);

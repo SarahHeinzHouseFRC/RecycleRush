@@ -108,6 +108,9 @@ public class Robot extends IterativeRobot
         {
             log.error("Failed to load Elevator state, exception: " + e.toString());
         }
+        
+        log.info("Deleting old log files...");
+        Log.deleteOldLogFiles();
     }
 
     public void autonomousInit()
