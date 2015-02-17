@@ -11,7 +11,7 @@ public class RotateToHeadingCommand extends Command
 
     public RotateToHeadingCommand(double rotationTarget, boolean isBlocking)
     {
-        if (isBlocking)
+        if(isBlocking)
         {
             requires(DriveTrain.getInstance());
         }
@@ -25,7 +25,7 @@ public class RotateToHeadingCommand extends Command
 
     public RotateToHeadingCommand(double rotationTarget, double timeout, boolean isBlocking)
     {
-        if (isBlocking)
+        if(isBlocking)
         {
             requires(DriveTrain.getInstance());
         }
@@ -46,7 +46,7 @@ public class RotateToHeadingCommand extends Command
     @Override
     protected void execute()
     {
-        if (isBlocking)
+        if(isBlocking)
         {
             DriveTrain.getInstance().mecanumDrive_Cartesian(0, 0, 0, DriveTrain.getInstance().getIMU().getYaw());
         }

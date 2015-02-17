@@ -87,12 +87,12 @@ public class DriveTrain extends SHARPSubsystem
 
             imu = new IMUAdvanced(serialPort, updateRateHz);
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
             imu = null;
         }
 
-        if (imu != null)
+        if(imu != null)
         {
             LiveWindow.addSensor("IMU", "Gyro", imu);
 
@@ -110,7 +110,7 @@ public class DriveTrain extends SHARPSubsystem
 
     public void changeControlMode(CANTalon.ControlMode controlMode)
     {
-        switch (controlMode)
+        switch(controlMode)
         {
             case PercentVbus:
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.PercentVbus);
@@ -215,7 +215,7 @@ public class DriveTrain extends SHARPSubsystem
 
     public void stop()
     {
-        if (frontLeftTalon.getControlMode() == CANTalon.ControlMode.PercentVbus)
+        if(frontLeftTalon.getControlMode() == CANTalon.ControlMode.PercentVbus)
         {
             robotDrive.tankDrive(0, 0);
         }
@@ -294,14 +294,14 @@ public class DriveTrain extends SHARPSubsystem
      */
     private double getRotationPID(double rotationSpeed)
     {
-        if (rotatingToTarget)
+        if(rotatingToTarget)
         {
-            if (!rotationController.isEnable())
+            if(!rotationController.isEnable())
             {
                 rotationController.enable();
             }
 
-            if (rotationController.getSetpoint() != rotationTarget)
+            if(rotationController.getSetpoint() != rotationTarget)
             {
                 rotationController.setSetpoint(rotationTarget);
             }
@@ -316,9 +316,9 @@ public class DriveTrain extends SHARPSubsystem
             return rotationControllerOutput;
         }
 
-        if (rotationController.isEnable())
+        if(rotationController.isEnable())
         {
-            if (Math.abs(rotationSpeed) >= ROTATION_DEADBAND)
+            if(Math.abs(rotationSpeed) >= ROTATION_DEADBAND)
             {
                 rotationController.disable();
             }
@@ -329,7 +329,7 @@ public class DriveTrain extends SHARPSubsystem
         }
         else
         {
-            if (Math.abs(rotationSpeed) < ROTATION_DEADBAND)
+            if(Math.abs(rotationSpeed) < ROTATION_DEADBAND)
             {
                 gyroOffset = getIMU().getYaw();
                 rotationController.setSetpoint(gyroOffset);
@@ -349,14 +349,14 @@ public class DriveTrain extends SHARPSubsystem
     {
         rotatingToTarget = true;
 
-        if (rotationController.getSetpoint() != rotationTarget)
+        if(rotationController.getSetpoint() != rotationTarget)
         {
             this.rotationTarget = rotationTarget;
 
             rotationController.setSetpoint(rotationTarget);
         }
 
-        if (!rotationController.isEnable())
+        if(!rotationController.isEnable())
         {
             rotationController.enable();
         }
@@ -391,7 +391,7 @@ public class DriveTrain extends SHARPSubsystem
 
     public boolean atDriveTarget()
     {
-        if (frontLeftTalon.getControlMode() != CANTalon.ControlMode.Position || frontRightTalon.getControlMode() != CANTalon.ControlMode.Position || backLeftTalon.getControlMode() != CANTalon.ControlMode.Position || backRightTalon.getControlMode() != CANTalon.ControlMode.Position)
+        if(frontLeftTalon.getControlMode() != CANTalon.ControlMode.Position || frontRightTalon.getControlMode() != CANTalon.ControlMode.Position || backLeftTalon.getControlMode() != CANTalon.ControlMode.Position || backRightTalon.getControlMode() != CANTalon.ControlMode.Position)
         {
             log.warn("Checked atDriveTarget, but one of the Talons was set to the wrong mode.");
 
@@ -408,7 +408,7 @@ public class DriveTrain extends SHARPSubsystem
 
     public static DriveTrain getInstance()
     {
-        if (instance == null)
+        if(instance == null)
         {
             Robot.getInstance().getLogger().error("Something has gone horribly wrong in " + DriveTrain.class.getSimpleName());
         }

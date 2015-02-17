@@ -16,18 +16,18 @@ public abstract class ConstantsBase
         try
         {
             String file = Util.getFile(CONSTANTS_FILE_PATH);
-            if (file.length() < 1)
+            if(file.length() < 1)
             {
                 log.error("Constants file is blank, unable to override Constants.");
             }
 
             String[] lines = Util.split(file, "\n");
 
-            for (String curLine : lines)
+            for(String curLine : lines)
             {
                 String[] line = Util.split(curLine, "=");
 
-                if (line.length != 2)
+                if(line.length != 2)
                 {
                     log.error("Invalid Constants file line: " + (curLine.length() == 0 ? "(Empty Line)" : curLine));
 
@@ -36,11 +36,11 @@ public abstract class ConstantsBase
 
                 boolean found = false;
 
-                for (int j = 0; j < constants.size(); j++)
+                for(int j = 0; j < constants.size(); j++)
                 {
                     Constant constant = (Constant) constants.elementAt(j);
 
-                    if (constant.getName().compareTo(line[0]) == 0)
+                    if(constant.getName().compareTo(line[0]) == 0)
                     {
                         log.info("Setting " + constant.getName() + " to " + Double.parseDouble(line[1]));
                         constant.setVal(Double.parseDouble(line[1]));
@@ -49,13 +49,13 @@ public abstract class ConstantsBase
                     }
                 }
 
-                if (!found)
+                if(!found)
                 {
                     log.error("Constants doesn't exist " + curLine);
                 }
             }
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error(e.toString());
         }

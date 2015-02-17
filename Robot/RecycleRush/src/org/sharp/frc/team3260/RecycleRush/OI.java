@@ -58,7 +58,7 @@ public class OI
 
     public static OI getInstance()
     {
-        if (instance == null)
+        if(instance == null)
         {
             return new OI();
         }
@@ -78,7 +78,7 @@ public class OI
 
     public void checkControls()
     {
-        if ((Math.abs(manipulatorGamepad.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.5))
+        if((Math.abs(manipulatorGamepad.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.5))
         {
             Elevator.getInstance().changeElevatorMode(false);
         }

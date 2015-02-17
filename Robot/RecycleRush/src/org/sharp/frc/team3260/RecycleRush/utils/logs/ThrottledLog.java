@@ -26,7 +26,7 @@ public class ThrottledLog extends Log
 
     public void info(String message)
     {
-        if (System.currentTimeMillis() - lastPrintTime > timeBetweenPrints)
+        if(System.currentTimeMillis() - lastPrintTime > timeBetweenPrints)
         {
             log(message, INFO);
 
@@ -36,7 +36,7 @@ public class ThrottledLog extends Log
 
     public void info(String message, boolean ignoresTime)
     {
-        if (ignoresTime)
+        if(ignoresTime)
         {
             log(message, INFO);
         }

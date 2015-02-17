@@ -49,7 +49,7 @@ public class ElevatorToSetpointCommand extends Command
     @Override
     protected void end()
     {
-        if (isTimedOut())
+        if(isTimedOut())
         {
             Elevator.getInstance().getLogger().severe("Elevator timed out en route to " + setpoint.positionName + ".");
         }

@@ -86,9 +86,9 @@ public class Robot extends IterativeRobot
         try
         {
             String elevatorPositionString = Util.getFile("//media//sda1//Elevator Position.txt");
-            
+
             int elevatorPosition = Integer.parseInt(elevatorPositionString);
-            
+
             if(elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
             {
                 Elevator.getInstance().setElevatorPosition(elevatorPosition);

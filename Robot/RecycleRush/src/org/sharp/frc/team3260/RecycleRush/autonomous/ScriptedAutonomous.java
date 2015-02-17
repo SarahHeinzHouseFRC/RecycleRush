@@ -28,7 +28,9 @@ public class ScriptedAutonomous
     {
         load();
     }
-    public ScriptedAutonomous(String pathToCSV){
+
+    public ScriptedAutonomous(String pathToCSV)
+    {
         this.pathToCSV = pathToCSV;
         load();
     }
@@ -38,8 +40,14 @@ public class ScriptedAutonomous
         try
         {
             File file;
-            if(pathToCSV == null)  file = new File("//home//lvuser//autonomousVariables.csv"); //need to make sure if this is the correct path
-            else file = new File(pathToCSV);
+            if(pathToCSV == null)
+            {
+                file = new File("//home//lvuser//autonomousVariables.csv"); //need to make sure if this is the correct path
+            }
+            else
+            {
+                file = new File(pathToCSV);
+            }
             FileReader fileReader = new FileReader(file);
 
             BufferedReader reader = new BufferedReader(fileReader);
@@ -64,15 +72,15 @@ public class ScriptedAutonomous
 
             csvRecords = (List) csvFileParser.getRecords();
 
-            if (csvRecords != null)
+            if(csvRecords != null)
             {
-                if (!csvRecords.isEmpty())
+                if(!csvRecords.isEmpty())
                 {
-                    for (int i = 0; i < csvRecords.size(); i++)
+                    for(int i = 0; i < csvRecords.size(); i++)
                     {
-                        for (String header : headers)
+                        for(String header : headers)
                         {
-                            if (i == 0)
+                            if(i == 0)
                             {
                                 mappedByHeader.put(header, new ArrayList<>());
                             }
@@ -80,7 +88,7 @@ public class ScriptedAutonomous
                         }
                     }
 
-                    for (int i = 0; i < mappedByHeader.get("ID").size(); i++)
+                    for(int i = 0; i < mappedByHeader.get("ID").size(); i++)
                     {
                         /* Add the ID's and process their given variables. */
                         int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
@@ -94,7 +102,7 @@ public class ScriptedAutonomous
                         degreeToRotate = Integer.parseInt(mappedByHeader.get("Degree to Rotate").get(i));
                         zeroGyro = Integer.parseInt(mappedByHeader.get("Zero Gyro").get(i)) != 0;
 
-                        switch (currentID)
+                        switch(currentID)
                         {
                             //drive forward
                             case 1:
@@ -115,14 +123,20 @@ public class ScriptedAutonomous
                             case 2:
                                 getLog().info("Adding RotateToHeading command, angle: " + degreeToRotate);
                                 addSequential(new RotateToHeadingCommand((double) -degreeToRotate, true));
-                                if(zeroGyro) addSequential(new ZeroGyroCommand());
+                                if(zeroGyro)
+                                {
+                                    addSequential(new ZeroGyroCommand());
+                                }
                                 break;
 
                             //rotate left
                             case -2:
                                 getLog().info("Adding RotateToHeading command, angle: " + degreeToRotate);
                                 addSequential(new RotateToHeadingCommand((double) degreeToRotate, true));
-                                if(zeroGyro) addSequential(new ZeroGyroCommand());
+                                if(zeroGyro)
+                                {
+                                    addSequential(new ZeroGyroCommand());
+                                }
                                 break;
 
                             case 5:
@@ -162,7 +176,7 @@ public class ScriptedAutonomous
                 }
             }
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             e.printStackTrace();
 

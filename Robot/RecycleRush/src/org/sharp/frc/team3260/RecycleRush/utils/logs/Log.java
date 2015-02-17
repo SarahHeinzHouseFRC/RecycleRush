@@ -45,20 +45,20 @@ public class Log
 
     public static void createFlashDriveLog()
     {
-        if (!failedToCreateFlashDriveLog && flashDriveLog == null)
+        if(!failedToCreateFlashDriveLog && flashDriveLog == null)
         {
             try
             {
                 File flashDriveLogFile = new File("//home//lvuser//log.txt");
 
-                if (!flashDriveLogFile.exists())
+                if(!flashDriveLogFile.exists())
                 {
                     flashDriveLogFile.createNewFile();
                 }
 
                 flashDriveLog = FileLog.getInstance(flashDriveLogFile);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 failedToCreateFlashDriveLog = true;
 
@@ -76,14 +76,14 @@ public class Log
     {
         StringBuilder builder = new StringBuilder();
 
-        if ((attr & ATTRIBUTE_TIME) == ATTRIBUTE_TIME)
+        if((attr & ATTRIBUTE_TIME) == ATTRIBUTE_TIME)
         {
             builder.append("[").append(getTime()).append("] ");
         }
 
         builder.append("[").append(name).append("] ");
 
-        if ((attr & ATTRIBUTE_THREAD) == ATTRIBUTE_THREAD)
+        if((attr & ATTRIBUTE_THREAD) == ATTRIBUTE_THREAD)
         {
             builder.append("[").append(Thread.currentThread().getName()).append("] ");
         }

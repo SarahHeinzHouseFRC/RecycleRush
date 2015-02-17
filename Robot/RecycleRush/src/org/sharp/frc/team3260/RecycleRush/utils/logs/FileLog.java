@@ -19,7 +19,7 @@ public class FileLog extends PrintStream
     {
         String fileName = file.getName();
 
-        if (!instances.containsKey(fileName))
+        if(!instances.containsKey(fileName))
         {
             instances.put(fileName, new FileLog(file));
         }

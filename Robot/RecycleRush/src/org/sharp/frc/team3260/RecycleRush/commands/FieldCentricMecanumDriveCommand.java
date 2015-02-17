@@ -40,7 +40,7 @@ public class FieldCentricMecanumDriveCommand extends Command
         SmartDashboard.putNumber("Drive Joystick Y", forward);
         SmartDashboard.putNumber("Drive Joystick Rotation", rotation);
 
-        if (DriveTrain.getInstance().getIMU() == null)
+        if(DriveTrain.getInstance().getIMU() == null)
         {
             DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, 0);
         }

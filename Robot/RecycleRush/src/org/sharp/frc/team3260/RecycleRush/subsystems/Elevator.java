@@ -48,14 +48,14 @@ public class Elevator extends SHARPSubsystem
 
     public void changeElevatorMode(boolean useEncoder)
     {
-        if (this.useEncoder == useEncoder && ((useEncoder && getControlMode() == CANTalon.ControlMode.Position) || (!useEncoder && getControlMode() == CANTalon.ControlMode.PercentVbus)))
+        if(this.useEncoder == useEncoder && ((useEncoder && getControlMode() == CANTalon.ControlMode.Position) || (!useEncoder && getControlMode() == CANTalon.ControlMode.PercentVbus)))
         {
             return;
         }
 
         this.useEncoder = useEncoder;
 
-        if (!this.useEncoder)
+        if(!this.useEncoder)
         {
             log.warn("Disabling Elevator PID controller.");
 
@@ -84,7 +84,7 @@ public class Elevator extends SHARPSubsystem
 
     public void up(double speed)
     {
-        if (useEncoder)
+        if(useEncoder)
         {
             setElevator(elevatorTalon.getPosition() + (speed * maxSpeedTicks));
         }
@@ -96,7 +96,7 @@ public class Elevator extends SHARPSubsystem
 
     public void down(double speed)
     {
-        if (useEncoder)
+        if(useEncoder)
         {
             setElevator(elevatorTalon.getPosition() - (speed * maxSpeedTicks));
         }
@@ -108,11 +108,11 @@ public class Elevator extends SHARPSubsystem
 
     public void setElevator(int setpoint)
     {
-        if (setpoint < ElevatorPosition.GROUND.encoderValue)
+        if(setpoint < ElevatorPosition.GROUND.encoderValue)
         {
             setpoint = ElevatorPosition.GROUND.encoderValue;
         }
-        else if (setpoint > ElevatorPosition.TOP.encoderValue)
+        else if(setpoint > ElevatorPosition.TOP.encoderValue)
         {
             setpoint = ElevatorPosition.TOP.encoderValue;
         }
@@ -134,7 +134,7 @@ public class Elevator extends SHARPSubsystem
 
     public void stop()
     {
-        if (getControlMode() == CANTalon.ControlMode.PercentVbus)
+        if(getControlMode() == CANTalon.ControlMode.PercentVbus)
         {
             up(0.0);
         }
@@ -157,7 +157,7 @@ public class Elevator extends SHARPSubsystem
 
     public static Elevator getInstance()
     {
-        if (instance == null)
+        if(instance == null)
         {
             Robot.getInstance().getLogger().error("Something has gone horribly wrong in " + Elevator.class.getSimpleName());
         }
@@ -188,7 +188,7 @@ public class Elevator extends SHARPSubsystem
     public void setElevatorPosition(int elevatorPosition)
     {
         log.info("Elevator encoder value changed to " + elevatorPosition + ".");
-        
+
         elevatorTalon.setPosition(elevatorPosition);
     }
 
@@ -224,7 +224,7 @@ public class Elevator extends SHARPSubsystem
 
         static public ElevatorPosition getPositionByIndex(int index)
         {
-            if (positions.containsKey(index))
+            if(positions.containsKey(index))
             {
                 return positions.get(index);
             }

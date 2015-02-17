@@ -37,12 +37,12 @@ public class Lights extends SHARPSubsystem
 
         // Read 5 bytes of data, with 0 bytes to send.  A false return value indicates success
 
-        if (!i2c.transaction(dataToSend, 0, dataReceived, 5))
+        if(!i2c.transaction(dataToSend, 0, dataReceived, 5))
         {
             // If the data returned is indeed the counter, the first byte should be a 1 - identical
             // to the value we sent above
 
-            if (dataReceived[0] != 1)
+            if(dataReceived[0] != 1)
             {
                 log.error("Invalid data returned from Arduino.");
             }
@@ -66,29 +66,29 @@ public class Lights extends SHARPSubsystem
     {
         // Maximum 6 bytes to send in addition to the "command" byte.  Place all the data into
         // the byte array.
-        if (length > 6)
+        if(length > 6)
         {
             length = 6;
         }
 
         dataToSend[0] = 2;
 
-        for (int i = 0; i < length; i++)
+        for(int i = 0; i < length; i++)
         {
             dataToSend[i + 1] = newData[i];
         }
 
         // Send the data to the Arduino.  Do not request any return bytes or this function
         // will fail
-        if (!i2c.transaction(dataToSend, length + 1, dataReceived, 0))
+        if(!i2c.transaction(dataToSend, length + 1, dataReceived, 0))
         {
             // After successfully sending the data, perform a data read.  Since the last
             // transaction was a write with a "Command" value of 2, the Arduino will assume
             // this is the data to return.
 
-            if (!i2c.transaction(dataToSend, 0, dataReceived, 7))
+            if(!i2c.transaction(dataToSend, 0, dataReceived, 7))
             {
-                if (dataReceived[0] != 2)
+                if(dataReceived[0] != 2)
                 {
                     log.error("Invalid data returned from Arduino.");
                 }

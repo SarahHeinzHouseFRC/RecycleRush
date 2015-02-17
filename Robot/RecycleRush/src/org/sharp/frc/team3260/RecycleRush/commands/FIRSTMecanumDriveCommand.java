@@ -38,7 +38,7 @@ public class FIRSTMecanumDriveCommand extends Command
 
         forward = Math.abs(forward) > ROTATION_DEADBAND ? forward : 0;
 
-        if (DriveTrain.getInstance().getIMU() == null)
+        if(DriveTrain.getInstance().getIMU() == null)
         {
             DriveTrain.getInstance().stockMecanumDrive(strafe, forward, rotation, 0);
         }

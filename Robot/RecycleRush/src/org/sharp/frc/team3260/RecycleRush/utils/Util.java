@@ -1,11 +1,8 @@
 package org.sharp.frc.team3260.RecycleRush.utils;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.Vector;
 
 /*
@@ -23,13 +20,13 @@ public class Util
     {
         String content = "";
 
-        try (BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName)))
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName)))
         {
             StringBuilder stringBuilder = new StringBuilder();
 
             String line = bufferedReader.readLine();
 
-            while (line != null)
+            while(line != null)
             {
                 stringBuilder.append(line);
                 stringBuilder.append(System.lineSeparator());
@@ -38,7 +35,7 @@ public class Util
 
             content = stringBuilder.toString();
         }
-        catch (IOException e)
+        catch(IOException e)
         {
             e.printStackTrace();
         }
@@ -54,7 +51,7 @@ public class Util
     {
         Vector nodes = new Vector();
         int index = input.indexOf(delimiter);
-        while (index >= 0)
+        while(index >= 0)
         {
             nodes.addElement(input.substring(0, index));
             input = input.substring(index + delimiter.length());
@@ -63,7 +60,7 @@ public class Util
         nodes.addElement(input);
 
         String[] retString = new String[nodes.size()];
-        for (int i = 0; i < nodes.size(); ++i)
+        for(int i = 0; i < nodes.size(); ++i)
         {
             retString[i] = (String) nodes.elementAt(i);
         }
@@ -79,7 +76,7 @@ public class Util
 
             return true;
         }
-        catch (NumberFormatException e)
+        catch(NumberFormatException e)
         {
             return false;
         }
@@ -93,11 +90,11 @@ public class Util
      */
     public static double limit(double num)
     {
-        if (num > 1.0)
+        if(num > 1.0)
         {
             return 1.0;
         }
-        else if (num < -1.0)
+        else if(num < -1.0)
         {
             return -1.0;
         }
@@ -134,10 +131,10 @@ public class Util
         double maxMagnitude = Math.abs(wheelSpeeds[0]);
 
         // Loops through each number to find the biggest absolute value.
-        for (int i = 1; i < wheelSpeeds.length; i++)
+        for(int i = 1; i < wheelSpeeds.length; i++)
         {
             double temp = Math.abs(wheelSpeeds[i]);
-            if (maxMagnitude < temp)
+            if(maxMagnitude < temp)
             {
                 maxMagnitude = temp;
             }
@@ -145,9 +142,9 @@ public class Util
 
         // If the maximum is greater than 1.0, reduce all the values down
         // proportionally so the maximum becomes 1.0.
-        if (maxMagnitude > 1.0)
+        if(maxMagnitude > 1.0)
         {
-            for (int i = 0; i < wheelSpeeds.length; i++)
+            for(int i = 0; i < wheelSpeeds.length; i++)
             {
                 wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
             }
@@ -169,7 +166,7 @@ public class Util
     {
         double sum = 0;
 
-        for (int x = 0; x < vals.length; x++)
+        for(int x = 0; x < vals.length; x++)
         {
             sum += vals[x];
         }

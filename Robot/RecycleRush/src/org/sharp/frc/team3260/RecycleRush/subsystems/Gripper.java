@@ -44,7 +44,7 @@ public class Gripper extends SHARPSubsystem
 
     public static Gripper getInstance()
     {
-        if (instance == null)
+        if(instance == null)
         {
             Robot.getInstance().getLogger().error("Something has gone horribly wrong in " + Gripper.class.getSimpleName());
         }
