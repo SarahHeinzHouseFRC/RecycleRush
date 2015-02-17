@@ -70,7 +70,7 @@ public class Log
                 {
                     long diff = curTime - curLog.lastModified();
 
-                    if(diff > 1 * 24 * 60 * 60 * 1000)
+                    if(diff > 3 * 24 * 60 * 60 * 1000)
                     {
                         curLog.delete();
                     }
