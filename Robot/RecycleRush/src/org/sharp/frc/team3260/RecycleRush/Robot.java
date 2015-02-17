@@ -57,7 +57,7 @@ public class Robot extends IterativeRobot
 
         log.info("Indexing Autonomous Options...");
 
-        File[] listOfAutoFiles = new File("//media//sda1//autonomous//").listFiles();
+        File[] listOfAutoFiles = new File("//U//autonomous//").listFiles();
         if(listOfAutoFiles != null)
         {
             for(File autoOption : listOfAutoFiles)
@@ -90,7 +90,7 @@ public class Robot extends IterativeRobot
         log.info("Attempting to load Elevator state from previous run...");
         try
         {
-            String elevatorPositionString = Util.getFile("//media//sda1//Elevator Position.txt");
+            String elevatorPositionString = Util.getFile("//U//Elevator Position.txt");
 
             int elevatorPosition = Integer.parseInt(elevatorPositionString);
 
@@ -166,18 +166,18 @@ public class Robot extends IterativeRobot
         {
             try
             {
-                File elevatorPositionFile = new File("//media//sda1//Elevator Position.txt");
+                File elevatorPositionFile = new File("//U//Elevator Position.txt");
 
                 elevatorPositionFile.delete();
             }
             catch(Exception e)
             {
-                log.warn("Deleting /media/sda1/Elevator Position.txt failed.");
+                log.warn("Deleting /U/Elevator Position.txt failed.");
             }
 
             try
             {
-                File elevatorPositionFile = new File("//media//sda1//Elevator Position.txt");
+                File elevatorPositionFile = new File("//U//Elevator Position.txt");
 
                 FileWriter fileWriter = new FileWriter(elevatorPositionFile, false);
                 fileWriter.write(elevatorPosition);
