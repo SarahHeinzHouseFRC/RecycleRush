@@ -36,14 +36,21 @@ public class ScriptedAutonomous
         try
         {
             File file;
+
             if(pathToCSV == null)
             {
-                file = new File("//home//lvuser//autonomousVariables.csv"); //need to make sure if this is the correct path
+                file = new File("//home//lvuser//defaultAutonomous.csv"); //need to make sure if this is the correct path
             }
             else
             {
                 file = new File(pathToCSV);
+
+                if(!file.exists())
+                {
+                    file = new File("//home//lvuser//defaultAutonomous.csv");
+                }
             }
+
             FileReader fileReader = new FileReader(file);
 
             BufferedReader reader = new BufferedReader(fileReader);
@@ -67,7 +74,7 @@ public class ScriptedAutonomous
             csvFileParser = new CSVParser(new FileReader(file), csvFileFormat);
 
             csvRecords = (List) csvFileParser.getRecords();
-            
+
             if(csvRecords != null)
             {
                 if(!csvRecords.isEmpty())
@@ -97,7 +104,7 @@ public class ScriptedAutonomous
                         elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
                         degreeToRotate = Integer.parseInt(mappedByHeader.get("Degree to Rotate").get(i));
                         zeroGyro = Integer.parseInt(mappedByHeader.get("Zero Gyro").get(i)) != 0;
-                        
+
                         switch(currentID)
                         {
                             //drive forward
@@ -178,7 +185,7 @@ public class ScriptedAutonomous
 
             return false;
         }
-        
+
         getLog().info("Added " + numCommandsAdded + " Commands.");
 
         return true;
@@ -188,11 +195,11 @@ public class ScriptedAutonomous
     {
         return pathToCSV;
     }
-    
+
     public void setPathToCSV(String path)
     {
         pathToCSV = path;
-        
+
         load();
     }
 
