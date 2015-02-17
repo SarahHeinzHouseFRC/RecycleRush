@@ -21,8 +21,8 @@ public class DriveTrain extends SHARPSubsystem
     private IMUAdvanced imu;
 
     protected double rotationControllerP = 0.008,
-            rotationControllerI = 0.0,
-            rotationControllerD = 0.01,
+            rotationControllerI = 0.001,
+            rotationControllerD = 0.0,
             rotationControllerF = 0.0;
 
     protected double gyroOffset = 0.0;
@@ -155,25 +155,25 @@ public class DriveTrain extends SHARPSubsystem
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontLeftTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                frontLeftTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
+                frontLeftTalon.setPID(0.875, 0.01, 0, 0, 0, 0, 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontRightTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                frontRightTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
+                frontRightTalon.setPID(0.875, 0.01, 0, 0, 0, 0, 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backLeftTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                backLeftTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
+                backLeftTalon.setPID(0.875, 0.01, 0, 0, 0, 0, 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backRightTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                backRightTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
+                backRightTalon.setPID(0.875, 0.01, 0, 0, 0, 0, 0);
                 backRightTalon.enableControl();
 
                 log.info("ControlMode changed to " + controlMode.name());
