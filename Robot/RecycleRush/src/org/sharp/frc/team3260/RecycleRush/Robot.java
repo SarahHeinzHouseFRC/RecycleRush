@@ -56,18 +56,13 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
 
         log.info("Indexing Autonomous Options...");
+
         File[] listOfAutoFiles = new File("//home//lvuser//autonomous").listFiles();
-        if(listOfAutoFiles != null)
-        {
-            autoChooser.addDefault(listOfAutoFiles[0].getName(), new ScriptedAutonomous(listOfAutoFiles[0].getName()));
-
-            for(File autoOption : listOfAutoFiles)
-            {
-                autoChooser.addObject(autoOption.getName(), new ScriptedAutonomous(autoOption.getName()));
-            }
+        autoChooser.addDefault(listOfAutoFiles[0].getName(),new String(listOfAutoFiles[0].getName()));
+        for (File autoOption : listOfAutoFiles){
+            autoChooser.addObject(autoOption.getName(), new String(autoOption.getName()));
         }
-
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        SmartDashboard.putData("Auto Chooser",autoChooser);
 
         log.info("Attempting to start Camera Server...");
         try
@@ -107,7 +102,6 @@ public class Robot extends IterativeRobot
 
     public void autonomousInit()
     {
-        scriptedAutonomous = (ScriptedAutonomous) autoChooser.getSelected();
         scriptedAutonomous.getCommandGroup().start();
     }
 
@@ -181,6 +175,7 @@ public class Robot extends IterativeRobot
 
     public void disabledPeriodic()
     {
+        scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
         if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
         {
             scriptedAutonomous.load();
