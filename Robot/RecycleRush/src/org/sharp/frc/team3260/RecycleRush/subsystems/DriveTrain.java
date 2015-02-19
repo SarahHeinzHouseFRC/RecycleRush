@@ -22,8 +22,8 @@ public class DriveTrain extends SHARPSubsystem
 
     private IMUAdvanced imu;
 
-    protected double rotationControllerP = 0.008,
-            rotationControllerI = 0.001,
+    protected double rotationControllerP = 0.00573,
+            rotationControllerI = 0.0001,
             rotationControllerD = 0.0,
             rotationControllerF = 0.0;
 
@@ -47,7 +47,7 @@ public class DriveTrain extends SHARPSubsystem
         compressor = new Compressor(0);
         compressor.start();
 
-        transducer = new SHARPPressureTransducer(1);
+        transducer = new SHARPPressureTransducer(0);
         
         frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), 5);
         frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), 5);
@@ -159,25 +159,25 @@ public class DriveTrain extends SHARPSubsystem
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontLeftTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                frontLeftTalon.setPID(0.875, 0.01, 0, 0, 0, 0, 0);
+                frontLeftTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontRightTalon.set(0.0);
-                frontLeftTalon.setProfile(0);
-                frontRightTalon.setPID(0.875, 0.01, 0, 0, 0, 0, 0);
+                frontRightTalon.setProfile(0);
+                frontRightTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backLeftTalon.set(0.0);
-                frontLeftTalon.setProfile(0);
-                backLeftTalon.setPID(0.875, 0.01, 0, 0, 0, 0, 0);
+                backLeftTalon.setProfile(0);
+                backLeftTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backRightTalon.set(0.0);
-                frontLeftTalon.setProfile(0);
-                backRightTalon.setPID(0.875, 0.01, 0, 0, 0, 0, 0);
+                backRightTalon.setProfile(0);
+                backRightTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
                 backRightTalon.enableControl();
 
                 log.info("ControlMode changed to " + controlMode.name());
@@ -325,6 +325,8 @@ public class DriveTrain extends SHARPSubsystem
 
     public void setRotationTarget(double rotationTarget)
     {
+        rotationController.reset();
+
         rotatingToTarget = true;
 
         if(rotationController.getSetpoint() != rotationTarget)

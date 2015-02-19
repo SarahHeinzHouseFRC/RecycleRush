@@ -32,7 +32,7 @@ public class Robot extends IterativeRobot
 
     public Robot()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -65,7 +65,7 @@ public class Robot extends IterativeRobot
             CameraServer.getInstance().setQuality(30);
             CameraServer.getInstance().startAutomaticCapture("cam0");
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.error("Starting Camera Server failed with exception " + e.getMessage());
         }
@@ -79,21 +79,21 @@ public class Robot extends IterativeRobot
 
             int elevatorPosition = Integer.parseInt(elevatorPositionString);
 
-            if(elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
+            if (elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
             {
                 Elevator.getInstance().setElevatorPosition(elevatorPosition);
             }
 
-            if(Elevator.getInstance().getTalon().isRevLimitSwitchClosed())
+            if (Elevator.getInstance().getTalon().isRevLimitSwitchClosed())
             {
                 Elevator.getInstance().setElevatorPosition(0);
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.error("Failed to load Elevator state, exception: " + e.toString());
         }
-        
+
         log.info("Deleting old log files...");
         Log.deleteOldLogFiles();
     }
@@ -132,7 +132,7 @@ public class Robot extends IterativeRobot
 
     public void disabledInit()
     {
-        if(scriptedAutonomous.getCommandGroup() != null)
+        if (scriptedAutonomous.getCommandGroup() != null)
         {
             scriptedAutonomous.getCommandGroup().cancel();
         }
@@ -141,11 +141,11 @@ public class Robot extends IterativeRobot
 
         log.info("Attempting to save Elevator position of " + elevatorPosition + " to flash drive");
 
-        if(elevatorPosition < 0)
+        if (elevatorPosition < 0)
         {
             log.warn("Not saving Elevator position, value less than zero.");
         }
-        else if(elevatorPosition > Elevator.ElevatorPosition.TOP.encoderValue)
+        else if (elevatorPosition > Elevator.ElevatorPosition.TOP.encoderValue)
         {
             log.warn("Not saving Elevator position, value less than maximum.");
         }
@@ -157,7 +157,7 @@ public class Robot extends IterativeRobot
 
                 elevatorPositionFile.delete();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.warn("Deleting /U/Elevator Position.txt failed.");
             }
@@ -170,7 +170,7 @@ public class Robot extends IterativeRobot
                 fileWriter.write(elevatorPosition);
                 fileWriter.close();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.error("Saving /media/sda1/Elevator Position.txt failed, exception: " + e.toString());
             }
@@ -179,41 +179,41 @@ public class Robot extends IterativeRobot
 
     public void disabledPeriodic()
     {
-        if(!scriptedAutonomous.getPathToCSV().equals(autoChooser.getSelected().toString()))
-        {
-            scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
-        }
-        
-        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
+//        if (!scriptedAutonomous.getPathToCSV().equals(autoChooser.getSelected().toString()))
+//        {
+//            scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
+//        }
+
+        if (OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
         {
             loadAutonomousChooser();
-            
+
             scriptedAutonomous.load();
         }
 
         SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
         DriveTrain.getInstance().showPressure();
     }
-    
+
     private void loadAutonomousChooser()
     {
         autoChooser = new SendableChooser();
-        
+
         File[] listOfAutoFiles = new File("//U//autonomous//").listFiles();
-        if(listOfAutoFiles != null)
-        {
-            for(File autoOption : listOfAutoFiles)
-            {
-                if(autoChooser.getSelected() == null)
-                {
-                    autoChooser.addDefault(autoOption.getName(), autoOption.getName());
-                }
-                else
-                {
-                    autoChooser.addObject(autoOption.getName(), autoOption.getName());
-                }
-            }
-        }
+//        if (listOfAutoFiles != null)
+//        {
+//            for (File autoOption : listOfAutoFiles)
+//            {
+//                if (autoChooser.getSelected() == null)
+//                {
+//                    autoChooser.addDefault(autoOption.getName(), autoOption.getName());
+//                }
+//                else
+//                {
+//                    autoChooser.addObject(autoOption.getName(), autoOption.getName());
+//                }
+//            }
+//        }
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
