@@ -21,8 +21,6 @@ public class SHARPPressureTransducer extends SensorBase implements LiveWindowSen
 
         analog.setAverageBits(12);
 
-        System.out.println(analog.getAverageBits());
-
         LiveWindow.addSensor("Pressure", analog.getChannel(), this);
     }
 
@@ -31,7 +29,7 @@ public class SHARPPressureTransducer extends SensorBase implements LiveWindowSen
         return analog.getAverageVoltage();
     }
 
-    public double getPSI()
+    public double getPressure()
     {
         double curPSI = 38.823 * getVoltage() - 32.976;
 
@@ -48,7 +46,7 @@ public class SHARPPressureTransducer extends SensorBase implements LiveWindowSen
         if(table != null)
         {
             table.putNumber("Voltage", getVoltage());
-            table.putNumber("PSI", getPSI());
+            table.putNumber("PSI", getPressure());
         }
     }
 

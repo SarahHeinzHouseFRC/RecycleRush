@@ -396,7 +396,7 @@ public class DriveTrain extends SHARPSubsystem
 
     public void showPressure()
     {
-        SmartDashboard.putNumber("Pressure", transducer.getPSI());
+        SmartDashboard.putNumber("Pressure", transducer.getPressure());
     }
     
     public static DriveTrain getInstance()
