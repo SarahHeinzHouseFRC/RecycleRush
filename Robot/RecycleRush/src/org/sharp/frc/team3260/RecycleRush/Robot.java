@@ -1,9 +1,9 @@
 package org.sharp.frc.team3260.RecycleRush;
 
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.autonomous.BasicAutonomousCommandGroup;
@@ -31,6 +31,8 @@ public class Robot extends IterativeRobot
     private ScriptedAutonomous scriptedAutonomous;
     private SendableChooser autoChooser;
 
+    private boolean showedPressureWarning, showedBatteryWarning;
+
     public Robot()
     {
         if(instance == null)
@@ -45,6 +47,9 @@ public class Robot extends IterativeRobot
 
     public void robotInit()
     {
+        showedBatteryWarning = false;
+        showedPressureWarning = false;
+
         log.info("Creating subsystem instances...");
         new DriveTrain();
         new Elevator();
@@ -220,7 +225,34 @@ public class Robot extends IterativeRobot
     public void updateStatus()
     {
         SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
-        DriveTrain.getInstance().showPressure();
+
+        double batteryVoltage = DriverStation.getInstance().getBatteryVoltage();
+        double pressure = DriveTrain.getInstance().getPressure();
+
+        SmartDashboard.putNumber("Pressure", pressure);
+
+        if(pressure < 40)
+        {
+            if(!showedPressureWarning)
+            {
+                log.warn("Pneumatics pressure severely low. Current pressure: " + pressure + " PSI.");
+            }
+
+            showedPressureWarning = true;
+        }
+        else
+        {
+            showedPressureWarning = false;
+        }
+
+        if(batteryVoltage < 10)
+        {
+            log.warn("Battery Voltage severely low. Current voltage: " + batteryVoltage + " Volts.");
+        }
+        else
+        {
+            showedBatteryWarning = false;
+        }
     }
 
     public Log getLogger()

@@ -404,11 +404,6 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.ClearIaccum();
     }
 
-    public void showPressure()
-    {
-        SmartDashboard.putNumber("Pressure", transducer.getPressure());
-    }
-
     public static DriveTrain getInstance()
     {
         if(instance == null)
@@ -438,5 +433,10 @@ public class DriveTrain extends SHARPSubsystem
                 wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
             }
         }
+    }
+
+    public double getPressure()
+    {
+        return transducer.getPressure();
     }
 }
