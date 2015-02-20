@@ -48,7 +48,7 @@ public class DriveTrain extends SHARPSubsystem
         compressor.start();
 
         transducer = new SHARPPressureTransducer(0);
-        
+
         frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), 5);
         frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), 5);
         backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), 5);
@@ -265,10 +265,10 @@ public class DriveTrain extends SHARPSubsystem
         if(rotationController.getSetpoint() != rotationTarget && rotatingToTarget)
         {
             rotatingToTarget = false;
-            
+
             rotationController.setSetpoint(getIMU().getYaw());
         }
-        
+
         if(rotatingToTarget)
         {
             if(!rotationController.isEnable())
@@ -377,7 +377,7 @@ public class DriveTrain extends SHARPSubsystem
     {
         return (Math.abs(talon.getSetpoint() - talon.getPosition()) < tolerance);
     }
-    
+
     public void clearAccumulatedI()
     {
         frontLeftTalon.ClearIaccum();
@@ -390,7 +390,7 @@ public class DriveTrain extends SHARPSubsystem
     {
         SmartDashboard.putNumber("Pressure", transducer.getPressure());
     }
-    
+
     public static DriveTrain getInstance()
     {
         if(instance == null)

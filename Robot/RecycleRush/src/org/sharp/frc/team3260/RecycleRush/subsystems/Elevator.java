@@ -129,7 +129,8 @@ public class Elevator extends SHARPSubsystem
 
     public boolean atSetpoint()
     {
-        return (!useEncoder || (Math.abs(elevatorTalon.getPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE) || (elevatorTalon.getSetpoint() < 0 && elevatorTalon.isRevLimitSwitchClosed()));    }
+        return (!useEncoder || (Math.abs(elevatorTalon.getPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE) || (elevatorTalon.getSetpoint() < 0 && elevatorTalon.isRevLimitSwitchClosed()));
+    }
 
     public void stop()
     {

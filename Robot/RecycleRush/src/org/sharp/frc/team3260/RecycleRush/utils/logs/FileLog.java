@@ -22,8 +22,8 @@ public class FileLog extends PrintStream
         if(!instances.containsKey(fileName))
         {
             FileOutputStream fileOutputStream = new FileOutputStream(file);
-            
-            instances.put(fileName, new FileLog(fileOutputStream));        
+
+            instances.put(fileName, new FileLog(fileOutputStream));
         }
 
         return instances.get(fileName);

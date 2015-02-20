@@ -39,7 +39,7 @@ public class ScriptedAutonomous
 
             if(pathToCSV == null)
             {
-                file = new File("//home//lvuser//defaultAutonomous.csv"); //need to make sure if this is the correct path
+                file = new File("//home//lvuser//defaultAutonomous.csv");
             }
             else
             {
@@ -65,7 +65,7 @@ public class ScriptedAutonomous
             String[] headerArray = new String[headers.size()];
             headerArray = headers.toArray(headerArray);
 
-            List<CSVRecord> csvRecords = null;
+            List<CSVRecord> csvRecords;
 
             // run through each key add its values to the vector
 
@@ -73,7 +73,7 @@ public class ScriptedAutonomous
 
             csvFileParser = new CSVParser(new FileReader(file), csvFileFormat);
 
-            csvRecords = (List) csvFileParser.getRecords();
+            csvRecords = csvFileParser.getRecords();
 
             if(csvRecords != null)
             {
@@ -87,7 +87,7 @@ public class ScriptedAutonomous
                             {
                                 mappedByHeader.put(header, new ArrayList<>());
                             }
-                            
+
                             mappedByHeader.get(header).add(csvRecords.get(i).get(header));
                         }
                     }
@@ -135,7 +135,8 @@ public class ScriptedAutonomous
                                 else
                                 {
                                     addSequential(new DriveDistanceCommand(-distance));
-                                }                                break;
+                                }
+                                break;
 
                             //rotate right
                             case 2:
@@ -218,16 +219,38 @@ public class ScriptedAutonomous
 
     public void setPathToCSV(String path)
     {
-        pathToCSV = path;
+        if(!pathToCSV.equals(path))
+        {
+            pathToCSV = path;
 
-        load();
+            load();
+        }
+    }
+
+    public void setPathToCSV(String path, boolean forced)
+    {
+        if(!pathToCSV.equals(path) || forced)
+        {
+            pathToCSV = path;
+
+            load();
+        }
     }
 
     public void load()
     {
-        commandGroup = new CommandGroup();
+        if(pathToCSV.equals(BasicAutonomousCommandGroup.class.getName()))
+        {
+            commandGroup = new BasicAutonomousCommandGroup();
 
-        commandsLoaded = loadCSV();
+            commandsLoaded = true;
+        }
+        else
+        {
+            commandGroup = new CommandGroup();
+
+            commandsLoaded = loadCSV();
+        }
 
         getLog().info("Autonomous loading was " + (commandsLoaded ? "successful." : "not successful."));
 

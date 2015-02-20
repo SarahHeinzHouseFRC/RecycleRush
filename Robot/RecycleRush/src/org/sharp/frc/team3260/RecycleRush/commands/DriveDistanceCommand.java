@@ -7,7 +7,7 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 public class DriveDistanceCommand extends Command
 {
     private double timeout = 5;
-    
+
     private double distance;
 
     public DriveDistanceCommand(double distance)
@@ -16,13 +16,13 @@ public class DriveDistanceCommand extends Command
 
         this.distance = distance;
     }
-    
+
     public DriveDistanceCommand(double distance, double timeout)
     {
         requires(DriveTrain.getInstance());
-        
+
         this.distance = distance;
-        
+
         this.timeout = timeout;
     }
 
@@ -33,7 +33,7 @@ public class DriveDistanceCommand extends Command
         DriveTrain.getInstance().getLogger().info("DriveDistanceCommand initiated, distance set to " + distance + ", timeout is " + timeout + " seconds.");
 
         DriveTrain.getInstance().zeroEncoders();
-        
+
         DriveTrain.getInstance().clearAccumulatedI();
 
         DriveTrain.getInstance().setDriveEncoderTargets(distance, -distance, distance, -distance);
