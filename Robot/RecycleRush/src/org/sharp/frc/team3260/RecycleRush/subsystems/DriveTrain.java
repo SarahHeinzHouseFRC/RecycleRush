@@ -2,8 +2,6 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 import edu.wpi.first.wpilibj.*;
-import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
-import edu.wpi.first.wpilibj.communication.UsageReporting;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
@@ -68,6 +66,9 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
         frontLeftTalon.reverseOutput(Constants.driveBackRightInverted.getBoolean());
+        frontRightTalon.reverseOutput(Constants.driveFrontLeftInverted.getBoolean());
+        backLeftTalon.reverseOutput(Constants.driveBackLeftInverted.getBoolean());
+        backRightTalon.reverseOutput(Constants.driveBackRightInverted.getBoolean());
 
         frontLeftTalon.reverseSensor(true);
         frontRightTalon.reverseSensor(true);

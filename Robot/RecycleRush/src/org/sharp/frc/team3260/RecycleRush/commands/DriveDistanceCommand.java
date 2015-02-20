@@ -36,7 +36,7 @@ public class DriveDistanceCommand extends Command
 
         DriveTrain.getInstance().clearAccumulatedI();
 
-        DriveTrain.getInstance().setDriveEncoderTargets(distance, -distance, distance, -distance);
+        DriveTrain.getInstance().setDriveEncoderTargets(distance, distance, distance, distance);
     }
 
     protected void execute()
