@@ -236,6 +236,14 @@ public class DriveTrain extends SHARPSubsystem
         mecanumDrive_Cartesian(x, y, rotation, gyroAngle, false);
     }
 
+    public void tankDrive(double leftOutput, double rightOutput)
+    {
+        frontLeftTalon.set(leftOutput);
+        frontRightTalon.set(rightOutput);
+        backLeftTalon.set(leftOutput);
+        backRightTalon.set(rightOutput);
+    }
+
     public void mecanumDrive_Cartesian(double x, double y, double rotation, double gyroAngle, boolean useRotationPID)
     {
         double xIn = x;
@@ -415,7 +423,7 @@ public class DriveTrain extends SHARPSubsystem
     {
         double maxMagnitude = Math.abs(wheelSpeeds[0]);
         int i;
-        for(i = 1; i < numDriveMotors; i++)
+        for(i = 1; i < wheelSpeeds.length; i++)
         {
             double temp = Math.abs(wheelSpeeds[i]);
             if(maxMagnitude < temp)
@@ -425,7 +433,7 @@ public class DriveTrain extends SHARPSubsystem
         }
         if(maxMagnitude > 1.0)
         {
-            for(i = 0; i < numDriveMotors; i++)
+            for(i = 0; i < wheelSpeeds.length; i++)
             {
                 wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
             }
