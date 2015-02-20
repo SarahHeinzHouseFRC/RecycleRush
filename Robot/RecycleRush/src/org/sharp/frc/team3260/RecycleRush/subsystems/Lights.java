@@ -32,8 +32,6 @@ public class Lights extends SHARPSubsystem
     // then reads it back into the public byte array "dataReceived" for verification
     private void arduinoWrite(byte newData[], byte length)
     {
-        // Maximum 6 bytes to send in addition to the "command" byte.  Place all the data into
-        // the byte array.
         if(length > 6)
         {
             length = 6;
@@ -45,9 +43,6 @@ public class Lights extends SHARPSubsystem
 
         if(!i2c.transaction(dataToSend, length + 1, dataReceived, 0))
         {
-            // After successfully sending the data, perform a data read.  Since the last
-            // transaction was a write with a "Command" value of 2, the Arduino will assume
-            // this is the data to return.
             if(!i2c.transaction(dataToSend, 0, dataReceived, 7))
             {
                 if(dataReceived[0] != 2)
@@ -102,10 +97,10 @@ public class Lights extends SHARPSubsystem
 
         public void setAdditionalData(byte... additionalData)
         {
-            if(additionalData.length <= 6)
-            {
-                resetAdditionalData();
+            resetAdditionalData();
 
+            if(additionalData.length <= 5)
+            {
                 this.additionalData = additionalData;
             }
         }
