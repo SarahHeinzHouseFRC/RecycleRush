@@ -230,9 +230,18 @@ public class Robot extends IterativeRobot
     {
         if(!postedCalibrationStatus)
         {
-            if(!DriveTrain.getInstance().isIMUCalibrated())
+            if(!DriveTrain.getInstance().isIMUnull())
             {
-                log.info("NavX MXP calibration started. Do not move the robot");
+                if(!DriveTrain.getInstance().isIMUCalibrated())
+                {
+                    log.info("NavX MXP calibration started. Do not move the robot.");
+
+                    postedCalibrationStatus = true;
+                }
+            }
+            else
+            {
+                log.warn("The NavX object is null. Calibration will not begin. Ensure that the NavX is connected and restart the robot.");
 
                 postedCalibrationStatus = true;
             }

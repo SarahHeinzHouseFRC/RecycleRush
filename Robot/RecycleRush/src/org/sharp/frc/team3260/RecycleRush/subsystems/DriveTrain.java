@@ -458,4 +458,9 @@ public class DriveTrain extends SHARPSubsystem
     {
         return transducer.getPressure();
     }
+
+    public boolean isIMUnull()
+    {
+        return imu == null;
+    }
 }
