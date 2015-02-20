@@ -96,6 +96,10 @@ public class Robot extends IterativeRobot
 
         log.info("Deleting old log files...");
         Log.deleteOldLogFiles();
+
+        log.info("Creating status updater...");
+        Runnable statusUpdater = Robot.getInstance()::postStatus;
+        statusUpdater.run();
     }
 
     public void autonomousInit()
@@ -106,9 +110,6 @@ public class Robot extends IterativeRobot
     public void autonomousPeriodic()
     {
         Scheduler.getInstance().run();
-
-        SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
-        DriveTrain.getInstance().showPressure();
     }
 
     public void teleopInit()
@@ -118,11 +119,6 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-
-        OI.getInstance().checkControls();
-
-        SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
-        DriveTrain.getInstance().showPressure();
     }
 
     public void testPeriodic()
@@ -183,9 +179,6 @@ public class Robot extends IterativeRobot
 
             scriptedAutonomous.load();
         }
-
-        SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
-        DriveTrain.getInstance().showPressure();
     }
 
     private void loadAutonomousChooser()
@@ -208,6 +201,17 @@ public class Robot extends IterativeRobot
             e.printStackTrace();
         }
         SmartDashboard.putData("Auto Chooser", autoChooser);
+    }
+
+    public void postStatus()
+    {
+        if(isOperatorControl())
+        {
+            OI.getInstance().checkControls();
+        }
+
+        SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
+        DriveTrain.getInstance().showPressure();
     }
 
     public Log getLogger()

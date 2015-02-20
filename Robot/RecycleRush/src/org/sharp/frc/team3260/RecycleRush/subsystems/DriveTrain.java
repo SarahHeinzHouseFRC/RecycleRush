@@ -32,12 +32,12 @@ public class DriveTrain extends SHARPSubsystem
 
     protected double rotationControllerOutput = 0.0;
 
-    protected static final double ROTATION_DEADBAND = 0.05;
+    protected static final double ROTATION_PID_THRESHOLD = 0.05;
 
     protected double rotationTarget = 0.0;
     protected boolean rotatingToTarget = false;
 
-    protected PIDController rotationController;
+    protected PIDController driveRotationController;
 
     public DriveTrain()
     {
@@ -94,15 +94,15 @@ public class DriveTrain extends SHARPSubsystem
         {
             LiveWindow.addSensor("IMU", "Gyro", imu);
 
-            rotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), output -> rotationControllerOutput = output);
+            driveRotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), output -> rotationControllerOutput = output);
 
-            rotationController.setPercentTolerance(1);
+            driveRotationController.setPercentTolerance(1);
 
-            rotationController.setContinuous();
+            driveRotationController.setContinuous();
 
-            rotationController.setInputRange(-180, 180);
+            driveRotationController.setInputRange(-180, 180);
 
-            SmartDashboard.putData("Rotation Controller", rotationController);
+            SmartDashboard.putData("Rotation Controller", driveRotationController);
         }
     }
 
@@ -280,21 +280,21 @@ public class DriveTrain extends SHARPSubsystem
      */
     private double getRotationPID(double rotationSpeed)
     {
-        if(rotationController.getSetpoint() != rotationTarget && rotatingToTarget)
+        if(driveRotationController.getSetpoint() != rotationTarget && rotatingToTarget)
         {
             rotatingToTarget = false;
 
-            rotationController.setSetpoint(getIMU().getYaw());
+            driveRotationController.setSetpoint(getIMU().getYaw());
         }
 
         if(rotatingToTarget)
         {
-            if(!rotationController.isEnable())
+            if(!driveRotationController.isEnable())
             {
-                rotationController.enable();
+                driveRotationController.enable();
             }
 
-            if(rotationController.onTarget())
+            if(driveRotationController.onTarget())
             {
                 rotatingToTarget = false;
 
@@ -304,11 +304,11 @@ public class DriveTrain extends SHARPSubsystem
             return rotationControllerOutput;
         }
 
-        if(rotationController.isEnable())
+        if(driveRotationController.isEnable())
         {
-            if(Math.abs(rotationSpeed) >= ROTATION_DEADBAND)
+            if(Math.abs(rotationSpeed) >= ROTATION_PID_THRESHOLD)
             {
-                rotationController.disable();
+                driveRotationController.disable();
             }
             else
             {
@@ -317,11 +317,11 @@ public class DriveTrain extends SHARPSubsystem
         }
         else
         {
-            if(Math.abs(rotationSpeed) < ROTATION_DEADBAND)
+            if(Math.abs(rotationSpeed) < ROTATION_PID_THRESHOLD)
             {
                 gyroOffset = getIMU().getYaw();
-                rotationController.setSetpoint(gyroOffset);
-                rotationController.enable();
+                driveRotationController.setSetpoint(gyroOffset);
+                driveRotationController.enable();
             }
         }
 
@@ -330,25 +330,25 @@ public class DriveTrain extends SHARPSubsystem
 
     public boolean reachedRotationTarget()
     {
-        return rotationController.onTarget();
+        return driveRotationController.onTarget();
     }
 
     public void setRotationTarget(double rotationTarget)
     {
-        rotationController.reset();
+        driveRotationController.reset();
 
         rotatingToTarget = true;
 
-        if(rotationController.getSetpoint() != rotationTarget)
+        if(driveRotationController.getSetpoint() != rotationTarget)
         {
             this.rotationTarget = rotationTarget;
 
-            rotationController.setSetpoint(rotationTarget);
+            driveRotationController.setSetpoint(rotationTarget);
         }
 
-        if(!rotationController.isEnable())
+        if(!driveRotationController.isEnable())
         {
-            rotationController.enable();
+            driveRotationController.enable();
         }
     }
 
