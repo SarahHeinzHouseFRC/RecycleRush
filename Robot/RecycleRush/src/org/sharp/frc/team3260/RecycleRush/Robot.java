@@ -31,6 +31,8 @@ public class Robot extends IterativeRobot
     private ScriptedAutonomous scriptedAutonomous;
     private SendableChooser autoChooser;
 
+    private boolean postedCalibrationStatus;
+
     private boolean showedPressureWarning, showedBatteryWarning;
 
     public Robot()
@@ -110,6 +112,8 @@ public class Robot extends IterativeRobot
         log.info("Creating status updater...");
         Runnable statusUpdater = Robot.getInstance()::updateStatus;
         statusUpdater.run();
+
+        postedCalibrationStatus = false;
     }
 
     public void autonomousInit()
@@ -224,6 +228,16 @@ public class Robot extends IterativeRobot
 
     public void updateStatus()
     {
+        if(!postedCalibrationStatus)
+        {
+            if(!DriveTrain.getInstance().isIMUCalibrated())
+            {
+                log.info("NavX MXP calibration started. Do not move the robot");
+
+                postedCalibrationStatus = true;
+            }
+        }
+
         SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
 
         double batteryVoltage = DriverStation.getInstance().getBatteryVoltage();

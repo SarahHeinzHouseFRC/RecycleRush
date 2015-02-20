@@ -23,6 +23,8 @@ public class DriveTrain extends SHARPSubsystem
 
     private AHRS imu;
 
+    private boolean firstIteration;
+
     protected double rotationControllerP = 0.00573,
             rotationControllerI = 0.0001,
             rotationControllerD = 0.0,
@@ -104,6 +106,8 @@ public class DriveTrain extends SHARPSubsystem
 
             SmartDashboard.putData("Rotation Controller", driveRotationController);
         }
+
+        firstIteration = true;
     }
 
     public void changeControlMode(CANTalon.ControlMode controlMode)
@@ -402,6 +406,21 @@ public class DriveTrain extends SHARPSubsystem
         frontRightTalon.ClearIaccum();
         backLeftTalon.ClearIaccum();
         backRightTalon.ClearIaccum();
+    }
+
+    public boolean isIMUCalibrated()
+    {
+        boolean isCalibrating = imu.isCalibrating();
+
+        if(firstIteration && !isCalibrating)
+        {
+            log.info("NavX MXP finished calibrating, zeroing yaw...");
+            Timer.delay(0.3);
+            imu.zeroYaw();
+            firstIteration = false;
+        }
+
+        return isCalibrating;
     }
 
     public static DriveTrain getInstance()
