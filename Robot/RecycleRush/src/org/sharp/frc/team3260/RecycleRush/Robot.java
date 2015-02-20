@@ -70,6 +70,7 @@ public class Robot extends IterativeRobot
             log.error("Starting Camera Server failed with exception " + e.getMessage());
         }
 
+        log.info("Creating instance of ScriptedAutonomous...");
         scriptedAutonomous = new ScriptedAutonomous();
 
         log.info("Attempting to load Elevator state from previous run...");
@@ -81,11 +82,15 @@ public class Robot extends IterativeRobot
 
             if(elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
             {
+                log.info("Elevator position set to " + elevatorPosition + ".");
+
                 Elevator.getInstance().setElevatorPosition(elevatorPosition);
             }
 
             if(Elevator.getInstance().getTalon().isRevLimitSwitchClosed())
             {
+                log.info("Limit switch currently held, setting Elevator position to 0.");
+
                 Elevator.getInstance().setElevatorPosition(0);
             }
         }
@@ -98,7 +103,7 @@ public class Robot extends IterativeRobot
         Log.deleteOldLogFiles();
 
         log.info("Creating status updater...");
-        Runnable statusUpdater = Robot.getInstance()::postStatus;
+        Runnable statusUpdater = Robot.getInstance()::updateStatus;
         statusUpdater.run();
     }
 
@@ -171,14 +176,6 @@ public class Robot extends IterativeRobot
 
     public void disabledPeriodic()
     {
-        scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
-
-        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
-        {
-            loadAutonomousChooser();
-
-            scriptedAutonomous.load();
-        }
     }
 
     private void loadAutonomousChooser()
@@ -187,13 +184,23 @@ public class Robot extends IterativeRobot
         autoChooser.addDefault(BasicAutonomousCommandGroup.class.getName(), BasicAutonomousCommandGroup.class.getName());
         try
         {
-            File[] listOfAutoFiles = new File("//U//autonomous//").listFiles();
-            if(listOfAutoFiles != null)
+            String autonDirectory = "/U/Autonomous/";
+
+            File[] listOfAutoFiles = new File(autonDirectory).listFiles();
+
+            log.info("Loading autonomous options, found " + listOfAutoFiles.length + " files in " + autonDirectory + ".");
+
+            if(listOfAutoFiles.length != 0)
             {
                 for(File autoOption : listOfAutoFiles)
                 {
+                    log.info("Added Autonomous Option " + autoOption.getName() + ".");
                     autoChooser.addObject(autoOption.getName(), autoOption.getName());
                 }
+            }
+            else
+            {
+                log.info("Found zero Autonomous Options in " + autonDirectory + ".");
             }
         }
         catch(Exception e)
@@ -203,11 +210,23 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
-    public void postStatus()
+    public void updateStatus()
     {
         if(isOperatorControl())
         {
             OI.getInstance().checkControls();
+        }
+
+        if(!isEnabled())
+        {
+            scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
+
+            if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
+            {
+                loadAutonomousChooser();
+
+                scriptedAutonomous.load();
+            }
         }
 
         SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
