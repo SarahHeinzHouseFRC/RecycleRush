@@ -1,6 +1,6 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
-import com.kauailabs.nav6.frc.IMUAdvanced;
+import com.kauailabs.navx_mxp.AHRS;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,7 +21,7 @@ public class DriveTrain extends SHARPSubsystem
     private Compressor compressor;
     private SHARPPressureTransducer transducer;
 
-    private IMUAdvanced imu;
+    private AHRS imu;
 
     protected double rotationControllerP = 0.00573,
             rotationControllerI = 0.0001,
@@ -79,11 +79,11 @@ public class DriveTrain extends SHARPSubsystem
 
         try
         {
-            SerialPort serialPort = new SerialPort(57600, SerialPort.Port.kOnboard);
+            SerialPort serialPort = new SerialPort(57600, SerialPort.Port.kMXP);
 
             byte updateRateHz = 50;
 
-            imu = new IMUAdvanced(serialPort, updateRateHz);
+            imu = new AHRS(serialPort, updateRateHz);
         }
         catch(Exception ex)
         {
@@ -352,7 +352,7 @@ public class DriveTrain extends SHARPSubsystem
         }
     }
 
-    public IMUAdvanced getIMU()
+    public AHRS getIMU()
     {
         return imu;
     }
