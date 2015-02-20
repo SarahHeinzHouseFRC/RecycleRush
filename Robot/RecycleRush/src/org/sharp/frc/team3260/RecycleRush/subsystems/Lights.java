@@ -1,13 +1,7 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.I2C;
-import javafx.scene.effect.Light;
 import org.sharp.frc.team3260.RecycleRush.commands.UpdateLightsCommand;
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.function.Function;
 
 public class Lights extends SHARPSubsystem
 {
@@ -17,8 +11,6 @@ public class Lights extends SHARPSubsystem
 
     protected static byte dataReceived[] = {0, 0, 0, 0, 0, 0, 0};
     protected static byte dataToSend[] = {0, 0, 0, 0, 0, 0, 0};
-    private byte lightMode;
-    protected static final byte[] defaultAdditionalData = {0, 0, 0, 0, 0};
     private byte[] additionalData = {0, 0, 0, 0, 0};
 
     public Lights()
@@ -51,14 +43,11 @@ public class Lights extends SHARPSubsystem
 
         System.arraycopy(newData, 0, dataToSend, 1, length);
 
-        // Send the data to the Arduino.  Do not request any return bytes or this function
-        // will fail
         if(!i2c.transaction(dataToSend, length + 1, dataReceived, 0))
         {
             // After successfully sending the data, perform a data read.  Since the last
             // transaction was a write with a "Command" value of 2, the Arduino will assume
             // this is the data to return.
-
             if(!i2c.transaction(dataToSend, 0, dataReceived, 7))
             {
                 if(dataReceived[0] != 2)
@@ -79,8 +68,6 @@ public class Lights extends SHARPSubsystem
 
     private void setLightMode(byte lightMode, byte[] additionalData)
     {
-        this.lightMode = lightMode;
-
         this.additionalData = additionalData;
 
         byte[] writeData = concat(new byte[]{lightMode}, additionalData);
@@ -90,22 +77,22 @@ public class Lights extends SHARPSubsystem
 
     public void setLightMode(LightOption lightOption)
     {
-        setLightMode((byte) lightOption.id, additionalData);
+        setLightMode(lightOption.getID(), additionalData);
     }
 
     public static class LightOption
     {
-        public static final LightOption DEFAULT = new LightOption(0, "DEFAULT");
-        public static final LightOption LOW_BATTERY = new LightOption(1, "LOW_BATTERY");
-        public static final LightOption LOW_PRESSURE = new LightOption(2, "LOW_PRESSURE");
-        public static final LightOption ELEVATOR_STATUS = new LightOption(3, "ELEVATOR_STATUS");
+        public static final LightOption DEFAULT = new LightOption((byte) 0, "DEFAULT");
+        public static final LightOption LOW_BATTERY = new LightOption((byte) 1, "LOW_BATTERY");
+        public static final LightOption LOW_PRESSURE = new LightOption((byte) 2, "LOW_PRESSURE");
+        public static final LightOption ELEVATOR_STATUS = new LightOption((byte) 3, "ELEVATOR_STATUS");
 
         private String name;
-        private int id;
+        private byte id;
 
         private byte[] additionalData;
 
-        public LightOption(int id, String name)
+        public LightOption(byte id, String name)
         {
             this.name = name;
             this.id = id;
@@ -133,7 +120,7 @@ public class Lights extends SHARPSubsystem
             return additionalData;
         }
 
-        public int getID()
+        public byte getID()
         {
             return id;
         }
