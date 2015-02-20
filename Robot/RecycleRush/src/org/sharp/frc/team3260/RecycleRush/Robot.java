@@ -124,11 +124,8 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
         Scheduler.getInstance().run();
-    }
 
-    public void testPeriodic()
-    {
-        LiveWindow.run();
+        OI.getInstance().checkControls();
     }
 
     public void disabledInit()
@@ -176,6 +173,7 @@ public class Robot extends IterativeRobot
 
     public void disabledPeriodic()
     {
+        Scheduler.getInstance().run();
     }
 
     private void loadAutonomousChooser()
@@ -212,11 +210,6 @@ public class Robot extends IterativeRobot
 
     public void updateStatus()
     {
-        if(isOperatorControl())
-        {
-            OI.getInstance().checkControls();
-        }
-
         if(!isEnabled())
         {
             scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
