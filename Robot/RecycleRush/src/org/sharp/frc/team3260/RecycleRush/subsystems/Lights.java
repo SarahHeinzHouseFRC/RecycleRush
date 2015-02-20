@@ -1,6 +1,13 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.I2C;
+import javafx.scene.effect.Light;
+import org.sharp.frc.team3260.RecycleRush.commands.UpdateLightsCommand;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.function.Function;
 
 public class Lights extends SHARPSubsystem
 {
@@ -10,6 +17,9 @@ public class Lights extends SHARPSubsystem
 
     protected static byte dataReceived[] = {0, 0, 0, 0, 0, 0, 0};
     protected static byte dataToSend[] = {0, 0, 0, 0, 0, 0, 0};
+    private byte lightMode;
+    protected static final byte[] defaultAdditionalData = {0, 0, 0, 0, 0};
+    private byte[] additionalData = {0, 0, 0, 0, 0};
 
     public Lights()
     {
@@ -23,42 +33,8 @@ public class Lights extends SHARPSubsystem
     @Override
     protected void initDefaultCommand()
     {
-
+        setDefaultCommand(new UpdateLightsCommand());
     }
-
-    // This routine retrieves the incrementing counter value from the Arduino and reconstitutes
-    // it back into a 32 bit integer.  This is a rather convoluted way of doing it as JAVA does
-    // not support an unsigned single byte (bytes are signed)
-    private int arduinoCounter()
-    {
-        // Request Command #1 - Return Counter Value ("Register" 1)
-
-        i2c.write(1, 0);
-
-        // Read 5 bytes of data, with 0 bytes to send.  A false return value indicates success
-
-        if(!i2c.transaction(dataToSend, 0, dataReceived, 5))
-        {
-            // If the data returned is indeed the counter, the first byte should be a 1 - identical
-            // to the value we sent above
-
-            if(dataReceived[0] != 1)
-            {
-                log.error("Invalid data returned from Arduino.");
-            }
-            else
-            {
-                return (((int) dataReceived[4] * 16777216) + (((int) dataReceived[3] & 0x000000ff) * 65536) + (((int) dataReceived[2] & 0x000000ff) * 256) + ((int) dataReceived[1] & 0x000000ff));
-            }
-        }
-        else
-        {
-            log.error("Failure to read from Arduino.");
-        }
-
-        return 0;
-    }
-
 
     // This routine sends up to 6 bytes to place in the Arduino's "read/write" array and
     // then reads it back into the public byte array "dataReceived" for verification
@@ -73,10 +49,7 @@ public class Lights extends SHARPSubsystem
 
         dataToSend[0] = 2;
 
-        for(int i = 0; i < length; i++)
-        {
-            dataToSend[i + 1] = newData[i];
-        }
+        System.arraycopy(newData, 0, dataToSend, 1, length);
 
         // Send the data to the Arduino.  Do not request any return bytes or this function
         // will fail
@@ -102,5 +75,87 @@ public class Lights extends SHARPSubsystem
         {
             log.error("Failure to send data to Arduino.");
         }
+    }
+
+    private void setLightMode(byte lightMode, byte[] additionalData)
+    {
+        this.lightMode = lightMode;
+
+        this.additionalData = additionalData;
+
+        byte[] writeData = concat(new byte[]{lightMode}, additionalData);
+
+        arduinoWrite(writeData, (byte) writeData.length);
+    }
+
+    public void setLightMode(LightOption lightOption)
+    {
+        setLightMode((byte) lightOption.id, additionalData);
+    }
+
+    public static class LightOption
+    {
+        public static final LightOption DEFAULT = new LightOption(0, "DEFAULT");
+        public static final LightOption LOW_BATTERY = new LightOption(1, "LOW_BATTERY");
+        public static final LightOption LOW_PRESSURE = new LightOption(2, "LOW_PRESSURE");
+        public static final LightOption ELEVATOR_STATUS = new LightOption(3, "ELEVATOR_STATUS");
+
+        private String name;
+        private int id;
+
+        private byte[] additionalData;
+
+        public LightOption(int id, String name)
+        {
+            this.name = name;
+            this.id = id;
+
+            resetAdditionalData();
+        }
+
+        public void setAdditionalData(byte... additionalData)
+        {
+            if(additionalData.length <= 6)
+            {
+                resetAdditionalData();
+
+                this.additionalData = additionalData;
+            }
+        }
+
+        public void resetAdditionalData()
+        {
+            additionalData = new byte[] { };
+        }
+
+        public byte[] getAdditionalData()
+        {
+            return additionalData;
+        }
+
+        public int getID()
+        {
+            return id;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+    }
+
+    public byte[] concat(byte[] a, byte[] b)
+    {
+        int aLen = a.length;
+        int bLen = b.length;
+        byte[] c = new byte[aLen + bLen];
+        System.arraycopy(a, 0, c, 0, aLen);
+        System.arraycopy(b, 0, c, aLen, bLen);
+        return c;
+    }
+
+    public static Lights getInstance()
+    {
+        return instance;
     }
 }

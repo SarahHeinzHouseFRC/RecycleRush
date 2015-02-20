@@ -170,6 +170,22 @@ public class Elevator extends SHARPSubsystem
         return elevatorTalon.getEncPosition();
     }
 
+    public byte getPositionAsByte()
+    {
+        double percentOfMax = getPosition() / ElevatorPosition.TOP.encoderValue;
+
+        if(percentOfMax < 0)
+        {
+            percentOfMax = 0;
+        }
+        else if(percentOfMax > 1)
+        {
+            percentOfMax = 1;
+        }
+
+        return ((byte) (Byte.MAX_VALUE * percentOfMax));
+    }
+
     public void setZero()
     {
         setElevatorPosition(0);
