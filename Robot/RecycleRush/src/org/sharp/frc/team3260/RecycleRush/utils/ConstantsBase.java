@@ -88,6 +88,8 @@ public abstract class ConstantsBase
             return (int) value;
         }
 
+        public boolean getBoolean() { return (value == 1); }
+
         public void setVal(double value)
         {
             this.value = value;

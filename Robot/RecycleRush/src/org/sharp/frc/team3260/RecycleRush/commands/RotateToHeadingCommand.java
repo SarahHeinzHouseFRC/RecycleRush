@@ -48,7 +48,7 @@ public class RotateToHeadingCommand extends Command
     {
         if(isBlocking)
         {
-            DriveTrain.getInstance().mecanumDrive_Cartesian(0, 0, 0, DriveTrain.getInstance().getIMU().getYaw());
+            DriveTrain.getInstance().mecanumDrive_Cartesian(0, 0, 0, DriveTrain.getInstance().getIMU().getYaw(), true);
         }
     }
 

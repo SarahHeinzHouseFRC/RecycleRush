@@ -2,6 +2,8 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import com.kauailabs.nav6.frc.IMUAdvanced;
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.communication.FRCNetworkCommunicationsLibrary;
+import edu.wpi.first.wpilibj.communication.UsageReporting;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
@@ -14,8 +16,9 @@ public class DriveTrain extends SHARPSubsystem
 {
     protected static DriveTrain instance;
 
+    private static final int numDriveMotors = 4;
+
     private CANTalon frontLeftTalon, frontRightTalon, backLeftTalon, backRightTalon;
-    private RobotDrive robotDrive;
 
     private Compressor compressor;
     private SHARPPressureTransducer transducer;
@@ -64,19 +67,14 @@ public class DriveTrain extends SHARPSubsystem
         backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
         backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
+        frontLeftTalon.reverseOutput(Constants.driveBackRightInverted.getBoolean());
+
         frontLeftTalon.reverseSensor(true);
         frontRightTalon.reverseSensor(true);
         backLeftTalon.reverseSensor(true);
         backRightTalon.reverseSensor(true);
 
         zeroEncoders();
-
-        robotDrive = new RobotDrive(frontLeftTalon, backLeftTalon, frontRightTalon, backRightTalon);
-        robotDrive.setSafetyEnabled(false);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontLeft, Constants.driveFrontLeftInverted.getInt() == 1);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearLeft, Constants.driveBackLeftInverted.getInt() == 1);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kFrontRight, Constants.driveFrontRightInverted.getInt() == 1);
-        robotDrive.setInvertedMotor(RobotDrive.MotorType.kRearRight, Constants.driveBackRightInverted.getInt() == 1);
 
         try
         {
@@ -194,11 +192,6 @@ public class DriveTrain extends SHARPSubsystem
         setDefaultCommand(new FIRSTMecanumDriveCommand());
     }
 
-    public void tankDrive(double leftAxis, double rightAxis)
-    {
-        robotDrive.tankDrive(leftAxis, rightAxis);
-    }
-
     public void zeroGyro()
     {
         imu.zeroYaw();
@@ -216,7 +209,7 @@ public class DriveTrain extends SHARPSubsystem
     {
         if(frontLeftTalon.getControlMode() == CANTalon.ControlMode.PercentVbus)
         {
-            robotDrive.tankDrive(0, 0);
+            setDriveMotors(0, 0, 0, 0);
         }
         else
         {
@@ -226,30 +219,46 @@ public class DriveTrain extends SHARPSubsystem
 
     public void setDriveMotors(double frontLeftOutput, double frontRightOutput, double backLeftOutput, double backRightOutput)
     {
-        frontLeftTalon.set(frontLeftOutput * (Constants.driveFrontLeftInverted.getInt() == 1 ? -1 : 0));
-        frontRightTalon.set(frontRightOutput * (Constants.driveFrontRightInverted.getInt() == 1 ? -1 : 0));
-        backLeftTalon.set(backLeftOutput * (Constants.driveBackLeftInverted.getInt() == 1 ? -1 : 0));
-        backRightTalon.set(backRightOutput * (Constants.driveBackRightInverted.getInt() == 1 ? -1 : 0));
+        frontLeftTalon.set(frontLeftOutput);
+        frontRightTalon.set(frontRightOutput);
+        backLeftTalon.set(backLeftOutput);
+        backRightTalon.set(backRightOutput);
     }
 
-    public void mecanumDrive_Cartesian(double x, double y, double rotation, double gyroAngle)
+    public void setDriveMotors(double[] wheelSpeeds)
     {
-        rotation = getRotationPID(rotation);
-        mecanumDrive_Cartesian0(x, y, rotation, gyroAngle);
+        normalize(wheelSpeeds);
     }
 
     public void stockMecanumDrive(double x, double y, double rotation, double gyroAngle)
     {
-        robotDrive.mecanumDrive_Cartesian(x, y, rotation, gyroAngle);
+        mecanumDrive_Cartesian(x, y, rotation, gyroAngle, false);
     }
 
-    private void mecanumDrive_Cartesian0(double x, double y, double rotation, double gyroAngle)
+    public void mecanumDrive_Cartesian(double x, double y, double rotation, double gyroAngle, boolean useRotationPID)
     {
-        double rotated[] = Util.rotateVector(x, y, gyroAngle);
-        x = rotated[0];
-        y = rotated[1];
+        double xIn = x;
+        double yIn = y;
+        // Negate y for the joystick.
+        yIn = -yIn;
 
-        stockMecanumDrive(x, y, rotation, 0);
+        if(useRotationPID)
+        {
+            rotation = getRotationPID(rotation);
+        }
+
+        // Compenstate for gyro angle.
+        double rotated[] = Util.rotateVector(xIn, yIn, gyroAngle);
+        xIn = rotated[0];
+        yIn = rotated[1];
+
+        double wheelSpeeds[] = new double[numDriveMotors];
+        wheelSpeeds[0] = xIn + yIn + rotation;
+        wheelSpeeds[1] = -xIn + yIn - rotation;
+        wheelSpeeds[2] = -xIn + yIn + rotation;
+        wheelSpeeds[3] = xIn + yIn - rotation;
+
+        setDriveMotors(wheelSpeeds);
     }
 
     /**
@@ -399,5 +408,26 @@ public class DriveTrain extends SHARPSubsystem
         }
 
         return instance;
+    }
+
+    protected static void normalize(double wheelSpeeds[])
+    {
+        double maxMagnitude = Math.abs(wheelSpeeds[0]);
+        int i;
+        for(i = 1; i < numDriveMotors; i++)
+        {
+            double temp = Math.abs(wheelSpeeds[i]);
+            if(maxMagnitude < temp)
+            {
+                maxMagnitude = temp;
+            }
+        }
+        if(maxMagnitude > 1.0)
+        {
+            for(i = 0; i < numDriveMotors; i++)
+            {
+                wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
+            }
+        }
     }
 }
