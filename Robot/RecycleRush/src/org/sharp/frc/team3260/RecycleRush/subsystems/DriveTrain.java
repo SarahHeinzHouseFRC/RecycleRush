@@ -232,14 +232,6 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.set(backRightOutput * (Constants.driveBackRightInverted.getInt() == 1 ? -1 : 0));
     }
 
-    /**
-     * @param x         The speed that the robot should drive in the X direction. [-1.0..1.0]
-     * @param y         The speed that the robot should drive in the Y direction.
-     *                  This input is inverted to match the forward == -1.0 that joysticks produce. [-1.0..1.0]
-     * @param rotation  The rate of rotation for the robot that is completely independent of
-     *                  the translation. [-1.0..1.0]
-     * @param gyroAngle The current angle reading from the gyro.  Use this to implement field-oriented controls.
-     */
     public void mecanumDrive_Cartesian(double x, double y, double rotation, double gyroAngle)
     {
         rotation = getRotationPID(rotation);

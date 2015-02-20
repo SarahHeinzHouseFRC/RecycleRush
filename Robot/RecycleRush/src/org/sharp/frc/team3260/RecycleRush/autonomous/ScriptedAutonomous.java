@@ -185,6 +185,11 @@ public class ScriptedAutonomous
                                 numCommandsAdded++;
                                 addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition)));
                                 break;
+
+                            case 8:
+                                numCommandsAdded++;
+                                addSequential(new ZeroGyroCommand());
+                                break;
                         }
                     }
                 }
