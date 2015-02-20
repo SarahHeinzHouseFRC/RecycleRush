@@ -247,7 +247,12 @@ public class Robot extends IterativeRobot
 
         if(batteryVoltage < 10)
         {
-            log.warn("Battery Voltage severely low. Current voltage: " + batteryVoltage + " Volts.");
+            if(!showedBatteryWarning)
+            {
+                log.warn("Battery Voltage severely low. Current voltage: " + batteryVoltage + " Volts.");
+            }
+
+            showedBatteryWarning = true;
         }
         else
         {
