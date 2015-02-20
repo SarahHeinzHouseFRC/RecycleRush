@@ -174,6 +174,15 @@ public class Robot extends IterativeRobot
     public void disabledPeriodic()
     {
         Scheduler.getInstance().run();
+
+        scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
+
+        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
+        {
+            loadAutonomousChooser();
+
+            scriptedAutonomous.load();
+        }
     }
 
     private void loadAutonomousChooser()
@@ -210,18 +219,6 @@ public class Robot extends IterativeRobot
 
     public void updateStatus()
     {
-        if(!isEnabled())
-        {
-            scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
-
-            if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
-            {
-                loadAutonomousChooser();
-
-                scriptedAutonomous.load();
-            }
-        }
-
         SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
         DriveTrain.getInstance().showPressure();
     }
