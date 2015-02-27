@@ -239,6 +239,11 @@ public class ScriptedAutonomous
 
     public void load()
     {
+        if(pathToCSV == null)
+        {
+            pathToCSV = BasicAutonomousCommandGroup.class.getName();
+        }
+
         if(pathToCSV.equals(BasicAutonomousCommandGroup.class.getName()))
         {
             commandGroup = new BasicAutonomousCommandGroup();

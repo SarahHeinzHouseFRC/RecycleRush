@@ -67,8 +67,8 @@ public class DriveTrain extends SHARPSubsystem
         backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
         backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
-        frontLeftTalon.reverseOutput(Constants.driveBackRightInverted.getBoolean());
-        frontRightTalon.reverseOutput(Constants.driveFrontLeftInverted.getBoolean());
+        frontLeftTalon.reverseOutput(Constants.driveFrontLeftInverted.getBoolean());
+        frontRightTalon.reverseOutput(Constants.driveFrontRightInverted.getBoolean());
         backLeftTalon.reverseOutput(Constants.driveBackLeftInverted.getBoolean());
         backRightTalon.reverseOutput(Constants.driveBackRightInverted.getBoolean());
 
