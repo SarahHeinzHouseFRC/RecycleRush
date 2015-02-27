@@ -19,7 +19,7 @@ public class Lights extends SHARPSubsystem
 
         instance = this;
 
-        i2c = new I2C(I2C.Port.kOnboard, 168);
+        i2c = new I2C(I2C.Port.kOnboard, 4);
     }
 
     @Override
