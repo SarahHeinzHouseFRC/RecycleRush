@@ -230,58 +230,63 @@ public class Robot extends IterativeRobot
 
     public void updateStatus()
     {
-        if(!postedCalibrationStatus)
+        while(true)
         {
-            if(!DriveTrain.getInstance().isIMUnull())
+            if(!postedCalibrationStatus)
             {
-                if(!DriveTrain.getInstance().isIMUCalibrated())
+                if(!DriveTrain.getInstance().isIMUnull())
                 {
-                    log.info("NavX MXP calibration started. Do not move the robot.");
+                    if(!DriveTrain.getInstance().isIMUCalibrated())
+                    {
+                        log.info("NavX MXP calibration started. Do not move the robot.");
+
+                        postedCalibrationStatus = true;
+                    }
+                }
+                else
+                {
+                    log.warn("The NavX object is null. Calibration will not begin. Ensure that the NavX is connected and restart the robot.");
 
                     postedCalibrationStatus = true;
                 }
             }
+
+            SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
+
+            double batteryVoltage = DriverStation.getInstance().getBatteryVoltage();
+            double pressure = DriveTrain.getInstance().getPressure();
+
+            SmartDashboard.putNumber("Pressure", pressure);
+
+            if(pressure < 40)
+            {
+                if(!showedPressureWarning)
+                {
+                    log.warn("Pneumatics pressure severely low. Current pressure: " + pressure + " PSI.");
+                }
+
+                showedPressureWarning = true;
+            }
             else
             {
-                log.warn("The NavX object is null. Calibration will not begin. Ensure that the NavX is connected and restart the robot.");
-
-                postedCalibrationStatus = true;
+                showedPressureWarning = false;
             }
-        }
 
-        SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
-
-        double batteryVoltage = DriverStation.getInstance().getBatteryVoltage();
-        double pressure = DriveTrain.getInstance().getPressure();
-
-        SmartDashboard.putNumber("Pressure", pressure);
-
-        if(pressure < 40)
-        {
-            if(!showedPressureWarning)
+            if(batteryVoltage < 10)
             {
-                log.warn("Pneumatics pressure severely low. Current pressure: " + pressure + " PSI.");
+                if(!showedBatteryWarning)
+                {
+                    log.warn("Battery Voltage severely low. Current voltage: " + batteryVoltage + " Volts.");
+                }
+
+                showedBatteryWarning = true;
             }
-
-            showedPressureWarning = true;
-        }
-        else
-        {
-            showedPressureWarning = false;
-        }
-
-        if(batteryVoltage < 10)
-        {
-            if(!showedBatteryWarning)
+            else
             {
-                log.warn("Battery Voltage severely low. Current voltage: " + batteryVoltage + " Volts.");
+                showedBatteryWarning = false;
             }
 
-            showedBatteryWarning = true;
-        }
-        else
-        {
-            showedBatteryWarning = false;
+            Lights.getInstance().updateLights();
         }
     }
 

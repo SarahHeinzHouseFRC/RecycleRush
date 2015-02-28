@@ -1,9 +1,7 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
-import org.sharp.frc.team3260.RecycleRush.commands.UpdateLightsCommand;
-
-import java.util.Arrays;
 
 public class Lights extends SHARPSubsystem
 {
@@ -13,7 +11,6 @@ public class Lights extends SHARPSubsystem
 
     protected static byte dataReceived[] = {0, 0, 0, 0, 0, 0, 0};
     protected static byte dataToSend[] = {0, 0, 0, 0, 0, 0, 0};
-    private byte[] additionalData = {0, 0, 0, 0, 0};
 
     public Lights()
     {
@@ -27,7 +24,6 @@ public class Lights extends SHARPSubsystem
     @Override
     protected void initDefaultCommand()
     {
-        setDefaultCommand(new UpdateLightsCommand());
     }
 
     // This routine sends up to 6 bytes to place in the Arduino's "read/write" array and
@@ -65,8 +61,6 @@ public class Lights extends SHARPSubsystem
 
     private void setLightMode(byte lightMode, byte[] additionalData)
     {
-        this.additionalData = additionalData;
-
         byte[] writeData = concat(new byte[]{lightMode}, additionalData);
 
         arduinoWrite(writeData, (byte) writeData.length);
@@ -136,6 +130,43 @@ public class Lights extends SHARPSubsystem
         System.arraycopy(a, 0, c, 0, aLen);
         System.arraycopy(b, 0, c, aLen, bLen);
         return c;
+    }
+
+    public void updateLights()
+    {
+        Lights.LightOption lightOption = Lights.LightOption.DEFAULT;
+
+        double batteryVoltage = DriverStation.getInstance().getBatteryVoltage();
+
+        double pressure = DriveTrain.getInstance().getPressure();
+
+        byte elevatorPosition = Elevator.getInstance().getPositionAsByte();
+
+        boolean gripperClosed = Gripper.getInstance().isClosed();
+
+        if(batteryVoltage < 11)
+        {
+            double batteryPercent = (batteryVoltage / 13);
+
+            byte batteryPercentByte = (byte) (batteryPercent * Byte.MAX_VALUE);
+
+            lightOption = Lights.LightOption.LOW_BATTERY;
+            lightOption.setAdditionalData(batteryPercentByte);
+        }
+        else if(pressure < 40 && pressure > 10)
+        {
+            byte pressureAsByte = (byte) ((DriverStation.getInstance().getBatteryVoltage() / 120) * Byte.MAX_VALUE);
+
+            lightOption = Lights.LightOption.LOW_PRESSURE;
+            lightOption.setAdditionalData(pressureAsByte);
+        }
+        else if(elevatorPosition > 500 || gripperClosed)
+        {
+            lightOption = Lights.LightOption.ELEVATOR_STATUS;
+            lightOption.setAdditionalData(Elevator.getInstance().getPositionAsByte());
+        }
+
+        Lights.getInstance().setLightMode(lightOption);
     }
 
     public static Lights getInstance()

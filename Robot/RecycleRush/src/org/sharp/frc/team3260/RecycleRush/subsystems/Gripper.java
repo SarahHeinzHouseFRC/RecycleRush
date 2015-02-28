@@ -51,4 +51,9 @@ public class Gripper extends SHARPSubsystem
 
         return instance;
     }
+
+    public boolean isClosed()
+    {
+        return solenoid.get().equals(DoubleSolenoid.Value.kReverse);
+    }
 }
