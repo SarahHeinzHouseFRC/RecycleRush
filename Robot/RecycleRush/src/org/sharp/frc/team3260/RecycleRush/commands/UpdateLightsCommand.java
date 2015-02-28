@@ -33,7 +33,7 @@ public class UpdateLightsCommand extends Command
 
         byte elevatorPosition = Elevator.getInstance().getPositionAsByte();
 
-        if(batteryVoltage < 40)
+        if(batteryVoltage < 11)
         {
             double batteryPercent = (batteryVoltage / 13);
 
@@ -42,7 +42,7 @@ public class UpdateLightsCommand extends Command
             lightOption = Lights.LightOption.LOW_BATTERY;
             lightOption.setAdditionalData(batteryPercentByte);
         }
-        else if(pressure < 40)
+        else if(pressure < 40 && pressure > 10)
         {
             byte pressureAsByte = (byte) ((DriverStation.getInstance().getBatteryVoltage() / 120) * Byte.MAX_VALUE);
 
