@@ -16,6 +16,7 @@ import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
+import org.sharp.frc.team3260.RecycleRush.subsystems.Lights;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
@@ -56,6 +57,7 @@ public class Robot extends IterativeRobot
         new DriveTrain();
         new Elevator();
         new Gripper();
+        new Lights();
 
         log.info("Adding SmartDashboard buttons...");
         SmartDashboard.putData("SHARPDrive", new SHARPDriveCommand());

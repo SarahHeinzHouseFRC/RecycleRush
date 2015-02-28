@@ -3,6 +3,8 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 import edu.wpi.first.wpilibj.I2C;
 import org.sharp.frc.team3260.RecycleRush.commands.UpdateLightsCommand;
 
+import java.util.Arrays;
+
 public class Lights extends SHARPSubsystem
 {
     protected static Lights instance;
@@ -19,7 +21,7 @@ public class Lights extends SHARPSubsystem
 
         instance = this;
 
-        i2c = new I2C(I2C.Port.kOnboard, 128);
+        i2c = new I2C(I2C.Port.kMXP, 168);
     }
 
     @Override
@@ -41,7 +43,7 @@ public class Lights extends SHARPSubsystem
 
         System.arraycopy(newData, 0, dataToSend, 1, length);
 
-        if(!i2c.transaction(dataToSend, length + 1, dataReceived, 0))
+        if(!i2c.transaction(dataToSend, dataToSend.length, dataReceived, 0))
         {
             if(!i2c.transaction(dataToSend, 0, dataReceived, 7))
             {
@@ -55,10 +57,10 @@ public class Lights extends SHARPSubsystem
                 log.error("Failure to read from Arduino.");
             }
         }
-        else
-        {
-            log.error("Failure to send data to Arduino.");
-        }
+//        else
+//        {
+//            log.error("Failure to send " + Arrays.toString(dataToSend) + " to Arduino.");
+//        }
     }
 
     private void setLightMode(byte lightMode, byte[] additionalData)
@@ -72,7 +74,7 @@ public class Lights extends SHARPSubsystem
 
     public void setLightMode(LightOption lightOption)
     {
-        setLightMode(lightOption.getID(), additionalData);
+        setLightMode(lightOption.getID(), lightOption.getAdditionalData());
     }
 
     public static class LightOption

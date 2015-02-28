@@ -3,6 +3,7 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import javafx.scene.effect.Light;
+import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Lights;
@@ -32,13 +33,14 @@ public class UpdateLightsCommand extends Command
 
         byte elevatorPosition = Elevator.getInstance().getPositionAsByte();
 
-        if(batteryVoltage < 11)
+        if(batteryVoltage < 40)
         {
-            byte batteryVoltageAsByte = (byte) ((DriverStation.getInstance().getBatteryVoltage() / 13) * Byte.MAX_VALUE);
+            double batteryPercent = (batteryVoltage / 13);
+
+            byte batteryPercentByte = (byte) (batteryPercent * Byte.MAX_VALUE);
 
             lightOption = Lights.LightOption.LOW_BATTERY;
-            lightOption.setAdditionalData(batteryVoltageAsByte);
-
+            lightOption.setAdditionalData(batteryPercentByte);
         }
         else if(pressure < 40)
         {
