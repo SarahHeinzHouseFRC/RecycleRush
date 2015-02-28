@@ -39,6 +39,33 @@ public class ScriptedAutonomous
 
             if(pathToCSV == null)
             {
+                file = new File("//home//lvuser//defaultAutonomous.json");
+            }
+            else
+            {
+                file = new File(pathToCSV);
+
+                if(!file.exists())
+                {
+                    file = new File("//home//lvuser//defaultAutonomous.json");
+                }
+            }
+
+
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+
+            return false;
+        }
+
+        try
+        {
+            File file;
+
+            if(pathToCSV == null)
+            {
                 file = new File("//home//lvuser//defaultAutonomous.csv");
             }
             else
