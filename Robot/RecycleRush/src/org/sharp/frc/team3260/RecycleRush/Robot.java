@@ -22,6 +22,7 @@ import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.util.Date;
 
 public class Robot extends IterativeRobot
 {
@@ -35,6 +36,10 @@ public class Robot extends IterativeRobot
     private boolean postedCalibrationStatus;
 
     private boolean showedPressureWarning, showedBatteryWarning;
+
+    private long matchReadyStartTime;
+    private boolean showedMatchReady;
+    private boolean finishedMatchReady;
 
     public Robot()
     {
@@ -110,6 +115,9 @@ public class Robot extends IterativeRobot
 
         log.info("Deleting old log files...");
         Log.deleteOldLogFiles();
+
+        showedMatchReady = false;
+        finishedMatchReady = false;
 
         log.info("Creating status updater...");
         Runnable statusUpdater = Robot.getInstance()::updateStatus;
@@ -286,8 +294,26 @@ public class Robot extends IterativeRobot
                 showedBatteryWarning = false;
             }
 
+            if(!showedMatchReady && DriveTrain.getInstance().isIMUCalibrated())
+            {
+                log.info("Starting match ready display at " + new Date() + ".");
+
+                matchReadyStartTime = System.currentTimeMillis();
+
+                showedMatchReady = true;
+            }
+            else if(!finishedMatchReady)
+            {
+                finishedMatchReady = (System.currentTimeMillis() - 3000) > matchReadyStartTime;
+            }
+
             Lights.getInstance().updateLights();
         }
+    }
+
+    public boolean isDisplayingMatchReady()
+    {
+        return showedMatchReady && !finishedMatchReady;
     }
 
     public Log getLogger()

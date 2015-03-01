@@ -32,7 +32,6 @@ import edu.wpi.first.wpilibj.SerialPort;
 
 public class AHRS extends IMU
 {
-
     static final byte NAVX_MXP_DEFAULT_UPDATE_RATE_HZ = 60;
 
     private AHRSProtocol.AHRSUpdate ahrs_update_data;
@@ -369,26 +368,13 @@ public class AHRS extends IMU
             this.mag_field_norm_ratio = ahrs_update.mag_field_norm_ratio;
 
             // Status/Motion Detection
-            this.is_moving =
-                    (((ahrs_update.sensor_status &
-                       AHRSProtocol.NAVX_SENSOR_STATUS_MOVING) != 0));
-            this.is_rotating =
-                    (((ahrs_update.sensor_status &
-                       AHRSProtocol.NAVX_SENSOR_STATUS_YAW_STABLE) != 0));
-            this.altitude_valid =
-                    (((ahrs_update.sensor_status &
-                       AHRSProtocol.NAVX_SENSOR_STATUS_ALTITUDE_VALID) != 0));
-            this.is_magnetometer_calibrated =
-                    (((ahrs_update.cal_status &
-                       AHRSProtocol.NAVX_CAL_STATUS_MAG_CAL_COMPLETE) != 0));
-            this.magnetic_disturbance =
-                    (((ahrs_update.sensor_status &
-                       AHRSProtocol.NAVX_SENSOR_STATUS_MAG_DISTURBANCE) != 0));
+            this.is_moving = (((ahrs_update.sensor_status & AHRSProtocol.NAVX_SENSOR_STATUS_MOVING) != 0));
+            this.is_rotating = (((ahrs_update.sensor_status & AHRSProtocol.NAVX_SENSOR_STATUS_YAW_STABLE) != 0));
+            this.altitude_valid = (((ahrs_update.sensor_status & AHRSProtocol.NAVX_SENSOR_STATUS_ALTITUDE_VALID) != 0));
+            this.is_magnetometer_calibrated = (((ahrs_update.cal_status & AHRSProtocol.NAVX_CAL_STATUS_MAG_CAL_COMPLETE) != 0));
+            this.magnetic_disturbance = (((ahrs_update.sensor_status & AHRSProtocol.NAVX_SENSOR_STATUS_MAG_DISTURBANCE) != 0));
 
-            updateDisplacement(this.world_linear_accel_x,
-                               this.world_linear_accel_y,
-                               update_rate_hz,
-                               this.is_moving);
+            updateDisplacement(this.world_linear_accel_x, this.world_linear_accel_y, update_rate_hz, this.is_moving);
         }
     }
 

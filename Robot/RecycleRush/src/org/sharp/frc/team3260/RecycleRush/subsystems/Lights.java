@@ -2,6 +2,7 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
+import org.sharp.frc.team3260.RecycleRush.Robot;
 
 public class Lights extends SHARPSubsystem
 {
@@ -77,6 +78,9 @@ public class Lights extends SHARPSubsystem
         public static final LightOption LOW_BATTERY = new LightOption((byte) 1, "LOW_BATTERY");
         public static final LightOption LOW_PRESSURE = new LightOption((byte) 2, "LOW_PRESSURE");
         public static final LightOption ELEVATOR_STATUS = new LightOption((byte) 3, "ELEVATOR_STATUS");
+        public static final LightOption ALLIANCE_COLOR = new LightOption((byte) 4, "ALLIANCE_COLOR");
+        public static final LightOption YOLO = new LightOption((byte) 5, "YOLO");
+        public static final LightOption MATCH_READY = new LightOption((byte) 6, "MATCH_READY");
 
         private String name;
         private byte id;
@@ -144,7 +148,17 @@ public class Lights extends SHARPSubsystem
 
         boolean gripperClosed = Gripper.getInstance().isClosed();
 
-        if(batteryVoltage < 11)
+        double pitch = DriveTrain.getInstance().getIMU().getPitch();
+
+        if(Robot.getInstance().isDisplayingMatchReady())
+        {
+            lightOption = LightOption.MATCH_READY;
+        }
+        else if(pitch > 40 || pitch < 30)
+        {
+            lightOption = LightOption.YOLO;
+        }
+        else if(batteryVoltage < 11)
         {
             double batteryPercent = (batteryVoltage / 13);
 
@@ -160,7 +174,12 @@ public class Lights extends SHARPSubsystem
             lightOption = Lights.LightOption.LOW_PRESSURE;
             lightOption.setAdditionalData(pressureAsByte);
         }
-        else if(elevatorPosition > 500 || gripperClosed)
+        else if(DriverStation.getInstance().isDisabled() && DriverStation.getInstance().isFMSAttached())
+        {
+            lightOption = LightOption.ALLIANCE_COLOR;
+            lightOption.setAdditionalData((byte) (DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red ? 0 : 1));
+        }
+        else if(elevatorPosition > 10 || gripperClosed)
         {
             lightOption = Lights.LightOption.ELEVATOR_STATUS;
             lightOption.setAdditionalData(Elevator.getInstance().getPositionAsByte());
