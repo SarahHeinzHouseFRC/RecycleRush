@@ -5,19 +5,30 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.JSONArray;
 import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
-
+import java.io.*;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.ClassNotFoundException;
+import java.lang.InstantiationException;
 import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class ScriptedAutonomous
 {
+
     private static final Log log = new Log("ScriptedAutonomous", Log.ATTRIBUTE_TIME);
+
+
 
     private CommandGroup commandGroup;
 
@@ -31,6 +42,57 @@ public class ScriptedAutonomous
 
     private boolean loadCSV()
     {
+            JSONParser parser = new JSONParser();
+            Object obj = new Object();
+
+        try {
+            obj = parser.parse(new FileReader("//home//lvuser//defaultAutonomous.json"));
+        }
+        catch (org.json.simple.parser.ParseException | IOException e)
+        {
+            log.error("Json File not Found");
+        }
+
+            JSONObject jsonObject = (JSONObject) obj;
+
+            String autonomousName = (String) jsonObject.get("Autonomous Name");
+            JSONArray commandList = (JSONArray) jsonObject.get("Commands");
+
+            boolean classFound = false;
+            Iterator iterator = commandList.iterator();
+            while(iterator.hasNext())
+            {
+                JSONObject currentCommand = (JSONObject) iterator.next();
+                String robotClass = (String) currentCommand.get("Robot Class");
+                Class commandClass = null;
+                try{
+                     commandClass = Class.forName(robotClass);
+                    classFound = true;
+                }catch (ClassNotFoundException e) {
+                    log.info("Class: " + robotClass + " not found");
+                }
+                if(classFound){
+                    switch (robotClass)
+                    {
+                        case "DriveDistanceCommand":
+                            int distance = Integer.parseInt(currentCommand.get("Disance").toString());
+                            int speed = Integer.parseInt(currentCommand.get("Speed").toString());
+
+                            addSequential(new DriveDistanceCommand(distance,speed));
+
+                           /* try{
+                            addSequential( (Command) commandClass.newInstance());
+                            }catch (InstantiationException | IllegalAccessException e ){
+
+                            }*/
+                    }
+
+
+
+
+                }
+            }
+
         int numCommandsAdded = 0;
 
         try

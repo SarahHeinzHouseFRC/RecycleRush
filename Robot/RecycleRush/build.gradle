@@ -19,7 +19,7 @@ apply plugin: 'eclipse'
 
 dependencies {
     compile files('gradle/libs/commons-csv-1.1.jar')
-    compile files('gradle/libs/json-20141113.jar')
+    compile files('gradle/libs/json-simple-1.1.1.jar')
 }
 
 sourceSets.main.java.srcDirs = ["src"]
