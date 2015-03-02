@@ -19,6 +19,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.lang.ClassNotFoundException;
 import java.lang.InstantiationException;
+import java.lang.Integer;
 import java.util.*;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -76,20 +77,46 @@ public class ScriptedAutonomous
                     {
                         case "DriveDistanceCommand":
                             int distance = Integer.parseInt(currentCommand.get("Disance").toString());
+
+                            addSequential(new DriveDistanceCommand(distance));
+                            break;
+
+                        case "DriveAtSpeedCommand":
+                            int time = Integer.parseInt(currentCommand.get("Time").toString());
                             int speed = Integer.parseInt(currentCommand.get("Speed").toString());
 
-                            addSequential(new DriveDistanceCommand(distance,speed));
+                            addSequential(new DriveAtSpeedCommand(speed,time));
+                            break;
 
-                           /* try{
-                            addSequential( (Command) commandClass.newInstance());
-                            }catch (InstantiationException | IllegalAccessException e ){
+                        case "RotateToHeadingCommand":
+                            int angle = Integer.parseInt(currentCommand.get("Angle to Rotate").toString());
 
-                            }*/
+                            addSequential(new RotateToHeadingCommand(angle,true));
+                            break;
+
+                        case "OpenGripperCommand":
+                            addSequential(new OpenGripperCommand());
+                            break;
+
+                        case "CloseGripperCommand":
+                            addSequential(new CloseGripperCommand);
+                            break;
+
+                        case "RobotIdleCommand":
+                            int time = Integer.parseInt(currentCommand.get("Time").toString());
+                            addSequential(new RobotIdleCommand(time));
+                            break;
+
+                        case "ElevatorToSetpointCommand":
+                            int elevatorSetPoint = Integer.parseInt(currentCommand.get("Elevator Setpoint").toString());
+
+                            addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositonByIndex(elevatorSetPoint)));
+                            break;
+
+                        case "ZeroGyroCommand":
+                            addSequential(new ZeroGyroCommand());
+                            break;
                     }
-
-
-
-
                 }
             }
 
