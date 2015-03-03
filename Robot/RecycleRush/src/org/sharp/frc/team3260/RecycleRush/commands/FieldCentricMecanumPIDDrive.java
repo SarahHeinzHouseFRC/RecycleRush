@@ -4,15 +4,15 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
+import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 public class FieldCentricMecanumPIDDrive extends Command
 {
     Joystick driveJoystick = OI.getInstance().getMainGamepad();
-
-    public double ROTATION_DEADBAND = 0.1;
 
     public FieldCentricMecanumPIDDrive()
     {
@@ -32,11 +32,9 @@ public class FieldCentricMecanumPIDDrive extends Command
         double forward = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
         double rotation = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X);
 
-        rotation = Math.abs(rotation) > ROTATION_DEADBAND ? rotation : 0;
-
-        strafe = Math.abs(strafe) > ROTATION_DEADBAND ? strafe : 0;
-
-        forward = Math.abs(forward) > ROTATION_DEADBAND ? forward : 0;
+        rotation = Util.handleDeadband(rotation, Constants.joystickDeadband.getDouble());
+        strafe = Util.handleDeadband(strafe, Constants.joystickDeadband.getDouble());
+        forward = Util.handleDeadband(forward, Constants.joystickDeadband.getDouble());
 
         if(DriveTrain.getInstance().getIMU() == null)
         {

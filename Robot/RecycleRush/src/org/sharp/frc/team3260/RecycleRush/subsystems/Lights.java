@@ -107,7 +107,7 @@ public class Lights extends SHARPSubsystem
 
         public void resetAdditionalData()
         {
-            additionalData = new byte[] { };
+            additionalData = new byte[]{};
         }
 
         public byte[] getAdditionalData()
@@ -154,7 +154,7 @@ public class Lights extends SHARPSubsystem
         {
             lightOption = LightOption.MATCH_READY;
         }
-        else if (pitch > 40 || pitch < -40)
+        else if(pitch > 40 || pitch < -40)
         {
             lightOption = LightOption.YOLO;
         }
@@ -167,7 +167,7 @@ public class Lights extends SHARPSubsystem
             lightOption = Lights.LightOption.LOW_BATTERY;
             lightOption.setAdditionalData(batteryPercentByte);
         }
-        else if (pressure < 40)
+        else if(pressure < 40)
         {
             byte pressureAsByte = (byte) ((DriverStation.getInstance().getBatteryVoltage() / 120) * Byte.MAX_VALUE);
 

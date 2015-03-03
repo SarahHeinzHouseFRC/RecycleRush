@@ -72,6 +72,13 @@ public abstract class ConstantsBase
             this.value = value;
             constants.addElement(this);
         }
+        
+        public Constant(String name, boolean value)
+        {
+            this.name = name;
+            this.value = value ? 1 : 0;
+            constants.addElement(this);
+        }
 
         public String getName()
         {
@@ -88,7 +95,10 @@ public abstract class ConstantsBase
             return (int) value;
         }
 
-        public boolean getBoolean() { return (value == 1); }
+        public boolean getBoolean()
+        {
+            return (value == 1);
+        }
 
         public void setVal(double value)
         {

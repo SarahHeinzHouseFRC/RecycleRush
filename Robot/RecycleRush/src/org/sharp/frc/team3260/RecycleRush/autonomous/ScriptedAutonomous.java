@@ -41,7 +41,7 @@ public class ScriptedAutonomous
         {
             jsonObject = (JSONObject) parser.parse(new FileReader("/U/Autonomous/" + pathToJSON));
         }
-        catch (Exception e)
+        catch(Exception e)
         {
             log.error("JSON File not Found, exception: " + e.toString());
 
@@ -50,7 +50,7 @@ public class ScriptedAutonomous
 
         JSONArray commandList = (JSONArray) jsonObject.get("Commands");
 
-        for (Object objCurrentCommand : commandList)
+        for(Object objCurrentCommand : commandList)
         {
             JSONObject currentCommand = (JSONObject) objCurrentCommand;
             String commandClass = (String) currentCommand.get("Command");
@@ -59,12 +59,12 @@ public class ScriptedAutonomous
 
             int time, speed, distance, angle, level;
 
-            if (commandClass == null || commandClass.equals(""))
+            if(commandClass == null || commandClass.equals(""))
             {
                 continue;
             }
 
-            switch (commandClass)
+            switch(commandClass)
             {
                 case "DriveDistanceCommand":
                     distance = Integer.parseInt(currentCommand.get("Distance").toString());
@@ -126,7 +126,7 @@ public class ScriptedAutonomous
 
     public void setPathToJSON(String path)
     {
-        if (!pathToJSON.equals(path))
+        if(!pathToJSON.equals(path))
         {
             pathToJSON = path;
 
@@ -136,7 +136,7 @@ public class ScriptedAutonomous
 
     public void setPathToCSV(String path, boolean forced)
     {
-        if (!pathToJSON.equals(path) || forced)
+        if(!pathToJSON.equals(path) || forced)
         {
             pathToJSON = path;
 
@@ -146,14 +146,14 @@ public class ScriptedAutonomous
 
     public void load()
     {
-        if (pathToJSON == null)
+        if(pathToJSON == null)
         {
             log.warn("pathToJSON is null, setting Autonomous to BasicAutonomousCommandGroup.");
 
             pathToJSON = BasicAutonomousCommandGroup.class.getSimpleName();
         }
 
-        if (pathToJSON.equals(BasicAutonomousCommandGroup.class.getSimpleName()))
+        if(pathToJSON.equals(BasicAutonomousCommandGroup.class.getSimpleName()))
         {
             log.warn("User asked for BasicAutonomousCommandGroup.");
 
@@ -168,7 +168,7 @@ public class ScriptedAutonomous
 
         getLog().info("Autonomous loading was " + (commandsLoaded ? "successful." : "not successful."));
 
-        if (!commandsLoaded)
+        if(!commandsLoaded)
         {
             getLog().info("Set command group to " + BasicAutonomousCommandGroup.class.getSimpleName() + ".");
 

@@ -7,11 +7,6 @@ import java.util.Vector;
 
 public class Util
 {
-    // Prevent this class from being instantiated.
-    private Util()
-    {
-    }
-
     public static String getFile(String fileName)
     {
         String content = "";
@@ -45,7 +40,7 @@ public class Util
      */
     public static String[] split(String input, String delimiter)
     {
-        Vector nodes = new Vector();
+        Vector<String> nodes = new Vector<>();
         int index = input.indexOf(delimiter);
         while(index >= 0)
         {
@@ -58,7 +53,7 @@ public class Util
         String[] retString = new String[nodes.size()];
         for(int i = 0; i < nodes.size(); ++i)
         {
-            retString[i] = (String) nodes.elementAt(i);
+            retString[i] = nodes.elementAt(i);
         }
 
         return retString;
@@ -105,5 +100,10 @@ public class Util
     public static double limit(double val, double limit)
     {
         return (Math.abs(val) < Math.abs(limit)) ? val : (val < 0 ? -limit : limit);
+    }
+
+    public static double handleDeadband(double value, double deadband)
+    {
+        return (Math.abs(value) > Math.abs(deadband)) ? value : 0.0;
     }
 }

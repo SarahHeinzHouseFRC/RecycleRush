@@ -2,6 +2,7 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
+import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
@@ -44,8 +45,8 @@ public class SHARPDriveCommand extends Command
         double wheel;
         double throttle;
 
-        wheel = handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X), 0.05);
-        throttle = -handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y), 0.05);
+        wheel = Util.handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X), Constants.joystickDeadband.getDouble());
+        throttle = -Util.handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y), Constants.joystickDeadband.getDouble());
 
         double negInertia = wheel - oldWheel;
         oldWheel = wheel;
@@ -167,10 +168,5 @@ public class SHARPDriveCommand extends Command
 
     protected void interrupted()
     {
-    }
-
-    public double handleDeadband(double value, double deadband)
-    {
-        return (Math.abs(value) > Math.abs(deadband)) ? value : 0.0;
     }
 }

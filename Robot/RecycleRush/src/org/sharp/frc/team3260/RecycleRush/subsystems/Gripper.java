@@ -9,9 +9,6 @@ public class Gripper extends SHARPSubsystem
 {
     protected static Gripper instance;
 
-    private Solenoid outSolenoid;
-    private Solenoid inSolenoid;
-
     private DoubleSolenoid solenoid;
 
     public Gripper()

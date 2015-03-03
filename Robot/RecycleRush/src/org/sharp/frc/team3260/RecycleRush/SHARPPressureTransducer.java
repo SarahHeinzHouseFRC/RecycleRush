@@ -21,7 +21,7 @@ public class SHARPPressureTransducer extends SensorBase implements LiveWindowSen
 
         analog.setAverageBits(12);
 
-        LiveWindow.addSensor("Pressure", analog.getChannel(), this);
+        LiveWindow.addSensor("Pressure Transducer", analog.getChannel(), this);
     }
 
     public double getVoltage()
@@ -72,6 +72,6 @@ public class SHARPPressureTransducer extends SensorBase implements LiveWindowSen
 
     public String getSmartDashboardType()
     {
-        return "Pressure";
+        return "Pressure Transducer";
     }
 }

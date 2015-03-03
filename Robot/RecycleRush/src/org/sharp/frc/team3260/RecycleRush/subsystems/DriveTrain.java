@@ -24,16 +24,9 @@ public class DriveTrain extends SHARPSubsystem
 
     private boolean firstIteration;
 
-    protected double rotationControllerP = 0.00573,
-            rotationControllerI = 0.0001,
-            rotationControllerD = 0.0,
-            rotationControllerF = 0.0;
-
     protected double gyroOffset = 0.0;
 
     protected double rotationControllerOutput = 0.0;
-
-    protected static final double ROTATION_PID_THRESHOLD = 0.05;
 
     protected double rotationTarget = 0.0;
     protected boolean rotatingToTarget = false;
@@ -51,10 +44,10 @@ public class DriveTrain extends SHARPSubsystem
 
         transducer = new SHARPPressureTransducer(0);
 
-        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), 5);
-        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), 5);
-        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), 5);
-        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt(), 5);
+        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
+        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
+        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
+        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
 
         frontLeftTalon.enableBrakeMode(true);
         frontRightTalon.enableBrakeMode(true);
@@ -95,7 +88,7 @@ public class DriveTrain extends SHARPSubsystem
         {
             LiveWindow.addSensor("IMU", "Gyro", imu);
 
-            driveRotationController = new PIDController(rotationControllerP, rotationControllerI, rotationControllerD, rotationControllerF, getIMUPIDSource(), output -> rotationControllerOutput = output);
+            driveRotationController = new PIDController(Constants.rotationControllerP.getDouble(), Constants.rotationControllerI.getDouble(), Constants.rotationControllerD.getDouble(), Constants.rotationControllerF.getDouble(), getIMUPIDSource(), output -> rotationControllerOutput = output);
 
             driveRotationController.setPercentTolerance(1);
 
@@ -131,25 +124,25 @@ public class DriveTrain extends SHARPSubsystem
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 frontLeftTalon.set(0.0);
                 frontLeftTalon.setProfile(1);
-                frontLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
+                frontLeftTalon.setPID(Constants.driveSpeedControllerP.getDouble(), Constants.driveSpeedControllerI.getDouble(), Constants.driveSpeedControllerD.getDouble(), 0, 0, Constants.driveSpeedControllerCloseLoopRampRate.getInt(), 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 frontRightTalon.set(0.0);
                 frontRightTalon.setProfile(1);
-                frontRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
+                frontRightTalon.setPID(Constants.driveSpeedControllerP.getDouble(), Constants.driveSpeedControllerI.getDouble(), Constants.driveSpeedControllerD.getDouble(), 0, 0, Constants.driveSpeedControllerCloseLoopRampRate.getInt(), 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 backLeftTalon.set(0.0);
                 backLeftTalon.setProfile(1);
-                backLeftTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
+                backLeftTalon.setPID(Constants.driveSpeedControllerP.getDouble(), Constants.driveSpeedControllerI.getDouble(), Constants.driveSpeedControllerD.getDouble(), 0, 0, Constants.driveSpeedControllerCloseLoopRampRate.getInt(), 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Speed);
                 backRightTalon.set(0.0);
                 backRightTalon.setProfile(1);
-                backRightTalon.setPID(0.93239296, 0, 0, 0, 0, 12, 0);
+                backRightTalon.setPID(Constants.driveSpeedControllerP.getDouble(), Constants.driveSpeedControllerI.getDouble(), Constants.driveSpeedControllerD.getDouble(), 0, 0, Constants.driveSpeedControllerCloseLoopRampRate.getInt(), 0);
                 backRightTalon.enableControl();
 
                 log.info("ControlMode changed to " + controlMode.name());
@@ -159,25 +152,25 @@ public class DriveTrain extends SHARPSubsystem
                 frontLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontLeftTalon.set(0.0);
                 frontLeftTalon.setProfile(0);
-                frontLeftTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
+                frontLeftTalon.setPID(Constants.drivePositionControllerP.getDouble(), Constants.drivePositionControllerI.getDouble(), Constants.drivePositionControllerD.getDouble(), 0, 0, Constants.drivePositionControllerCloseLoopRampRate.getInt(), 0);
                 frontLeftTalon.enableControl();
 
                 frontRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 frontRightTalon.set(0.0);
                 frontRightTalon.setProfile(0);
-                frontRightTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
+                frontRightTalon.setPID(Constants.drivePositionControllerP.getDouble(), Constants.drivePositionControllerI.getDouble(), Constants.drivePositionControllerD.getDouble(), 0, 0, Constants.drivePositionControllerCloseLoopRampRate.getInt(), 0);
                 frontRightTalon.enableControl();
 
                 backLeftTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backLeftTalon.set(0.0);
                 backLeftTalon.setProfile(0);
-                backLeftTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
+                backLeftTalon.setPID(Constants.drivePositionControllerP.getDouble(), Constants.drivePositionControllerI.getDouble(), Constants.drivePositionControllerD.getDouble(), 0, 0, Constants.drivePositionControllerCloseLoopRampRate.getInt(), 0);
                 backLeftTalon.enableControl();
 
                 backRightTalon.changeControlMode(CANTalon.ControlMode.Position);
                 backRightTalon.set(0.0);
                 backRightTalon.setProfile(0);
-                backRightTalon.setPID(0.875, 0, 0, 0, 0, 0, 0);
+                backRightTalon.setPID(Constants.drivePositionControllerP.getDouble(), Constants.drivePositionControllerI.getDouble(), Constants.drivePositionControllerD.getDouble(), 0, 0, Constants.drivePositionControllerCloseLoopRampRate.getInt(), 0);
                 backRightTalon.enableControl();
 
                 log.info("ControlMode changed to " + controlMode.name());
@@ -307,7 +300,7 @@ public class DriveTrain extends SHARPSubsystem
 
         if(driveRotationController.isEnable())
         {
-            if(Math.abs(rotationSpeed) >= ROTATION_PID_THRESHOLD)
+            if(Math.abs(rotationSpeed) >= Constants.rotationControllerThreshold.getDouble())
             {
                 driveRotationController.disable();
             }
@@ -318,7 +311,7 @@ public class DriveTrain extends SHARPSubsystem
         }
         else
         {
-            if(Math.abs(rotationSpeed) < ROTATION_PID_THRESHOLD)
+            if(Math.abs(rotationSpeed) < Constants.rotationControllerThreshold.getDouble())
             {
                 gyroOffset = getIMU().getYaw();
                 driveRotationController.setSetpoint(gyroOffset);
@@ -389,7 +382,7 @@ public class DriveTrain extends SHARPSubsystem
             return false;
         }
 
-        return talonOnTarget(frontLeftTalon, 200) && talonOnTarget(backLeftTalon, 200) && talonOnTarget(frontRightTalon, 200) && talonOnTarget(backRightTalon, 200);
+        return talonOnTarget(frontLeftTalon, Constants.driveControllerOnTargetThreshold.getInt()) && talonOnTarget(backLeftTalon, Constants.driveControllerOnTargetThreshold.getInt()) && talonOnTarget(frontRightTalon, Constants.driveControllerOnTargetThreshold.getInt()) && talonOnTarget(backRightTalon, Constants.driveControllerOnTargetThreshold.getInt());
     }
 
     protected boolean talonOnTarget(CANTalon talon, double tolerance)
@@ -433,8 +426,8 @@ public class DriveTrain extends SHARPSubsystem
     protected static void normalize(double wheelSpeeds[])
     {
         double maxMagnitude = Math.abs(wheelSpeeds[0]);
-        int i;
-        for(i = 1; i < wheelSpeeds.length; i++)
+
+        for(int i = 1; i < wheelSpeeds.length; i++)
         {
             double temp = Math.abs(wheelSpeeds[i]);
             if(maxMagnitude < temp)
@@ -442,9 +435,10 @@ public class DriveTrain extends SHARPSubsystem
                 maxMagnitude = temp;
             }
         }
+        
         if(maxMagnitude > 1.0)
         {
-            for(i = 0; i < wheelSpeeds.length; i++)
+            for(int i = 0; i < wheelSpeeds.length; i++)
             {
                 wheelSpeeds[i] = wheelSpeeds[i] / maxMagnitude;
             }

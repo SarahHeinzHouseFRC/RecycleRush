@@ -3,15 +3,15 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
+import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
+import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 public class FIRSTMecanumDriveCommand extends Command
 {
     Joystick driveJoystick = OI.getInstance().getMainGamepad();
-
-    public double JOYSTICK_DEADBAND = 0.1;
 
     public FIRSTMecanumDriveCommand()
     {
@@ -30,12 +30,10 @@ public class FIRSTMecanumDriveCommand extends Command
         double strafe = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_X);
         double forward = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
         double rotation = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X);
-
-        rotation = Math.abs(rotation) > JOYSTICK_DEADBAND ? rotation : 0;
-
-        strafe = Math.abs(strafe) > JOYSTICK_DEADBAND ? strafe : 0;
-
-        forward = Math.abs(forward) > JOYSTICK_DEADBAND ? forward : 0;
+        
+        rotation = Util.handleDeadband(rotation, Constants.joystickDeadband.getDouble());
+        strafe = Util.handleDeadband(strafe, Constants.joystickDeadband.getDouble());
+        forward = Util.handleDeadband(forward, Constants.joystickDeadband.getDouble());
 
         if(DriveTrain.getInstance().getIMU() == null || OI.getInstance().getMainGamepad().getRawButton(SHARPGamepad.BUTTON_LEFT_JOYSTICK))
         {

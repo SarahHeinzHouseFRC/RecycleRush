@@ -70,22 +70,22 @@ public class AHRS extends IMU
         ahrs_update_data = new AHRSProtocol.AHRSUpdate();
         update_type = AHRSProtocol.MSGID_AHRS_UPDATE;
         world_linear_accel_x =
-        world_linear_accel_y =
-        world_linear_accel_z =
-        mpu_temp_c =
-        fused_heading =
-        altitude =
-        barometric_pressure =
-        baro_sensor_temp_c =
-        mag_field_norm_ratio = 0.0f;
+                world_linear_accel_y =
+                        world_linear_accel_z =
+                                mpu_temp_c =
+                                        fused_heading =
+                                                altitude =
+                                                        barometric_pressure =
+                                                                baro_sensor_temp_c =
+                                                                        mag_field_norm_ratio = 0.0f;
         cal_mag_x =
-        cal_mag_y =
-        cal_mag_z = 0;
+                cal_mag_y =
+                        cal_mag_z = 0;
         is_moving =
-        is_rotating =
-        altitude_valid =
-        is_magnetometer_calibrated =
-        magnetic_disturbance = false;
+                is_rotating =
+                        altitude_valid =
+                                is_magnetometer_calibrated =
+                                        magnetic_disturbance = false;
         resetDisplacement();
     }
 
@@ -400,8 +400,9 @@ public class AHRS extends IMU
      * Velocity in meters/sec (based upon velocity in the previous sample).  Finally, this value
      * is converted to displacement in meters, and integrated.
      */
-    private void updateDisplacement(float accel_x_g, float accel_y_g,
-                                    int update_rate_hz, boolean is_moving)
+    private void updateDisplacement(
+            float accel_x_g, float accel_y_g,
+            int update_rate_hz, boolean is_moving)
     {
         if(is_moving)
         {

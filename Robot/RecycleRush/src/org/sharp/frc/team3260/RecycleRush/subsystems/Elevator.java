@@ -9,15 +9,11 @@ import java.util.HashMap;
 
 public class Elevator extends SHARPSubsystem
 {
-    private static final int ELEVATOR_TOLERANCE = 200;
-
     protected static Elevator instance;
 
     private CANTalon elevatorTalon;
 
     private boolean useEncoder = false;
-
-    private int maxSpeedTicks = 50;
 
     public Elevator()
     {
@@ -25,19 +21,19 @@ public class Elevator extends SHARPSubsystem
 
         instance = this;
 
-        elevatorTalon = new CANTalon(Constants.elevatorTalonID.getInt(), 5);
+        elevatorTalon = new CANTalon(Constants.elevatorTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
 
         elevatorTalon.enableBrakeMode(true);
 
-        elevatorTalon.reverseOutput(false);
+        elevatorTalon.reverseOutput(Constants.elevatorReverseOutput.getBoolean());
 
-        elevatorTalon.reverseSensor(true);
+        elevatorTalon.reverseSensor(Constants.elevatorReverseSensor.getBoolean());
 
         elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
         elevatorTalon.setProfile(1);
 
-        elevatorTalon.setPID(1.2, 0.0, 0.01);
+        elevatorTalon.setPID(Constants.elevatorPositionControllerP.getDouble(), Constants.elevatorPositionControllerI.getDouble(), Constants.elevatorPositionControllerD.getDouble());
 
         elevatorTalon.setReverseSoftLimit(ElevatorPosition.GROUND.encoderValue);
 
@@ -84,26 +80,12 @@ public class Elevator extends SHARPSubsystem
 
     public void up(double speed)
     {
-        if(useEncoder)
-        {
-            setElevator(elevatorTalon.getPosition() + (speed * maxSpeedTicks));
-        }
-        else
-        {
-            setElevator(speed);
-        }
+        setElevator(speed);
     }
 
     public void down(double speed)
     {
-        if(useEncoder)
-        {
-            setElevator(elevatorTalon.getPosition() - (speed * maxSpeedTicks));
-        }
-        else
-        {
-            setElevator(-speed);
-        }
+        setElevator(-speed);
     }
 
     public void setElevator(int setpoint)
@@ -129,7 +111,7 @@ public class Elevator extends SHARPSubsystem
 
     public boolean atSetpoint()
     {
-        return (!useEncoder || (Math.abs(elevatorTalon.getPosition() - elevatorTalon.getSetpoint()) < ELEVATOR_TOLERANCE) || (elevatorTalon.getSetpoint() < 0 && elevatorTalon.isRevLimitSwitchClosed()));
+        return (!useEncoder || (Math.abs(elevatorTalon.getPosition() - elevatorTalon.getSetpoint()) < Constants.elevatorControllerOnTargetThreshold.getInt()) || (elevatorTalon.getSetpoint() < 0 && elevatorTalon.isRevLimitSwitchClosed()));
     }
 
     public void stop()
