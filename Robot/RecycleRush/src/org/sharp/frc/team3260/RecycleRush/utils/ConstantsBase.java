@@ -8,8 +8,8 @@ public abstract class ConstantsBase
 {
     private static final Log log = new Log("ConstantsBase", Log.ATTRIBUTE_TIME);
 
-    private static final Vector constants = new Vector();
-    private static final String CONSTANTS_FILE_PATH = "/Constants/Constants.txt";
+    private static final Vector<Constant> constants = new Vector<>();
+    private static final String CONSTANTS_FILE_PATH = "/U/Constants.txt";
 
     public static void readConstantsFromFile()
     {
@@ -38,7 +38,7 @@ public abstract class ConstantsBase
 
                 for(int j = 0; j < constants.size(); j++)
                 {
-                    Constant constant = (Constant) constants.elementAt(j);
+                    Constant constant = constants.elementAt(j);
 
                     if(constant.getName().compareTo(line[0]) == 0)
                     {

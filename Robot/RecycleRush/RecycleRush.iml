@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module external.linked.project.id="RecycleRush" external.linked.project.path="$MODULE_DIR$" external.root.project.path="$MODULE_DIR$" external.system.id="GRADLE" external.system.module.group="" external.system.module.version="unspecified" type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <varelement var="jar://$wpilib$!/" value="wpilib" />
+    <varelement var="jar://$wpilib.sources$!/" value="src:wpilib.sources" />
+    <varelement var="jar://$networktables$!/" value="networktables" />
+    <varelement var="jar://$networktables.sources$!/" value="src:networktables.sources" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src" expected_position="0" />
+    </src_description>
+  </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/build/classes/main" />
     <output-test url="file://$MODULE_DIR$/build/classes/test" />
@@ -15,11 +24,28 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library" exported="">
+      <library name="Gradle: commons-csv-1.1">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/gradle/libs/commons-csv-1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/gradle/libs/commons-csv-1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="Gradle: json-simple-1.1.1">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/gradle/libs/json-simple-1.1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/gradle/libs/json-simple-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
       <library name="Gradle: NetworkTables">
         <CLASSES>
-          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/NetworkTables.jar!/" />
-          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/NetworkTables.jar!/" />
-          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/NetworkTables.jar!/" />
           <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/NetworkTables.jar!/" />
         </CLASSES>
         <JAVADOC />
@@ -30,31 +56,6 @@
       <library name="Gradle: WPILib">
         <CLASSES>
           <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib.jar!/" />
-          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib.jar!/" />
-          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib.jar!/" />
-          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library name="Gradle: commons-csv-1.1">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/gradle/libs/commons-csv-1.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/gradle/libs/commons-csv-1.1.jar!/" />
-          <root url="jar://$MODULE_DIR$/gradle/libs/commons-csv-1.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library name="Gradle: json-20141113">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/gradle/libs/json-20141113.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />

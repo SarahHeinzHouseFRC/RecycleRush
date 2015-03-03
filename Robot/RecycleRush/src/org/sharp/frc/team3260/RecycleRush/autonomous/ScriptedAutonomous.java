@@ -2,325 +2,116 @@ package org.sharp.frc.team3260.RecycleRush.autonomous;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.JSONArray;
 import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
-import java.io.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.io.FileReader;
-import java.io.IOException;
-import java.lang.ClassNotFoundException;
-import java.lang.InstantiationException;
-import java.lang.Integer;
-import java.util.*;
-import java.util.HashMap;
-import java.util.Iterator;
 
 public class ScriptedAutonomous
 {
-
     private static final Log log = new Log("ScriptedAutonomous", Log.ATTRIBUTE_TIME);
-
-
 
     private CommandGroup commandGroup;
 
     private boolean commandsLoaded;
-    private String pathToCSV;
+    private String pathToJSON;
 
     public ScriptedAutonomous()
     {
         load();
     }
 
-    private boolean loadCSV()
+    private boolean loadJSON()
     {
-            JSONParser parser = new JSONParser();
-            Object obj = new Object();
+        commandGroup = new CommandGroup();
 
-        try {
-            obj = parser.parse(new FileReader("//home//lvuser//defaultAutonomous.json"));
-        }
-        catch (org.json.simple.parser.ParseException | IOException e)
-        {
-            log.error("Json File not Found");
-        }
+        JSONParser parser = new JSONParser();
 
-            JSONObject jsonObject = (JSONObject) obj;
-
-            String autonomousName = (String) jsonObject.get("Autonomous Name");
-            JSONArray commandList = (JSONArray) jsonObject.get("Commands");
-
-            boolean classFound = false;
-            Iterator iterator = commandList.iterator();
-            while(iterator.hasNext())
-            {
-                JSONObject currentCommand = (JSONObject) iterator.next();
-                String robotClass = (String) currentCommand.get("Robot Class");
-                Class commandClass = null;
-                try{
-                     commandClass = Class.forName(robotClass);
-                    classFound = true;
-                }catch (ClassNotFoundException e) {
-                    log.info("Class: " + robotClass + " not found");
-                }
-                if(classFound){
-                    switch (robotClass)
-                    {
-                        case "DriveDistanceCommand":
-                            int distance = Integer.parseInt(currentCommand.get("Disance").toString());
-
-                            addSequential(new DriveDistanceCommand(distance));
-                            break;
-
-                        case "DriveAtSpeedCommand":
-                            int time = Integer.parseInt(currentCommand.get("Time").toString());
-                            int speed = Integer.parseInt(currentCommand.get("Speed").toString());
-
-                            addSequential(new DriveAtSpeedCommand(speed,time));
-                            break;
-
-                        case "RotateToHeadingCommand":
-                            int angle = Integer.parseInt(currentCommand.get("Angle to Rotate").toString());
-
-                            addSequential(new RotateToHeadingCommand(angle,true));
-                            break;
-
-                        case "OpenGripperCommand":
-                            addSequential(new OpenGripperCommand());
-                            break;
-
-                        case "CloseGripperCommand":
-                            addSequential(new CloseGripperCommand);
-                            break;
-
-                        case "RobotIdleCommand":
-                            int time = Integer.parseInt(currentCommand.get("Time").toString());
-                            addSequential(new RobotIdleCommand(time));
-                            break;
-
-                        case "ElevatorToSetpointCommand":
-                            int elevatorSetPoint = Integer.parseInt(currentCommand.get("Elevator Setpoint").toString());
-
-                            addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositonByIndex(elevatorSetPoint)));
-                            break;
-
-                        case "ZeroGyroCommand":
-                            addSequential(new ZeroGyroCommand());
-                            break;
-                    }
-                }
-            }
+        JSONObject jsonObject;
 
         int numCommandsAdded = 0;
 
+        log.info(pathToJSON);
+
         try
         {
-            File file;
-
-            if(pathToCSV == null)
-            {
-                file = new File("//home//lvuser//defaultAutonomous.json");
-            }
-            else
-            {
-                file = new File(pathToCSV);
-
-                if(!file.exists())
-                {
-                    file = new File("//home//lvuser//defaultAutonomous.json");
-                }
-            }
-
-
+            jsonObject = (JSONObject) parser.parse(new FileReader("/U/Autonomous/" + pathToJSON));
         }
-        catch(Exception ex)
+        catch (Exception e)
         {
-            ex.printStackTrace();
+            log.error("JSON File not Found, exception: " + e.toString());
 
             return false;
         }
 
-        try
+        JSONArray commandList = (JSONArray) jsonObject.get("Commands");
+
+        for (Object aCommandList : commandList)
         {
-            File file;
+            JSONObject currentCommand = (JSONObject) aCommandList;
+            String robotClass = (String) currentCommand.get("Command");
 
-            if(pathToCSV == null)
-            {
-                file = new File("//home//lvuser//defaultAutonomous.csv");
-            }
-            else
-            {
-                file = new File(pathToCSV);
+            numCommandsAdded++;
 
-                if(!file.exists())
-                {
-                    file = new File("//home//lvuser//defaultAutonomous.csv");
-                }
+            int time, speed, distance, angle, level;
+
+            if (robotClass == null)
+            {
+                continue;
             }
 
-            FileReader fileReader = new FileReader(file);
-
-            BufferedReader reader = new BufferedReader(fileReader);
-            String line = reader.readLine();
-            List<String> headers = Arrays.asList(line.split(","));
-
-            Map<String, List<String>> mappedByHeader = new HashMap<>();
-
-            CSVParser csvFileParser;
-            CSVFormat csvFileFormat;
-
-            String[] headerArray = new String[headers.size()];
-            headerArray = headers.toArray(headerArray);
-
-            List<CSVRecord> csvRecords;
-
-            // run through each key add its values to the vector
-
-            csvFileFormat = CSVFormat.DEFAULT.withHeader(headerArray).withSkipHeaderRecord();
-
-            csvFileParser = new CSVParser(new FileReader(file), csvFileFormat);
-
-            csvRecords = csvFileParser.getRecords();
-
-            if(csvRecords != null)
+            switch (robotClass)
             {
-                if(!csvRecords.isEmpty())
-                {
-                    for(int i = 0; i < csvRecords.size(); i++)
-                    {
-                        for(String header : headers)
-                        {
-                            if(i == 0)
-                            {
-                                mappedByHeader.put(header, new ArrayList<>());
-                            }
+                case "DriveDistanceCommand":
+                    distance = Integer.parseInt(currentCommand.get("Distance").toString());
 
-                            mappedByHeader.get(header).add(csvRecords.get(i).get(header));
-                        }
-                    }
+                    addSequential(new DriveDistanceCommand(distance));
+                    break;
 
-                    for(int i = 0; i < mappedByHeader.get("ID").size(); i++)
-                    {
-                        /* Add the ID's and process their given variables. */
-                        int currentID = Integer.parseInt(mappedByHeader.get("ID").get(i));
-                        double distance, time, timeout;
-                        int elevatorPosition, degreeToRotate;
-                        boolean zeroGyro;
+                case "DriveAtSpeedCommand":
+                    time = Integer.parseInt(currentCommand.get("Timeout").toString());
+                    speed = Integer.parseInt(currentCommand.get("Speed").toString());
 
-                        distance = Double.parseDouble(mappedByHeader.get("Drive Distance").get(i));
-                        time = Double.parseDouble(mappedByHeader.get("Time Out").get(i));
-                        elevatorPosition = Integer.parseInt(mappedByHeader.get("Elevator Position").get(i));
-                        degreeToRotate = Integer.parseInt(mappedByHeader.get("Degree to Rotate").get(i));
-                        zeroGyro = Integer.parseInt(mappedByHeader.get("Zero Gyro").get(i)) != 0;
-                        timeout = Double.parseDouble(mappedByHeader.get("Command Timeout").get(i));
+                    addSequential(new DriveAtSpeedCommand(speed, time));
+                    break;
 
-                        switch(currentID)
-                        {
-                            //drive forward
-                            case 1:
-                                //18.85 inches per rotation
-                                //163 tick per ft
-                                //0.07 inches per tick
-                                numCommandsAdded++;
-                                if(timeout != 0)
-                                {
-                                    addSequential(new DriveDistanceCommand(distance, timeout / 1000));
-                                }
-                                else
-                                {
-                                    addSequential(new DriveDistanceCommand(distance));
-                                }
-                                break;
+                case "RotateToHeadingCommand":
+                    angle = Integer.parseInt(currentCommand.get("Angle to Rotate").toString());
 
-                            //drive backward
-                            case -1:
-                                numCommandsAdded++;
-                                if(timeout != 0)
-                                {
-                                    addSequential(new DriveDistanceCommand(-distance, timeout / 1000));
-                                }
-                                else
-                                {
-                                    addSequential(new DriveDistanceCommand(-distance));
-                                }
-                                break;
+                    addSequential(new RotateToHeadingCommand(angle, true));
+                    break;
 
-                            //rotate right
-                            case 2:
-                                numCommandsAdded++;
-                                addSequential(new RotateToHeadingCommand((double) -degreeToRotate, true));
-                                if(zeroGyro)
-                                {
-                                    addSequential(new ZeroGyroCommand());
-                                }
-                                break;
+                case "OpenGripperCommand":
+                    addSequential(new OpenGripperCommand());
+                    break;
 
-                            //rotate left
-                            case -2:
-                                numCommandsAdded++;
-                                addSequential(new RotateToHeadingCommand((double) degreeToRotate, true));
-                                if(zeroGyro)
-                                {
-                                    addSequential(new ZeroGyroCommand());
-                                }
-                                break;
+                case "CloseGripperCommand":
+                    addSequential(new CloseGripperCommand());
+                    break;
 
-                            case 5:
-                                numCommandsAdded++;
-                                addSequential(new RobotIdleCommand(time));
-                                break;
+                case "RobotIdleCommand":
+                    time = Integer.parseInt(currentCommand.get("Time").toString());
+                    addSequential(new RobotIdleCommand(time));
+                    break;
 
-                            //open tote
-                            case 6:
-                                numCommandsAdded++;
-                                addSequential(new OpenGripperCommand());
-                                break;
+                case "ElevatorToSetpointCommand":
+                    level = Integer.parseInt(currentCommand.get("Level").toString());
 
-                            //close gripper
-                            case -6:
-                                numCommandsAdded++;
-                                addSequential(new CloseGripperCommand());
-                                break;
+                    addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)));
+                    break;
 
-                            //elevator up- should be set to point?
-                            case 7:
-                                numCommandsAdded++;
-                                addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition)));
-                                break;
+                case "ZeroGyroCommand":
+                    addSequential(new ZeroGyroCommand());
+                    break;
 
-                            //elevator down - should be set to point?
-                            case -7:
-                                numCommandsAdded++;
-                                addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(elevatorPosition)));
-                                break;
-
-                            case 8:
-                                numCommandsAdded++;
-                                addSequential(new ZeroGyroCommand());
-                                break;
-                        }
-                    }
-                }
-                else
-                {
-                    return false;
-                }
+                default:
+                    log.warn("Invalid command specified " + robotClass + ".");
+                    break;
             }
-        }
-        catch(IOException e)
-        {
-            e.printStackTrace();
-
-            return false;
         }
 
         getLog().info("Added " + numCommandsAdded + " Commands.");
@@ -328,16 +119,16 @@ public class ScriptedAutonomous
         return true;
     }
 
-    public String getPathToCSV()
+    public String getPathToJSON()
     {
-        return pathToCSV;
+        return pathToJSON;
     }
 
-    public void setPathToCSV(String path)
+    public void setPathToJSON(String path)
     {
-        if(!pathToCSV.equals(path))
+        if (!pathToJSON.equals(path))
         {
-            pathToCSV = path;
+            pathToJSON = path;
 
             load();
         }
@@ -345,9 +136,9 @@ public class ScriptedAutonomous
 
     public void setPathToCSV(String path, boolean forced)
     {
-        if(!pathToCSV.equals(path) || forced)
+        if (!pathToJSON.equals(path) || forced)
         {
-            pathToCSV = path;
+            pathToJSON = path;
 
             load();
         }
@@ -355,28 +146,32 @@ public class ScriptedAutonomous
 
     public void load()
     {
-        if(pathToCSV == null)
+        if (pathToJSON == null)
         {
-            pathToCSV = BasicAutonomousCommandGroup.class.getName();
+            log.warn("pathToJSON is null, setting Autonomous to BasicAutonomousCommandGroup.");
+
+            pathToJSON = BasicAutonomousCommandGroup.class.getName();
         }
 
-        if(pathToCSV.equals(BasicAutonomousCommandGroup.class.getName()))
+        if (pathToJSON.equals(BasicAutonomousCommandGroup.class.getName()))
         {
+            log.warn("User asked for BasicAutonomousCommandGroup.");
+
             commandGroup = new BasicAutonomousCommandGroup();
 
             commandsLoaded = true;
         }
         else
         {
-            commandGroup = new CommandGroup();
-
-            commandsLoaded = loadCSV();
+            commandsLoaded = loadJSON();
         }
 
         getLog().info("Autonomous loading was " + (commandsLoaded ? "successful." : "not successful."));
 
-        if(!commandsLoaded)
+        if (!commandsLoaded)
         {
+            getLog().info("Set command group to " + BasicAutonomousCommandGroup.class.getSimpleName() + ".");
+
             commandGroup = new BasicAutonomousCommandGroup();
         }
     }

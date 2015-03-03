@@ -3,7 +3,6 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 import com.kauailabs.navx_mxp.AHRS;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.SHARPPressureTransducer;
@@ -103,8 +102,6 @@ public class DriveTrain extends SHARPSubsystem
             driveRotationController.setContinuous();
 
             driveRotationController.setInputRange(-180, 180);
-
-            SmartDashboard.putData("Rotation Controller", driveRotationController);
         }
 
         firstIteration = true;

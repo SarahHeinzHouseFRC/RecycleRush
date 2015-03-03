@@ -3,6 +3,7 @@ package org.sharp.frc.team3260.RecycleRush;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -43,7 +44,7 @@ public class Robot extends IterativeRobot
 
     public Robot()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = this;
         }
@@ -79,7 +80,7 @@ public class Robot extends IterativeRobot
             CameraServer.getInstance().setQuality(30);
             CameraServer.getInstance().startAutomaticCapture("cam0");
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.error("Starting Camera Server failed with exception " + e.getMessage());
         }
@@ -90,25 +91,25 @@ public class Robot extends IterativeRobot
         log.info("Attempting to load Elevator state from previous run...");
         try
         {
-            String elevatorPositionString = Util.getFile("//U//Elevator Position.txt");
+            String elevatorPositionString = Util.getFile("//U//Elevator Position.txt").replace(" ", "").replace("\n", "".replace("\r", ""));
 
             int elevatorPosition = Integer.parseInt(elevatorPositionString);
 
-            if(elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
+            if (elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
             {
                 log.info("Elevator position set to " + elevatorPosition + ".");
 
                 Elevator.getInstance().setElevatorPosition(elevatorPosition);
             }
 
-            if(Elevator.getInstance().getTalon().isRevLimitSwitchClosed())
+            if (Elevator.getInstance().getTalon().isRevLimitSwitchClosed())
             {
                 log.info("Limit switch currently held, setting Elevator position to 0.");
 
                 Elevator.getInstance().setElevatorPosition(0);
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.error("Failed to load Elevator state, exception: " + e.toString());
         }
@@ -120,8 +121,7 @@ public class Robot extends IterativeRobot
         finishedMatchReady = false;
 
         log.info("Creating status updater...");
-        Runnable statusUpdater = Robot.getInstance()::updateStatus;
-        statusUpdater.run();
+        new Thread(new StatusUpdater()).start();
 
         postedCalibrationStatus = false;
     }
@@ -149,7 +149,7 @@ public class Robot extends IterativeRobot
 
     public void disabledInit()
     {
-        if(scriptedAutonomous.getCommandGroup() != null)
+        if (scriptedAutonomous.getCommandGroup() != null)
         {
             scriptedAutonomous.getCommandGroup().cancel();
         }
@@ -158,7 +158,7 @@ public class Robot extends IterativeRobot
 
         log.info("Attempting to save Elevator position of " + elevatorPosition + " to flash drive");
 
-        if(elevatorPosition < 0)
+        if (elevatorPosition < 0)
         {
             log.warn("Not saving Elevator position, value less than zero.");
         }
@@ -169,22 +169,11 @@ public class Robot extends IterativeRobot
         {
             File elevatorPositionFile = new File("//U//Elevator Position.txt");
 
-            elevatorPositionFile.delete();
-        }
-        catch(Exception e)
-        {
-            log.warn("Deleting /U/Elevator Position.txt failed.");
-        }
-
-        try
-        {
-            File elevatorPositionFile = new File("//U//Elevator Position.txt");
-
             FileWriter fileWriter = new FileWriter(elevatorPositionFile, false);
-            fileWriter.write(elevatorPosition);
+            fileWriter.write(elevatorPosition + "     ");
             fileWriter.close();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             log.error("Saving /media/sda1/Elevator Position.txt failed, exception: " + e.toString());
         }
@@ -194,9 +183,9 @@ public class Robot extends IterativeRobot
     {
         Scheduler.getInstance().run();
 
-        scriptedAutonomous.setPathToCSV(autoChooser.getSelected().toString());
+        scriptedAutonomous.setPathToJSON(autoChooser.getSelected().toString());
 
-        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
+        if (OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_START))
         {
             loadAutonomousChooser();
 
@@ -208,20 +197,31 @@ public class Robot extends IterativeRobot
     {
         autoChooser = new SendableChooser();
         autoChooser.addDefault(BasicAutonomousCommandGroup.class.getName(), BasicAutonomousCommandGroup.class.getName());
+
         try
         {
             String autonDirectory = "/U/Autonomous/";
 
             File[] listOfAutoFiles = new File(autonDirectory).listFiles();
 
+            if (listOfAutoFiles == null)
+            {
+                log.severe("Autonomous chooser directory does not exist");
+
+                return;
+            }
+
             log.info("Loading autonomous options, found " + listOfAutoFiles.length + " files in " + autonDirectory + ".");
 
-            if(listOfAutoFiles.length != 0)
+            if (listOfAutoFiles.length != 0)
             {
-                for(File autoOption : listOfAutoFiles)
+                for (File autoOption : listOfAutoFiles)
                 {
-                    log.info("Added Autonomous Option " + autoOption.getName() + ".");
-                    autoChooser.addObject(autoOption.getName(), autoOption.getName());
+                    if (autoOption.getName().toLowerCase().contains("json"))
+                    {
+                        log.info("Added Autonomous Option " + autoOption.getName() + ".");
+                        autoChooser.addObject(autoOption.getName(), autoOption.getName());
+                    }
                 }
             }
             else
@@ -229,91 +229,98 @@ public class Robot extends IterativeRobot
                 log.info("Found zero Autonomous Options in " + autonDirectory + ".");
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }
+
         SmartDashboard.putData("Auto Chooser", autoChooser);
-    }
-
-    public void updateStatus()
-    {
-        while(true)
-        {
-            if(!postedCalibrationStatus)
-            {
-                if(!DriveTrain.getInstance().isIMUnull())
-                {
-                    if(!DriveTrain.getInstance().isIMUCalibrated())
-                    {
-                        log.info("NavX MXP calibration started. Do not move the robot.");
-
-                        postedCalibrationStatus = true;
-                    }
-                }
-                else
-                {
-                    log.warn("The NavX object is null. Calibration will not begin. Ensure that the NavX is connected and restart the robot.");
-
-                    postedCalibrationStatus = true;
-                }
-            }
-
-            SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
-
-            double batteryVoltage = DriverStation.getInstance().getBatteryVoltage();
-            double pressure = DriveTrain.getInstance().getPressure();
-
-            SmartDashboard.putNumber("Pressure", pressure);
-
-            if(pressure < 40)
-            {
-                if(!showedPressureWarning)
-                {
-                    log.warn("Pneumatics pressure severely low. Current pressure: " + pressure + " PSI.");
-                }
-
-                showedPressureWarning = true;
-            }
-            else
-            {
-                showedPressureWarning = false;
-            }
-
-            if(batteryVoltage < 10)
-            {
-                if(!showedBatteryWarning)
-                {
-                    log.warn("Battery Voltage severely low. Current voltage: " + batteryVoltage + " Volts.");
-                }
-
-                showedBatteryWarning = true;
-            }
-            else
-            {
-                showedBatteryWarning = false;
-            }
-
-            if(!showedMatchReady && DriveTrain.getInstance().isIMUCalibrated())
-            {
-                log.info("Starting match ready display at " + new Date() + ".");
-
-                matchReadyStartTime = System.currentTimeMillis();
-
-                showedMatchReady = true;
-            }
-            else if(!finishedMatchReady)
-            {
-                finishedMatchReady = (System.currentTimeMillis() - 3000) > matchReadyStartTime;
-            }
-
-            Lights.getInstance().updateLights();
-        }
     }
 
     public boolean isDisplayingMatchReady()
     {
         return showedMatchReady && !finishedMatchReady;
+    }
+
+    private class StatusUpdater implements Runnable
+    {
+        @Override
+        public void run()
+        {
+            while (true)
+            {
+                if (!postedCalibrationStatus)
+                {
+                    if (!DriveTrain.getInstance().isIMUnull())
+                    {
+                        if (!DriveTrain.getInstance().isIMUCalibrated())
+                        {
+                            log.info("NavX MXP calibration started. Do not move the robot.");
+
+                            postedCalibrationStatus = true;
+                        }
+                    }
+                    else
+                    {
+                        log.warn("The NavX object is null. Calibration will not begin. Ensure that the NavX is connected and restart the robot.");
+
+                        postedCalibrationStatus = true;
+                    }
+                }
+
+                SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
+
+                double batteryVoltage = DriverStation.getInstance().getBatteryVoltage();
+                double pressure = DriveTrain.getInstance().getPressure();
+
+                SmartDashboard.putNumber("Pressure", pressure);
+
+                if (pressure < 40)
+                {
+                    if (!showedPressureWarning)
+                    {
+                        log.warn("Pneumatics pressure severely low. Current pressure: " + pressure + " PSI.");
+                    }
+
+                    showedPressureWarning = true;
+                }
+                else
+                {
+                    showedPressureWarning = false;
+                }
+
+                if (batteryVoltage < 10)
+                {
+                    if (!showedBatteryWarning)
+                    {
+                        log.warn("Battery Voltage severely low. Current voltage: " + batteryVoltage + " Volts.");
+                    }
+
+                    showedBatteryWarning = true;
+                }
+                else
+                {
+                    showedBatteryWarning = false;
+                }
+
+                if (!showedMatchReady && DriveTrain.getInstance().isIMUCalibrated())
+                {
+                    log.info("Starting match ready display at " + new Date() + ".");
+
+                    matchReadyStartTime = System.currentTimeMillis();
+
+                    showedMatchReady = true;
+                }
+                else if (!finishedMatchReady)
+                {
+                    finishedMatchReady = (System.currentTimeMillis() - 10000) > matchReadyStartTime;
+                }
+
+                Lights.getInstance().updateLights();
+
+                Timer.delay(0.1);
+            }
+        }
     }
 
     public Log getLogger()
