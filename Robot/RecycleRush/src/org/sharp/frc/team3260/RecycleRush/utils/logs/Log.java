@@ -13,10 +13,10 @@ public class Log
 
     public static final int ATTRIBUTE_TIME = 1;
     public static final int ATTRIBUTE_THREAD = 2;
-    public static final LogLevel INFO = new LogLevel("INFO");
-    public static final LogLevel WARN = new LogLevel("WARN");
-    public static final LogLevel ERROR = new LogLevel("ERROR");
-    public static final LogLevel SEVERE = new LogLevel("SEVERE");
+    public static final PriorityLevel INFO = new PriorityLevel("INFO");
+    public static final PriorityLevel WARN = new PriorityLevel("WARN");
+    public static final PriorityLevel ERROR = new PriorityLevel("ERROR");
+    public static final PriorityLevel SEVERE = new PriorityLevel("SEVERE");
     protected static final int ATTRIBUTE_DEFAULT = ATTRIBUTE_TIME;
     private DateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
     private static DateFormat fileDateFormat = new SimpleDateFormat("d MMM yyyy HH-mm-ss");
@@ -60,19 +60,25 @@ public class Log
         {
             long curTime = new Date().getTime();
 
-            File logDirectory = new File("//U//Logs//");
+            File logDirectory = new File("/U/Logs/");
 
             if(logDirectory.isDirectory())
             {
                 File[] logs = logDirectory.listFiles();
 
-                for(File curLog : logs)
+                if(logs != null && logs.length > 0)
                 {
-                    long diff = curTime - curLog.lastModified();
-
-                    if(diff > 3 * 24 * 60 * 60 * 1000)
+                    for(File curLog : logs)
                     {
-                        curLog.delete();
+                        long diff = curTime - curLog.lastModified();
+
+                        if(diff > 3 * 24 * 60 * 60 * 1000)
+                        {
+                            if(!curLog.delete())
+                            {
+                                System.out.println("Unable to delete log file " + curLog.getName());
+                            }
+                        }
                     }
                 }
             }
@@ -89,11 +95,18 @@ public class Log
         {
             try
             {
-                File flashDriveLogFile = new File("//U//Logs//" + getFileDate() + ".log.txt");
+                File flashDriveLogFile = new File("/U/Logs/" + getFileDate() + ".log.txt");
 
                 if(!flashDriveLogFile.exists())
                 {
-                    flashDriveLogFile.createNewFile();
+                    if(!flashDriveLogFile.createNewFile())
+                    {
+                        System.out.println("Failed to create flash drive log file.");
+                        
+                        failedToCreateFlashDriveLog = true;
+                        
+                        return;
+                    }
                 }
 
                 flashDriveLog = FileLog.getInstance(flashDriveLogFile);
@@ -140,7 +153,7 @@ public class Log
         ps.println(ts);
     }
 
-    public void log(String message, LogLevel level)
+    public void log(String message, PriorityLevel level)
     {
         log(message, level.getName().toUpperCase(), level.getPrintSteam());
 

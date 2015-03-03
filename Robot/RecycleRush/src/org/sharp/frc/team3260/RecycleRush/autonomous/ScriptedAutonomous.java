@@ -50,21 +50,21 @@ public class ScriptedAutonomous
 
         JSONArray commandList = (JSONArray) jsonObject.get("Commands");
 
-        for (Object aCommandList : commandList)
+        for (Object objCurrentCommand : commandList)
         {
-            JSONObject currentCommand = (JSONObject) aCommandList;
-            String robotClass = (String) currentCommand.get("Command");
+            JSONObject currentCommand = (JSONObject) objCurrentCommand;
+            String commandClass = (String) currentCommand.get("Command");
 
             numCommandsAdded++;
 
             int time, speed, distance, angle, level;
 
-            if (robotClass == null)
+            if (commandClass == null || commandClass.equals(""))
             {
                 continue;
             }
 
-            switch (robotClass)
+            switch (commandClass)
             {
                 case "DriveDistanceCommand":
                     distance = Integer.parseInt(currentCommand.get("Distance").toString());
@@ -109,7 +109,7 @@ public class ScriptedAutonomous
                     break;
 
                 default:
-                    log.warn("Invalid command specified " + robotClass + ".");
+                    log.warn("Invalid command specified " + commandClass + ".");
                     break;
             }
         }
@@ -150,10 +150,10 @@ public class ScriptedAutonomous
         {
             log.warn("pathToJSON is null, setting Autonomous to BasicAutonomousCommandGroup.");
 
-            pathToJSON = BasicAutonomousCommandGroup.class.getName();
+            pathToJSON = BasicAutonomousCommandGroup.class.getSimpleName();
         }
 
-        if (pathToJSON.equals(BasicAutonomousCommandGroup.class.getName()))
+        if (pathToJSON.equals(BasicAutonomousCommandGroup.class.getSimpleName()))
         {
             log.warn("User asked for BasicAutonomousCommandGroup.");
 

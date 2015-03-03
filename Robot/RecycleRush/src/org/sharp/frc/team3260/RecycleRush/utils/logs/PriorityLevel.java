@@ -2,17 +2,17 @@ package org.sharp.frc.team3260.RecycleRush.utils.logs;
 
 import java.io.PrintStream;
 
-public class LogLevel
+public class PriorityLevel
 {
     String name;
     PrintStream stream = System.out;
 
-    public LogLevel(String name)
+    public PriorityLevel(String name)
     {
         this.name = name;
     }
 
-    public LogLevel setName(String n)
+    public PriorityLevel setName(String n)
     {
         this.name = n;
         return this;
@@ -23,7 +23,7 @@ public class LogLevel
         return name;
     }
 
-    public LogLevel setPrintStream(PrintStream stream)
+    public PriorityLevel setPrintStream(PrintStream stream)
     {
         this.stream = stream;
         return this;

@@ -75,7 +75,7 @@ public class Elevator extends SHARPSubsystem
 
             elevatorTalon.setProfile(0);
 
-            elevatorTalon.setPID(0.93239296, 0, 0);
+            elevatorTalon.setPID(1.2, 0.0, 0.01);
 
             elevatorTalon.enableControl();
 
@@ -215,11 +215,11 @@ public class Elevator extends SHARPSubsystem
         public String positionName;
         public int encoderValue;
 
-        public static final ElevatorPosition GROUND = new ElevatorPosition(0, "GROUND", -500);
+        public static final ElevatorPosition GROUND = new ElevatorPosition(0, "GROUND", -250);
         public static final ElevatorPosition TWO_TOTE = new ElevatorPosition(2, "TWO_TOTES", 1270);
         public static final ElevatorPosition RECYCLING_CAN = new ElevatorPosition(3, "RECYCLING_CAN", 1150);
         public static final ElevatorPosition THREE_TOTES = new ElevatorPosition(4, "THREE_TOTES", 2500);
-        public static final ElevatorPosition TOP = new ElevatorPosition(5, "TOP", 6000);
+        public static final ElevatorPosition TOP = new ElevatorPosition(5, "TOP", 6200);
         public static final ElevatorPosition CAN_ON_TOTE = new ElevatorPosition(6, "CAN_ON_TOTE", 2260);
         public static final ElevatorPosition CAN_ABOVE_TOTE = new ElevatorPosition(7, "CAN_ABOVE_TOTE", 3000);
         public static final ElevatorPosition DRIVING_HEIGHT = new ElevatorPosition(8, "DRIVING_HEIGHT", 500);
