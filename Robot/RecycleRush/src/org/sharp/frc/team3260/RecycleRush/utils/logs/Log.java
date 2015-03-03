@@ -102,9 +102,9 @@ public class Log
                     if(!flashDriveLogFile.createNewFile())
                     {
                         System.out.println("Failed to create flash drive log file.");
-                        
+
                         failedToCreateFlashDriveLog = true;
-                        
+
                         return;
                     }
                 }
@@ -155,7 +155,7 @@ public class Log
 
     public void log(String message, PriorityLevel level)
     {
-        log(message, level.getName().toUpperCase(), level.getPrintSteam());
+        log(message, level.getName().toUpperCase(), System.out);
 
         if(!failedToCreateFlashDriveLog)
         {
@@ -183,5 +183,26 @@ public class Log
     public void severe(String message)
     {
         log(message, SEVERE);
+    }
+
+    public static class PriorityLevel
+    {
+        String name;
+
+        public PriorityLevel(String name)
+        {
+            this.name = name;
+        }
+
+        public PriorityLevel setName(String n)
+        {
+            this.name = n;
+            return this;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
     }
 }
