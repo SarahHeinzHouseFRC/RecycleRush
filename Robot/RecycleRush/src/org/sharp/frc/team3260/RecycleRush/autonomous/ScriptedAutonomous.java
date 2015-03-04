@@ -63,10 +63,7 @@ public class ScriptedAutonomous
             HashMap<String, JSONObject> parametersMap = new HashMap<String, JSONObject>();
             for(JSONObject currentParameter : parameters)
             {
-                for(String key :currentParameter.keySet())
-                {
-                    parametersMap.put(key, currentParameter);
-                }
+                parametersMap.put(currentParameter.get("Name"), currentParameter.get("Value"));
             }
 
             numCommandsAdded++;
