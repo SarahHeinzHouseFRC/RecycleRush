@@ -50,7 +50,7 @@ public class Robot extends IterativeRobot
         {
             DriverStation.reportError("Error: Attempted to create a second instance of Robot class.", true);
         }
-        
+
         instance = this;
     }
 

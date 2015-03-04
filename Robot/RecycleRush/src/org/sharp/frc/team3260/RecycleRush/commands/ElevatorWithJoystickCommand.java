@@ -6,7 +6,6 @@ import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
-import org.sharp.frc.team3260.RecycleRush.utils.ConstantsBase;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 public class ElevatorWithJoystickCommand extends Command

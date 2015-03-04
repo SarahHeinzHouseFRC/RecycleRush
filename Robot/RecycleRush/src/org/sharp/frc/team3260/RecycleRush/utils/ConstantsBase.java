@@ -72,7 +72,7 @@ public abstract class ConstantsBase
             this.value = value;
             constants.addElement(this);
         }
-        
+
         public Constant(String name, boolean value)
         {
             this.name = name;

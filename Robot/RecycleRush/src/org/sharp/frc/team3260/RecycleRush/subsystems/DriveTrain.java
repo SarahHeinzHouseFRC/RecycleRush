@@ -435,7 +435,7 @@ public class DriveTrain extends SHARPSubsystem
                 maxMagnitude = temp;
             }
         }
-        
+
         if(maxMagnitude > 1.0)
         {
             for(int i = 0; i < wheelSpeeds.length; i++)
