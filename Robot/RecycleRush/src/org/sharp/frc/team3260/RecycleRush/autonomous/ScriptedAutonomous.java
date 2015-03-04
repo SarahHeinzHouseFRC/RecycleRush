@@ -10,6 +10,9 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 import java.io.FileReader;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class ScriptedAutonomous
 {
@@ -54,10 +57,21 @@ public class ScriptedAutonomous
         {
             JSONObject currentCommand = (JSONObject) objCurrentCommand;
             String commandClass = (String) currentCommand.get("Command");
+            JSONArray parameters = currentCommand.get("Parameters");
+
+            //Identify each paramter by their name.
+            HashMap<String, JSONObject> parametersMap = new HashMap<String, JSONObject>();
+            for(JSONObject currentParameter : parameters)
+            {
+                for(String key :currentParameter.keySet())
+                {
+                    parametersMap.put(key, currentParameter);
+                }
+            }
 
             numCommandsAdded++;
 
-            int time, speed, distance, angle, level;
+            int time, speed, distance, angle, level, timeout;
 
             if(commandClass == null || commandClass.equals(""))
             {
@@ -67,20 +81,20 @@ public class ScriptedAutonomous
             switch(commandClass)
             {
                 case "DriveDistanceCommand":
-                    distance = Integer.parseInt(currentCommand.get("Distance").toString());
+                    distance = Integer.parseInt(parametersMap.get("Distance").toString());
 
                     addSequential(new DriveDistanceCommand(distance));
                     break;
 
                 case "DriveAtSpeedCommand":
-                    time = Integer.parseInt(currentCommand.get("Timeout").toString());
-                    speed = Integer.parseInt(currentCommand.get("Speed").toString());
+                    time = Integer.parseInt(parametersMap.get("Time").toString());
+                    speed = Integer.parseInt(parametersMap.Command.get("Speed").toString());
 
                     addSequential(new DriveAtSpeedCommand(speed, time));
                     break;
 
                 case "RotateToHeadingCommand":
-                    angle = Integer.parseInt(currentCommand.get("Angle to Rotate").toString());
+                    angle = Integer.parseInt(parametersMap.get("Angle to Rotate").toString());
 
                     addSequential(new RotateToHeadingCommand(angle, true));
                     break;
@@ -94,12 +108,12 @@ public class ScriptedAutonomous
                     break;
 
                 case "RobotIdleCommand":
-                    time = Integer.parseInt(currentCommand.get("Time").toString());
+                    time = Integer.parseInt(parametersMap.get("Time").toString());
                     addSequential(new RobotIdleCommand(time));
                     break;
 
                 case "ElevatorToSetpointCommand":
-                    level = Integer.parseInt(currentCommand.get("Level").toString());
+                    level = Integer.parseInt(parametersMap.get("Level").toString());
 
                     addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)));
                     break;
