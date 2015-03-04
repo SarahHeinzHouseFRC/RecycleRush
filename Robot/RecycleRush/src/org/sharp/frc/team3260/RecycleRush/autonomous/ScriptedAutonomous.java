@@ -11,11 +11,8 @@ import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 import java.io.FileReader;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
 
-public class ScriptedAutonomous
-{
+public class ScriptedAutonomous {
     private static final Log log = new Log("ScriptedAutonomous", Log.ATTRIBUTE_TIME);
 
     private CommandGroup commandGroup;
@@ -23,13 +20,11 @@ public class ScriptedAutonomous
     private boolean commandsLoaded;
     private String pathToJSON;
 
-    public ScriptedAutonomous()
-    {
+    public ScriptedAutonomous() {
         load();
     }
 
-    private boolean loadJSON()
-    {
+    private boolean loadJSON() {
         commandGroup = new CommandGroup();
 
         JSONParser parser = new JSONParser();
@@ -40,12 +35,9 @@ public class ScriptedAutonomous
 
         log.info(pathToJSON);
 
-        try
-        {
+        try {
             jsonObject = (JSONObject) parser.parse(new FileReader("/U/Autonomous/" + pathToJSON));
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             log.error("JSON File not Found, exception: " + e.toString());
 
             return false;
@@ -53,38 +45,31 @@ public class ScriptedAutonomous
 
         JSONArray commandList = (JSONArray) jsonObject.get("Commands");
 
-        for(Object objCurrentCommand : commandList)
-        {
+        for (Object objCurrentCommand : commandList) {
             JSONObject currentCommand = (JSONObject) objCurrentCommand;
             String commandClass = (String) currentCommand.get("Command");
             JSONArray parameters = currentCommand.get("Parameters");
 
             //Identify each paramter by their name.
             HashMap<String, JSONObject> parametersMap = new HashMap<String, JSONObject>();
-            for(JSONObject currentParameter : parameters)
-            {
-                parametersMap.put(currentParameter.get("Name"), currentParameter.get("Value"));
-            }
-
+            for (JSONObject currentParameter : parameters)
+                parametersMap.put(currentParameter.get("Name"), currentParameter);
             numCommandsAdded++;
-
             int time, speed, distance, angle, level, timeout;
 
-            if(commandClass == null || commandClass.equals(""))
-            {
+            if (commandClass == null || commandClass.equals("")) {
                 continue;
             }
 
-            switch(commandClass)
-            {
+            switch (commandClass) {
                 case "DriveDistanceCommand":
-                    distance = Integer.parseInt(parametersMap.get("Distance").toString());
+                    distance = Integer.parseInt(parametersMap.get("Distance").get("Value"));
 
                     addSequential(new DriveDistanceCommand(distance));
                     break;
 
                 case "DriveAtSpeedCommand":
-                    time = Integer.parseInt(parametersMap.get("Time").toString());
+                    time = Integer.parseInt(parametersMap.get("Time").get("Value"));
                     speed = Integer.parseInt(parametersMap.Command.get("Speed").toString());
 
                     addSequential(new DriveAtSpeedCommand(speed, time));
@@ -105,12 +90,12 @@ public class ScriptedAutonomous
                     break;
 
                 case "RobotIdleCommand":
-                    time = Integer.parseInt(parametersMap.get("Time").toString());
+                    time = Integer.parseInt(parametersMap.get("Time").get("Value"));
                     addSequential(new RobotIdleCommand(time));
                     break;
 
                 case "ElevatorToSetpointCommand":
-                    level = Integer.parseInt(parametersMap.get("Level").toString());
+                    level = Integer.parseInt(parametersMap.get("Level").get("Value"));
 
                     addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)));
                     break;
@@ -130,87 +115,71 @@ public class ScriptedAutonomous
         return true;
     }
 
-    public String getPathToJSON()
-    {
+    public String getPathToJSON() {
         return pathToJSON;
     }
 
-    public void setPathToJSON(String path)
-    {
-        if(!pathToJSON.equals(path))
-        {
+    public void setPathToJSON(String path) {
+        if (!pathToJSON.equals(path)) {
             pathToJSON = path;
 
             load();
         }
     }
 
-    public void setPathToCSV(String path, boolean forced)
-    {
-        if(!pathToJSON.equals(path) || forced)
-        {
+    public void setPathToCSV(String path, boolean forced) {
+        if (!pathToJSON.equals(path) || forced) {
             pathToJSON = path;
 
             load();
         }
     }
 
-    public void load()
-    {
-        if(pathToJSON == null)
-        {
+    public void load() {
+        if (pathToJSON == null) {
             log.warn("pathToJSON is null, setting Autonomous to BasicAutonomousCommandGroup.");
 
             pathToJSON = BasicAutonomousCommandGroup.class.getSimpleName();
         }
 
-        if(pathToJSON.equals(BasicAutonomousCommandGroup.class.getSimpleName()))
-        {
+        if (pathToJSON.equals(BasicAutonomousCommandGroup.class.getSimpleName())) {
             log.warn("User asked for BasicAutonomousCommandGroup.");
 
             commandGroup = new BasicAutonomousCommandGroup();
 
             commandsLoaded = true;
-        }
-        else
-        {
+        } else {
             commandsLoaded = loadJSON();
         }
 
         getLog().info("Autonomous loading was " + (commandsLoaded ? "successful." : "not successful."));
 
-        if(!commandsLoaded)
-        {
+        if (!commandsLoaded) {
             getLog().info("Set command group to " + BasicAutonomousCommandGroup.class.getSimpleName() + ".");
 
             commandGroup = new BasicAutonomousCommandGroup();
         }
     }
 
-    private void addSequential(Command command)
-    {
+    private void addSequential(Command command) {
         commandGroup.addSequential(command);
     }
 
-    private void addSequential(Command command, double timeout)
-    {
+    private void addSequential(Command command, double timeout) {
         commandGroup.addSequential(command, timeout);
     }
 
-    public CommandGroup getCommandGroup()
-    {
+    public CommandGroup getCommandGroup() {
         log.info("Retrieving Autonomous Command Group." + (loadedSuccessfully() ? "" : " Loading failed, Basic Auto Command Group substituted."));
 
         return commandGroup;
     }
 
-    public boolean loadedSuccessfully()
-    {
+    public boolean loadedSuccessfully() {
         return commandsLoaded;
     }
 
-    public static Log getLog()
-    {
+    public static Log getLog() {
         return log;
     }
 }
