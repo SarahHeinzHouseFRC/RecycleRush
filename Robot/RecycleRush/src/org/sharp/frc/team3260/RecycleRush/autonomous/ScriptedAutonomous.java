@@ -55,17 +55,17 @@ public class ScriptedAutonomous
         {
             JSONObject currentCommand = (JSONObject) objCurrentCommand;
             String commandClass = (String) currentCommand.get("Command");
-            JSONArray parameters = (JSONArray)currentCommand.get("Parameters");
+            JSONArray parameters = (JSONArray) currentCommand.get("Parameters");
 
             //Identify each paramter by their name.
             HashMap<String, JSONObject> parametersMap = new HashMap<String, JSONObject>();
-            for (Object parameter : parameters) 
+            for(Object parameter : parameters)
             {
                 JSONObject currentParameter = (JSONObject) parameter;
                 parametersMap.put(currentParameter.get("Name").toString(), currentParameter);
             }
             numCommandsAdded++;
-            int level,time,timeout;
+            int level, time, timeout;
             double speed, distance, angle;
 
             if(commandClass == null || commandClass.equals(""))
@@ -76,26 +76,24 @@ public class ScriptedAutonomous
             switch(commandClass)
             {
                 case "DriveDistanceCommand":
-                    distance =  (double)parametersMap.get("Distance").get("Value");
-                    timeout =   new Long((long)parametersMap.get("Timeout").get("Value")).intValue();
+                    distance = (double) parametersMap.get("Distance").get("Value");
+                    timeout = new Long((long) parametersMap.get("Timeout").get("Value")).intValue();
 
-                    addSequential(new DriveDistanceCommand(distance,timeout));
+                    addSequential(new DriveDistanceCommand(distance, timeout));
                     break;
 
                 case "DriveAtSpeedCommand":
-                    time =    	new Long ((long) parametersMap.get("Time").get("Value")).intValue();
-                    speed =     (double)parametersMap.get("Speed").get("Value");
+                    time = new Long((long) parametersMap.get("Time").get("Value")).intValue();
+                    speed = (double) parametersMap.get("Speed").get("Value");
 
                     addSequential(new DriveAtSpeedCommand(speed, time));
-
                     break;
 
                 case "RotateToHeadingCommand":
-                    angle =  (double)parametersMap.get("Degrees to Rotate").get("Value");
+                    angle = (double) parametersMap.get("Degrees to Rotate").get("Value");
                     timeout = new Long((long) parametersMap.get("Timeout").get("Value")).intValue();
 
-                    addSequential(new RotateToHeadingCommand(angle,timeout, true));
-
+                    addSequential(new RotateToHeadingCommand(angle, timeout, true));
                     break;
 
                 case "OpenGripperCommand":
@@ -108,8 +106,7 @@ public class ScriptedAutonomous
 
                 case "RobotIdleCommand":
                     //in milliseconds
-
-                    time =  new Long((long)parametersMap.get("Time").get("Value")).intValue();
+                    time = new Long((long) parametersMap.get("Time").get("Value")).intValue();
                     addSequential(new RobotIdleCommand(time));
                     break;
 
