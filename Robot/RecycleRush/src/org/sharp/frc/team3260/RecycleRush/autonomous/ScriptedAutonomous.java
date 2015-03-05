@@ -59,10 +59,6 @@ public class ScriptedAutonomous
 
             //Identify each paramter by their name.
             HashMap<String, JSONObject> parametersMap = new HashMap<String, JSONObject>();
-            for(JSONObject currentParameter : parameters)
-            {
-                parametersMap.put(currentParameter.get("Name"), currentParameter);
-            }
             for (Object parameter : parameters) 
             {
                 JSONObject currentParameter = (JSONObject) parameter;
