@@ -318,7 +318,7 @@ public class Robot extends IterativeRobot
 
                 Lights.getInstance().updateLights();
 
-                Timer.delay(0.1);
+                Timer.delay(0.2);
             }
         }
     }

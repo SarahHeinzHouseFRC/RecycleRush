@@ -12,6 +12,8 @@ import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 public class FieldCentricMecanumPIDDrive extends Command
 {
+    private static final double ROTATION_DEADBAND = 0.05;
+
     Joystick driveJoystick = OI.getInstance().getMainGamepad();
 
     public FieldCentricMecanumPIDDrive()
@@ -29,12 +31,14 @@ public class FieldCentricMecanumPIDDrive extends Command
     protected void execute()
     {
         double strafe = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_X);
-        double forward = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
+        double forward = -driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
         double rotation = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X);
 
-        rotation = Util.handleDeadband(rotation, Constants.joystickDeadband.getDouble());
-        strafe = Util.handleDeadband(strafe, Constants.joystickDeadband.getDouble());
-        forward = Util.handleDeadband(forward, Constants.joystickDeadband.getDouble());
+        rotation = Math.abs(rotation) > ROTATION_DEADBAND ? rotation : 0;
+
+        strafe = Math.abs(strafe) > ROTATION_DEADBAND ? strafe : 0;
+
+        forward = Math.abs(forward) > ROTATION_DEADBAND ? forward : 0;
 
         if(DriveTrain.getInstance().getIMU() == null)
         {

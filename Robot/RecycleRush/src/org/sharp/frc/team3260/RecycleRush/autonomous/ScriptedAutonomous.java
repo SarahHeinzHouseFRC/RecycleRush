@@ -98,7 +98,7 @@ public class ScriptedAutonomous
 
                 case "OpenGripperCommand":
                     addSequential(new OpenGripperCommand());
-                    break;
+                    break; 
 
                 case "CloseGripperCommand":
                     addSequential(new CloseGripperCommand());

@@ -25,9 +25,9 @@ public class Elevator extends SHARPSubsystem
 
         elevatorTalon.enableBrakeMode(true);
 
-        elevatorTalon.reverseOutput(Constants.elevatorReverseOutput.getBoolean());
+        elevatorTalon.reverseOutput(false);
 
-        elevatorTalon.reverseSensor(Constants.elevatorReverseSensor.getBoolean());
+        elevatorTalon.reverseSensor(true);
 
         elevatorTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 

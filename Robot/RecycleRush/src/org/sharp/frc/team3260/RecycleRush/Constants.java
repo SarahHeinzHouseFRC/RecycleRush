@@ -14,11 +14,6 @@ public class Constants extends ConstantsBase
     public static final Constant driveBackLeftTalonID = new Constant("driveBackLeftTalonID", 2);
     public static final Constant driveBackRightTalonID = new Constant("driveBackRightTalonID", 1);
 
-    public static final Constant driveFrontLeftInverted = new Constant("driveFrontLeftInverted", 0);
-    public static final Constant driveFrontRightInverted = new Constant("driveFrontRightInverted", 1);
-    public static final Constant driveBackLeftInverted = new Constant("driveBackLeftInverted", 0);
-    public static final Constant driveBackRightInverted = new Constant("driveBackRightInverted", 1);
-
     public static final Constant driveSpeedControllerP = new Constant("driveSpeedControllerP", 0.93239296);
     public static final Constant driveSpeedControllerI = new Constant("driveSpeedControllerI", 0.0);
     public static final Constant driveSpeedControllerD = new Constant("driveSpeedControllerD", 0.0);
@@ -44,9 +39,6 @@ public class Constants extends ConstantsBase
     public static final Constant gripperSolenoidReverseChannel = new Constant("gripperSolenoidReverseChannel", 0);
 
     public static final Constant elevatorTalonID = new Constant("elevatorTalonID", 5);
-
-    public static final Constant elevatorReverseOutput = new Constant("elevatorReverseOutput", false);
-    public static final Constant elevatorReverseSensor = new Constant("elevatorReverseSensor", false);
 
     public static final Constant elevatorPositionControllerP = new Constant("elevatorPositionControllerP", 1.2);
     public static final Constant elevatorPositionControllerI = new Constant("elevatorPositionControllerI", 0.0);

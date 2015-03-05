@@ -59,10 +59,10 @@ public class DriveTrain extends SHARPSubsystem
         backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
         backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
-        frontLeftTalon.reverseOutput(Constants.driveFrontLeftInverted.getBoolean());
-        frontRightTalon.reverseOutput(Constants.driveFrontRightInverted.getBoolean());
-        backLeftTalon.reverseOutput(Constants.driveBackLeftInverted.getBoolean());
-        backRightTalon.reverseOutput(Constants.driveBackRightInverted.getBoolean());
+        frontLeftTalon.reverseOutput(true);
+        frontRightTalon.reverseOutput(true);
+        backLeftTalon.reverseOutput(true);
+        backRightTalon.reverseOutput(true);
 
         frontLeftTalon.reverseSensor(true);
         frontRightTalon.reverseSensor(true);
@@ -214,15 +214,17 @@ public class DriveTrain extends SHARPSubsystem
 
     public void setDriveMotors(double frontLeftOutput, double frontRightOutput, double backLeftOutput, double backRightOutput)
     {
-        frontLeftTalon.set(frontLeftOutput);
+        frontLeftTalon.set(-frontLeftOutput);
         frontRightTalon.set(frontRightOutput);
-        backLeftTalon.set(backLeftOutput);
+        backLeftTalon.set(-backLeftOutput);
         backRightTalon.set(backRightOutput);
     }
 
     public void setDriveMotors(double[] wheelSpeeds)
     {
         normalize(wheelSpeeds);
+
+        setDriveMotors(wheelSpeeds[0], wheelSpeeds[1], wheelSpeeds[2], wheelSpeeds[3]);
     }
 
     public void stockMecanumDrive(double x, double y, double rotation, double gyroAngle)
@@ -365,9 +367,9 @@ public class DriveTrain extends SHARPSubsystem
         backLeftTalon.setPosition(0);
         backRightTalon.setPosition(0);
 
-        frontLeftTalon.set(frontLeftTarget);
+        frontLeftTalon.set(-frontLeftTarget);
         frontRightTalon.set(frontRightTarget);
-        backLeftTalon.set(backLeftTarget);
+        backLeftTalon.set(-backLeftTarget);
         backRightTalon.set(backRightTarget);
 
         log.info("Drive Encoder Targets: " + frontLeftTarget + ", " + frontRightTarget + ", " + backLeftTarget + ", " + backRightTarget);
