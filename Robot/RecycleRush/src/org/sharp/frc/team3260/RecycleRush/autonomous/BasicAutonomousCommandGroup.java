@@ -25,7 +25,7 @@ public class BasicAutonomousCommandGroup extends CommandGroup
         addSequential(new RotateToHeadingCommand(-90, true));
         addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(2)));
         addSequential(new ZeroGyroCommand());
-        addSequential(new DriveAtSpeedCommand(-0.45, 2.5));
+        addSequential(new DriveAtSpeedCommand(0.45, 2.5));
         addSequential(new RobotIdleCommand(500));
         addSequential(new ZeroGyroCommand());
         addSequential(new RobotIdleCommand(250));

@@ -57,8 +57,8 @@ public class ScriptedAutonomous
             String commandClass = (String) currentCommand.get("Command");
             JSONArray parameters = (JSONArray) currentCommand.get("Parameters");
 
-            //Identify each paramter by their name.
-            HashMap<String, JSONObject> parametersMap = new HashMap<String, JSONObject>();
+            //Identify each parameter by their name.
+            HashMap<String, JSONObject> parametersMap = new HashMap<>();
             for(Object parameter : parameters)
             {
                 JSONObject currentParameter = (JSONObject) parameter;
