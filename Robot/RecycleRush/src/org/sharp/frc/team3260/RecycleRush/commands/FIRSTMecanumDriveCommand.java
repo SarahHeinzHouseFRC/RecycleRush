@@ -30,7 +30,7 @@ public class FIRSTMecanumDriveCommand extends Command
         double strafe = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_X);
         double forward = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
         double rotation = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X);
-        
+
         rotation = Util.handleDeadband(rotation, Constants.joystickDeadband.getDouble());
         strafe = Util.handleDeadband(strafe, Constants.joystickDeadband.getDouble());
         forward = Util.handleDeadband(forward, Constants.joystickDeadband.getDouble());
