@@ -48,14 +48,17 @@ public class ScriptedAutonomous {
         for (Object objCurrentCommand : commandList) {
             JSONObject currentCommand = (JSONObject) objCurrentCommand;
             String commandClass = (String) currentCommand.get("Command");
-            JSONArray parameters = currentCommand.get("Parameters");
+            JSONArray parameters = (JSONArray)currentCommand.get("Parameters");
 
             //Identify each paramter by their name.
             HashMap<String, JSONObject> parametersMap = new HashMap<String, JSONObject>();
-            for (JSONObject currentParameter : parameters)
-                parametersMap.put(currentParameter.get("Name"), currentParameter);
+            for (Object parameter : parameters) {
+                JSONObject currentParameter = (JSONObject) parameter;
+                parametersMap.put(currentParameter.get("Name").toString(), currentParameter);
+            }
             numCommandsAdded++;
-            int time, speed, distance, angle, level, timeout;
+            int level,time,timeout;
+            double speed, distance, angle;
 
             if (commandClass == null || commandClass.equals("")) {
                 continue;
@@ -63,49 +66,59 @@ public class ScriptedAutonomous {
 
             switch (commandClass) {
                 case "DriveDistanceCommand":
-                    distance = Integer.parseInt(parametersMap.get("Distance").get("Value"));
+                    distance =  (double)parametersMap.get("Distance").get("Value");
+                    timeout =   new Long((long)parametersMap.get("Timeout").get("Value")).intValue();
 
-                    addSequential(new DriveDistanceCommand(distance));
+                    addSequential(new DriveDistanceCommand(distance,timeout));
                     break;
 
                 case "DriveAtSpeedCommand":
-                    time = Integer.parseInt(parametersMap.get("Time").get("Value"));
-                    speed = Integer.parseInt(parametersMap.Command.get("Speed").toString());
+                    time =    	new Long ((long) parametersMap.get("Time").get("Value")).intValue();
+                    speed =     (double)parametersMap.get("Speed").get("Value");
 
                     addSequential(new DriveAtSpeedCommand(speed, time));
+
                     break;
 
                 case "RotateToHeadingCommand":
-                    angle = Integer.parseInt(parametersMap.get("Angle to Rotate").toString());
+                    angle =  (double)parametersMap.get("Degrees to Rotate").get("Value");
+                    timeout = new Long((long) parametersMap.get("Timeout").get("Value")).intValue();
 
-                    addSequential(new RotateToHeadingCommand(angle, true));
+                    addSequential(new RotateToHeadingCommand(angle,timeout, true));
+
                     break;
 
                 case "OpenGripperCommand":
+
                     addSequential(new OpenGripperCommand());
                     break;
 
                 case "CloseGripperCommand":
+
                     addSequential(new CloseGripperCommand());
                     break;
 
                 case "RobotIdleCommand":
-                    time = Integer.parseInt(parametersMap.get("Time").get("Value"));
+                    //in milliseconds
+
+                    time =  new Long((long)parametersMap.get("Time").get("Value")).intValue();
                     addSequential(new RobotIdleCommand(time));
                     break;
 
                 case "ElevatorToSetpointCommand":
-                    level = Integer.parseInt(parametersMap.get("Level").get("Value"));
-
+                    level = new Long((long) parametersMap.get("Level").get("Value")).intValue();
                     addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)));
+
                     break;
 
                 case "ZeroGyroCommand":
                     addSequential(new ZeroGyroCommand());
+
                     break;
 
                 default:
                     log.warn("Invalid command specified " + commandClass + ".");
+
                     break;
             }
         }
