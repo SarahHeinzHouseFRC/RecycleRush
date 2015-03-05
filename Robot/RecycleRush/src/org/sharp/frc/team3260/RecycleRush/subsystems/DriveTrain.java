@@ -44,10 +44,10 @@ public class DriveTrain extends SHARPSubsystem
 
         transducer = new SHARPPressureTransducer(0);
 
-        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
-        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
-        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
-        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
+        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), 5);
+        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), 5);
+        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), 5);
+        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt(), 5);
 
         frontLeftTalon.enableBrakeMode(true);
         frontRightTalon.enableBrakeMode(true);
@@ -60,9 +60,9 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
         frontLeftTalon.reverseOutput(true);
-        frontRightTalon.reverseOutput(true);
+        frontRightTalon.reverseOutput(false);
         backLeftTalon.reverseOutput(true);
-        backRightTalon.reverseOutput(true);
+        backRightTalon.reverseOutput(false);
 
         frontLeftTalon.reverseSensor(true);
         frontRightTalon.reverseSensor(true);
@@ -214,10 +214,10 @@ public class DriveTrain extends SHARPSubsystem
 
     public void setDriveMotors(double frontLeftOutput, double frontRightOutput, double backLeftOutput, double backRightOutput)
     {
-        frontLeftTalon.set(-frontLeftOutput);
-        frontRightTalon.set(frontRightOutput);
-        backLeftTalon.set(-backLeftOutput);
-        backRightTalon.set(backRightOutput);
+        frontLeftTalon.set(frontLeftOutput);
+        frontRightTalon.set(-frontRightOutput);
+        backLeftTalon.set(backLeftOutput);
+        backRightTalon.set(-backRightOutput);
     }
 
     public void setDriveMotors(double[] wheelSpeeds)
@@ -235,9 +235,9 @@ public class DriveTrain extends SHARPSubsystem
     public void tankDrive(double leftOutput, double rightOutput)
     {
         frontLeftTalon.set(leftOutput);
-        frontRightTalon.set(rightOutput);
+        frontRightTalon.set(-rightOutput);
         backLeftTalon.set(leftOutput);
-        backRightTalon.set(rightOutput);
+        backRightTalon.set(-rightOutput);
     }
 
     public void mecanumDrive_Cartesian(double x, double y, double rotation, double gyroAngle, boolean useRotationPID)
@@ -368,9 +368,9 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.setPosition(0);
 
         frontLeftTalon.set(-frontLeftTarget);
-        frontRightTalon.set(frontRightTarget);
+        frontRightTalon.set(-frontRightTarget);
         backLeftTalon.set(-backLeftTarget);
-        backRightTalon.set(backRightTarget);
+        backRightTalon.set(-backRightTarget);
 
         log.info("Drive Encoder Targets: " + frontLeftTarget + ", " + frontRightTarget + ", " + backLeftTarget + ", " + backRightTarget);
     }

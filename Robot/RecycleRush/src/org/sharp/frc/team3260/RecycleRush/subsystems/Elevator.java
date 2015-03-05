@@ -21,7 +21,7 @@ public class Elevator extends SHARPSubsystem
 
         instance = this;
 
-        elevatorTalon = new CANTalon(Constants.elevatorTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
+        elevatorTalon = new CANTalon(Constants.elevatorTalonID.getInt(), 5);
 
         elevatorTalon.enableBrakeMode(true);
 

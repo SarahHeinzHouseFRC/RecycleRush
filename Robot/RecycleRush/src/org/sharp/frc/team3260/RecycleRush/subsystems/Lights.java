@@ -154,7 +154,7 @@ public class Lights extends SHARPSubsystem
         {
             lightOption = LightOption.MATCH_READY;
         }
-        else if(pitch > 40 || pitch > -40)
+        else if(pitch > 40 || pitch < -40)
         {
             lightOption = LightOption.YOLO;
         }

@@ -31,7 +31,7 @@ public class FieldCentricMecanumPIDDrive extends Command
     protected void execute()
     {
         double strafe = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_X);
-        double forward = -driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
+        double forward = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
         double rotation = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X);
 
         rotation = Math.abs(rotation) > ROTATION_DEADBAND ? rotation : 0;
