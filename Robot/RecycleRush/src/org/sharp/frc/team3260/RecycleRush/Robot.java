@@ -237,11 +237,6 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
-    public boolean isDisplayingMatchReady()
-    {
-        return showedMatchReady && !finishedMatchReady;
-    }
-
     private class StatusUpdater implements Runnable
     {
         @Override
@@ -249,76 +244,15 @@ public class Robot extends IterativeRobot
         {
             while(doStatusUpdate)
             {
-                if(!postedCalibrationStatus)
-                {
-                    if(!DriveTrain.getInstance().isIMUnull())
-                    {
-                        if(!DriveTrain.getInstance().isIMUCalibrated())
-                        {
-                            log.info("NavX MXP calibration started. Do not move the robot.");
-
-                            postedCalibrationStatus = true;
-                        }
-                    }
-                    else
-                    {
-                        log.warn("The NavX object is null. Calibration will not begin. Ensure that the NavX is connected and restart the robot.");
-
-                        postedCalibrationStatus = true;
-                    }
-                }
-
                 SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
 
-                double batteryVoltage = DriverStation.getInstance().getBatteryVoltage();
                 double pressure = DriveTrain.getInstance().getPressure();
 
                 SmartDashboard.putNumber("Pressure", pressure);
 
-                if(pressure < 40)
-                {
-                    if(!showedPressureWarning)
-                    {
-                        log.warn("Pneumatics pressure severely low. Current pressure: " + pressure + " PSI.");
-                    }
-
-                    showedPressureWarning = true;
-                }
-                else
-                {
-                    showedPressureWarning = false;
-                }
-
-                if(batteryVoltage < 10)
-                {
-                    if(!showedBatteryWarning)
-                    {
-                        log.warn("Battery Voltage severely low. Current voltage: " + batteryVoltage + " Volts.");
-                    }
-
-                    showedBatteryWarning = true;
-                }
-                else
-                {
-                    showedBatteryWarning = false;
-                }
-
-                if(!showedMatchReady && DriveTrain.getInstance().isIMUCalibrated())
-                {
-                    log.info("Starting match ready display at " + new Date() + ".");
-
-                    matchReadyStartTime = System.currentTimeMillis();
-
-                    showedMatchReady = true;
-                }
-                else if(!finishedMatchReady)
-                {
-                    finishedMatchReady = (System.currentTimeMillis() - 10000) > matchReadyStartTime;
-                }
-
                 Lights.getInstance().updateLights();
 
-                Timer.delay(0.2);
+                Timer.delay(0.1);
             }
         }
     }
