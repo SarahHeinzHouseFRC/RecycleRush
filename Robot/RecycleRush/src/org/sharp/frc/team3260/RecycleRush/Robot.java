@@ -36,14 +36,6 @@ public class Robot extends IterativeRobot
 
     protected static boolean doStatusUpdate = true;
 
-    private boolean postedCalibrationStatus;
-
-    private boolean showedPressureWarning, showedBatteryWarning;
-
-    private long matchReadyStartTime;
-    private boolean showedMatchReady;
-    private boolean finishedMatchReady;
-
     public Robot()
     {
         if(instance != null)
@@ -56,9 +48,6 @@ public class Robot extends IterativeRobot
 
     public void robotInit()
     {
-        showedBatteryWarning = false;
-        showedPressureWarning = false;
-
         log.info("Creating subsystem instances...");
         new DriveTrain();
         new Elevator();
@@ -93,7 +82,9 @@ public class Robot extends IterativeRobot
         {
             String elevatorPositionString = Util.getFile("//U//Elevator Position.txt").replace(" ", "").replace("\n", "".replace("\r", ""));
 
-            int elevatorPosition = Integer.parseInt(elevatorPositionString);
+            //int elevatorPosition = Integer.parseInt(elevatorPositionString);
+
+            int elevatorPosition = 0;
 
             if(elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
             {
@@ -117,13 +108,8 @@ public class Robot extends IterativeRobot
         log.info("Deleting old log files...");
         Log.deleteOldLogFiles();
 
-        showedMatchReady = false;
-        finishedMatchReady = false;
-
         log.info("Creating status updater...");
         new Thread(new StatusUpdater()).start();
-
-        postedCalibrationStatus = false;
     }
 
     public void autonomousInit()

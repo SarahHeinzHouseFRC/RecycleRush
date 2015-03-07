@@ -8,6 +8,8 @@ public class BasicAutonomousCommandGroup extends CommandGroup
 {
     public BasicAutonomousCommandGroup()
     {
+        addSequential(new ZeroGyroCommand());
+
         addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(3)));
         addSequential(new CloseGripperCommand());
         addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(7)));

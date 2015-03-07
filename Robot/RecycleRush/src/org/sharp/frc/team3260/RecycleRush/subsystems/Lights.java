@@ -150,7 +150,7 @@ public class Lights extends SHARPSubsystem
 
         double pitch = DriveTrain.getInstance().getIMU().getPitch();
 
-        if(pitch > 40 || pitch < -40)
+        if(pitch > 40 || pitch > -40)
         {
             lightOption = LightOption.YOLO;
         }

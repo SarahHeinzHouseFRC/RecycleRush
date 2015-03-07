@@ -149,7 +149,7 @@ public class Elevator extends SHARPSubsystem
 
     public int getPosition()
     {
-        return elevatorTalon.getEncPosition();
+        return -elevatorTalon.getEncPosition();
     }
 
     public byte getPositionAsByte()
