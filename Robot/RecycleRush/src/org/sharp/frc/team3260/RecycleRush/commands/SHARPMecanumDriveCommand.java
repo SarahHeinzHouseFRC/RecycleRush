@@ -15,6 +15,8 @@ public class SHARPMecanumDriveCommand extends Command
     Joystick driveJoystick = OI.getInstance().getMainGamepad();
     Joystick secondJoystick = OI.getInstance().getManipulatorGamepad();
 
+    boolean usingSecondJoystick;
+
     public SHARPMecanumDriveCommand()
     {
         requires(DriveTrain.getInstance());
@@ -29,6 +31,8 @@ public class SHARPMecanumDriveCommand extends Command
     @Override
     protected void execute()
     {
+        usingSecondJoystick = false;
+
         double strafe = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_X);
         double forward = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
         double rotation = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X);
@@ -36,21 +40,19 @@ public class SHARPMecanumDriveCommand extends Command
         double secondJoystickForward = secondJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
         double secondJoystickStrafe = secondJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_X);
 
+        if((Math.abs(forward) < 0.1 && Math.abs(secondJoystickForward) > ROTATION_DEADBAND) || (Math.abs(strafe) < 0.1 && Math.abs(secondJoystickStrafe) > ROTATION_DEADBAND))
+        {
+            usingSecondJoystick = true;
+
+            forward = secondJoystickForward * 0.3;
+            strafe = secondJoystickStrafe * 0.3;
+        }
+
         rotation = Math.abs(rotation) > ROTATION_DEADBAND ? rotation : 0;
         strafe = Math.abs(strafe) > ROTATION_DEADBAND ? strafe : 0;
         forward = Math.abs(forward) > ROTATION_DEADBAND ? forward : 0;
 
-        if(Math.abs(forward) < 0.1 && Math.abs(secondJoystickForward) > ROTATION_DEADBAND)
-        {
-            strafe = secondJoystickForward * 0.5;
-        }
-        
-        if(Math.abs(strafe) < 0.1 && Math.abs(secondJoystickStrafe) > ROTATION_DEADBAND)
-        {
-            strafe = secondJoystickStrafe * 0.5; 
-        }
-        
-        if(DriveTrain.getInstance().getIMU() == null)
+        if(usingSecondJoystick || DriveTrain.getInstance().getIMU() == null)
         {
             DriveTrain.getInstance().stockMecanumDrive(strafe, forward, rotation, 0);
         }
