@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.SHARPPressureTransducer;
-import org.sharp.frc.team3260.RecycleRush.commands.FIRSTMecanumDriveCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.SHARPMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 public class DriveTrain extends SHARPSubsystem
@@ -184,7 +184,7 @@ public class DriveTrain extends SHARPSubsystem
 
     public void initDefaultCommand()
     {
-        setDefaultCommand(new FIRSTMecanumDriveCommand());
+        setDefaultCommand(new SHARPMecanumDriveCommand());
     }
 
     public void zeroGyro()
@@ -230,6 +230,11 @@ public class DriveTrain extends SHARPSubsystem
     public void stockMecanumDrive(double x, double y, double rotation, double gyroAngle)
     {
         mecanumDrive_Cartesian(x, y, rotation, gyroAngle, false);
+    }
+
+    public void stockMecanumDrive(double x, double y, double rotation, double gyroAngle, boolean useRotationPID)
+    {
+        mecanumDrive_Cartesian(x, y, rotation, gyroAngle, useRotationPID);
     }
 
     public void tankDrive(double leftOutput, double rightOutput)
