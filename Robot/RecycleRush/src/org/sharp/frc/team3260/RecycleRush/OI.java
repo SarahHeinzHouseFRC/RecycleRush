@@ -20,6 +20,7 @@ public class OI
 
     public Button manipulatorGamepadA, manipulatorGamepadB, manipulatorGamepadX, manipulatorGamepadY;
 
+    public Button manipulatorGamepadLeftBumper, manipulatorGamepadRightBumper;
     public Button manipulatorGamepadLeftTrigger, manipulatorGamepadRightTrigger;
 
     public OI()
@@ -35,6 +36,9 @@ public class OI
         manipulatorGamepadLeftTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_LEFT_AXIS, 0.5);
         manipulatorGamepadRightTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_RIGHT_AXS, 0.5);
 
+        manipulatorGamepadLeftBumper = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_LEFT_BUMPER);
+        manipulatorGamepadRightBumper = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_RIGHT_BUMPER);
+
         manipulatorGamepadA = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_A);
         manipulatorGamepadB = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_B);
         manipulatorGamepadX = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_X);
@@ -47,6 +51,9 @@ public class OI
 
         manipulatorGamepadLeftTrigger.whenReleased(new CloseGripperCommand());
         manipulatorGamepadRightTrigger.whenReleased(new OpenGripperCommand());
+        
+        manipulatorGamepadLeftBumper.whenReleased(new RotateToHeadingCommand(135, false));
+        manipulatorGamepadRightBumper.whenReleased(new RotateToHeadingCommand(-135, false));
 
         manipulatorGamepadA.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.GROUND));
         manipulatorGamepadB.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));

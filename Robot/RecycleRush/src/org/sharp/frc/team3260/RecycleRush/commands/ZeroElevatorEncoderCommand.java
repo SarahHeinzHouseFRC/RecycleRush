@@ -7,7 +7,6 @@ public class ZeroElevatorEncoderCommand extends Command
 {
     public ZeroElevatorEncoderCommand()
     {
-        requires(Elevator.getInstance());
     }
 
     @Override

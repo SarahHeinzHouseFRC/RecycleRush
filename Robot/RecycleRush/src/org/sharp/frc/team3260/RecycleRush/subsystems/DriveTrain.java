@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.SHARPPressureTransducer;
-import org.sharp.frc.team3260.RecycleRush.commands.FIRSTMecanumDriveCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.SHARPMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 public class DriveTrain extends SHARPSubsystem
@@ -44,10 +44,10 @@ public class DriveTrain extends SHARPSubsystem
 
         transducer = new SHARPPressureTransducer(0);
 
-        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
-        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
-        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
-        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt(), Constants.talonStatusPacketTime.getInt());
+        frontLeftTalon = new CANTalon(Constants.driveFrontLeftTalonID.getInt(), 5);
+        frontRightTalon = new CANTalon(Constants.driveFrontRightTalonID.getInt(), 5);
+        backLeftTalon = new CANTalon(Constants.driveBackLeftTalonID.getInt(), 5);
+        backRightTalon = new CANTalon(Constants.driveBackRightTalonID.getInt(), 5);
 
         frontLeftTalon.enableBrakeMode(true);
         frontRightTalon.enableBrakeMode(true);
@@ -60,9 +60,9 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
         frontLeftTalon.reverseOutput(true);
-        frontRightTalon.reverseOutput(true);
+        frontRightTalon.reverseOutput(false);
         backLeftTalon.reverseOutput(true);
-        backRightTalon.reverseOutput(true);
+        backRightTalon.reverseOutput(false);
 
         frontLeftTalon.reverseSensor(true);
         frontRightTalon.reverseSensor(true);
@@ -184,7 +184,7 @@ public class DriveTrain extends SHARPSubsystem
 
     public void initDefaultCommand()
     {
-        setDefaultCommand(new FIRSTMecanumDriveCommand());
+        setDefaultCommand(new SHARPMecanumDriveCommand());
     }
 
     public void zeroGyro()
@@ -232,11 +232,16 @@ public class DriveTrain extends SHARPSubsystem
         mecanumDrive_Cartesian(x, y, rotation, gyroAngle, false);
     }
 
+    public void stockMecanumDrive(double x, double y, double rotation, double gyroAngle, boolean useRotationPID)
+    {
+        mecanumDrive_Cartesian(x, y, rotation, gyroAngle, useRotationPID);
+    }
+
     public void tankDrive(double leftOutput, double rightOutput)
     {
-        frontLeftTalon.set(leftOutput);
+        frontLeftTalon.set(-leftOutput);
         frontRightTalon.set(rightOutput);
-        backLeftTalon.set(leftOutput);
+        backLeftTalon.set(-leftOutput);
         backRightTalon.set(rightOutput);
     }
 
@@ -266,14 +271,6 @@ public class DriveTrain extends SHARPSubsystem
         setDriveMotors(wheelSpeeds);
     }
 
-    /**
-     * Gets the corrected rotation speed based on the gyro heading and the
-     * expected rate of rotation. If the rotation rate is above a threshold, the
-     * gyro correction is turned off.
-     *
-     * @param rotationSpeed Desired rotation speed
-     * @return rotationSpeed
-     */
     private double getRotationPID(double rotationSpeed)
     {
         if(driveRotationController.getSetpoint() != rotationTarget && rotatingToTarget)
@@ -400,21 +397,6 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.ClearIaccum();
     }
 
-    public boolean isIMUCalibrated()
-    {
-        boolean isCalibrating = imu.isCalibrating();
-
-        if(firstIteration && !isCalibrating)
-        {
-            log.info("NavX MXP finished calibrating, zeroing yaw...");
-            Timer.delay(0.3);
-            imu.zeroYaw();
-            firstIteration = false;
-        }
-
-        return isCalibrating;
-    }
-
     public static DriveTrain getInstance()
     {
         if(instance == null)
@@ -450,10 +432,5 @@ public class DriveTrain extends SHARPSubsystem
     public double getPressure()
     {
         return transducer.getPressure();
-    }
-
-    public boolean isIMUnull()
-    {
-        return imu == null;
     }
 }

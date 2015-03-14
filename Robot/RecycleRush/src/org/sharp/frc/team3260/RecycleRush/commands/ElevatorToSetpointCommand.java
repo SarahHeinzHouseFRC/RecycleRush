@@ -28,7 +28,7 @@ public class ElevatorToSetpointCommand extends Command
 
         Elevator.getInstance().setElevator(setpoint);
 
-        int timeout = Math.abs(Elevator.getInstance().getPosition() - setpoint.encoderValue) / 1500;
+        double timeout = Math.abs(Elevator.getInstance().getPosition() - setpoint.encoderValue) / 1500;
 
         Elevator.getInstance().getLogger().info("Elevator To Setpoint Timeout: " + timeout);
 

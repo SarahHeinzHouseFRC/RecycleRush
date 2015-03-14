@@ -9,9 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.autonomous.BasicAutonomousCommandGroup;
 import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
-import org.sharp.frc.team3260.RecycleRush.commands.FIRSTMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.SHARPMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyroCommand;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
@@ -36,14 +36,6 @@ public class Robot extends IterativeRobot
 
     protected static boolean doStatusUpdate = true;
 
-    private boolean postedCalibrationStatus;
-
-    private boolean showedPressureWarning, showedBatteryWarning;
-
-    private long matchReadyStartTime;
-    private boolean showedMatchReady;
-    private boolean finishedMatchReady;
-
     public Robot()
     {
         if(instance != null)
@@ -56,9 +48,6 @@ public class Robot extends IterativeRobot
 
     public void robotInit()
     {
-        showedBatteryWarning = false;
-        showedPressureWarning = false;
-
         log.info("Creating subsystem instances...");
         new DriveTrain();
         new Elevator();
@@ -68,7 +57,7 @@ public class Robot extends IterativeRobot
         log.info("Adding SmartDashboard buttons...");
         SmartDashboard.putData("SHARPDrive", new SHARPDriveCommand());
         SmartDashboard.putData("Field Centric Mecanum Drive", new FieldCentricMecanumDriveCommand());
-        SmartDashboard.putData("FIRST Mecanum Drive", new FIRSTMecanumDriveCommand());
+        SmartDashboard.putData("SHARP Mecanum Drive", new SHARPMecanumDriveCommand());
         SmartDashboard.putData("Zero Gyro", new ZeroGyroCommand());
 
         log.info("Indexing Autonomous Options...");
@@ -93,7 +82,9 @@ public class Robot extends IterativeRobot
         {
             String elevatorPositionString = Util.getFile("//U//Elevator Position.txt").replace(" ", "").replace("\n", "".replace("\r", ""));
 
-            int elevatorPosition = Integer.parseInt(elevatorPositionString);
+            //int elevatorPosition = Integer.parseInt(elevatorPositionString);
+
+            int elevatorPosition = 0;
 
             if(elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
             {
@@ -117,13 +108,8 @@ public class Robot extends IterativeRobot
         log.info("Deleting old log files...");
         Log.deleteOldLogFiles();
 
-        showedMatchReady = false;
-        finishedMatchReady = false;
-
         log.info("Creating status updater...");
         new Thread(new StatusUpdater()).start();
-
-        postedCalibrationStatus = false;
     }
 
     public void autonomousInit()
@@ -237,11 +223,6 @@ public class Robot extends IterativeRobot
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
-    public boolean isDisplayingMatchReady()
-    {
-        return showedMatchReady && !finishedMatchReady;
-    }
-
     private class StatusUpdater implements Runnable
     {
         @Override
@@ -249,76 +230,15 @@ public class Robot extends IterativeRobot
         {
             while(doStatusUpdate)
             {
-                if(!postedCalibrationStatus)
-                {
-                    if(!DriveTrain.getInstance().isIMUnull())
-                    {
-                        if(!DriveTrain.getInstance().isIMUCalibrated())
-                        {
-                            log.info("NavX MXP calibration started. Do not move the robot.");
-
-                            postedCalibrationStatus = true;
-                        }
-                    }
-                    else
-                    {
-                        log.warn("The NavX object is null. Calibration will not begin. Ensure that the NavX is connected and restart the robot.");
-
-                        postedCalibrationStatus = true;
-                    }
-                }
-
                 SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
 
-                double batteryVoltage = DriverStation.getInstance().getBatteryVoltage();
                 double pressure = DriveTrain.getInstance().getPressure();
 
                 SmartDashboard.putNumber("Pressure", pressure);
 
-                if(pressure < 40)
-                {
-                    if(!showedPressureWarning)
-                    {
-                        log.warn("Pneumatics pressure severely low. Current pressure: " + pressure + " PSI.");
-                    }
-
-                    showedPressureWarning = true;
-                }
-                else
-                {
-                    showedPressureWarning = false;
-                }
-
-                if(batteryVoltage < 10)
-                {
-                    if(!showedBatteryWarning)
-                    {
-                        log.warn("Battery Voltage severely low. Current voltage: " + batteryVoltage + " Volts.");
-                    }
-
-                    showedBatteryWarning = true;
-                }
-                else
-                {
-                    showedBatteryWarning = false;
-                }
-
-                if(!showedMatchReady && DriveTrain.getInstance().isIMUCalibrated())
-                {
-                    log.info("Starting match ready display at " + new Date() + ".");
-
-                    matchReadyStartTime = System.currentTimeMillis();
-
-                    showedMatchReady = true;
-                }
-                else if(!finishedMatchReady)
-                {
-                    finishedMatchReady = (System.currentTimeMillis() - 10000) > matchReadyStartTime;
-                }
-
                 Lights.getInstance().updateLights();
 
-                Timer.delay(0.2);
+                Timer.delay(0.1);
             }
         }
     }

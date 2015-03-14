@@ -8,30 +8,17 @@ public class BasicAutonomousCommandGroup extends CommandGroup
 {
     public BasicAutonomousCommandGroup()
     {
+        addSequential(new ZeroGyroCommand());
+
         addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(3)));
         addSequential(new CloseGripperCommand());
         addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(7)));
-        addSequential(new DriveDistanceCommand(1100, 5));
-        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(6)));
-        addSequential(new OpenGripperCommand());
-        addSequential(new DriveDistanceCommand(-400, 1));
-        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(0)));
-        addSequential(new DriveDistanceCommand(450, 1));
-        addSequential(new CloseGripperCommand());
-        addSequential(new RobotIdleCommand(250));
-        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(8)));
         addSequential(new ZeroGyroCommand());
         addSequential(new RobotIdleCommand(250));
         addSequential(new RotateToHeadingCommand(-90, true));
         addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(2)));
         addSequential(new ZeroGyroCommand());
-//        addSequential(new DriveAtSpeedCommand(0.45, 2.5));
-//        addSequential(new RobotIdleCommand(500));
-//        addSequential(new ZeroGyroCommand());
-//        addSequential(new RobotIdleCommand(250));
-//        addSequential(new RotateToHeadingCommand(-90, true));
-//        addSequential(new RobotIdleCommand(250));
-//        addSequential(new OpenGripperCommand());
-//        addSequential(new ZeroGyroCommand());
+        addSequential(new DriveAtSpeedCommand(0.45, 2.5));
+        addSequential(new RobotIdleCommand(500));
     }
 }

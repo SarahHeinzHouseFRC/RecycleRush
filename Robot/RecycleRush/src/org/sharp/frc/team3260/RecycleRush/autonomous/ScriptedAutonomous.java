@@ -1,5 +1,6 @@
 package org.sharp.frc.team3260.RecycleRush.autonomous;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.json.simple.JSONArray;
@@ -65,8 +66,8 @@ public class ScriptedAutonomous
                 parametersMap.put(currentParameter.get("Name").toString(), currentParameter);
             }
             numCommandsAdded++;
-            int level, time, timeout;
-            double speed, distance, angle;
+            int level, timeout;
+            double speed, distance, angle,time;
 
             if(commandClass == null || commandClass.equals(""))
             {
@@ -83,7 +84,7 @@ public class ScriptedAutonomous
                     break;
 
                 case "DriveAtSpeedCommand":
-                    time = new Long((long) parametersMap.get("Time").get("Value")).intValue();
+                    time = (new Long((long)parametersMap.get("Time").get("Value")) / (double) 1000);
                     speed = (double) parametersMap.get("Speed").get("Value");
 
                     addSequential(new DriveAtSpeedCommand(speed, time));
@@ -106,7 +107,7 @@ public class ScriptedAutonomous
 
                 case "RobotIdleCommand":
                     //in milliseconds
-                    time = new Long((long) parametersMap.get("Time").get("Value")).intValue();
+                    time = (new Long((long)parametersMap.get("Time").get("Value")) / (double) 1000);
                     addSequential(new RobotIdleCommand(time));
                     break;
 
@@ -176,6 +177,8 @@ public class ScriptedAutonomous
         {
             commandsLoaded = loadJSON();
         }
+
+        DriverStation.getInstance().reportError("Autonomous loading was " + (commandsLoaded ? " succcesful" : "failed"), false);
 
         getLog().info("Autonomous loading was " + (commandsLoaded ? "successful." : "not successful."));
 
