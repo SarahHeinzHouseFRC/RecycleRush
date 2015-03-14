@@ -9,16 +9,5 @@ public class BasicAutonomousCommandGroup extends CommandGroup
     public BasicAutonomousCommandGroup()
     {
         addSequential(new ZeroGyroCommand());
-
-        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(3)));
-        addSequential(new CloseGripperCommand());
-        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(7)));
-        addSequential(new ZeroGyroCommand());
-        addSequential(new RobotIdleCommand(250));
-        addSequential(new RotateToHeadingCommand(-90, true));
-        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(2)));
-        addSequential(new ZeroGyroCommand());
-        addSequential(new DriveAtSpeedCommand(0.45, 2.5));
-        addSequential(new RobotIdleCommand(500));
     }
 }
