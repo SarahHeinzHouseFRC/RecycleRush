@@ -2,7 +2,6 @@ package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
-import org.sharp.frc.team3260.RecycleRush.Robot;
 
 public class Lights extends SHARPSubsystem
 {
@@ -27,8 +26,6 @@ public class Lights extends SHARPSubsystem
     {
     }
 
-    // This routine sends up to 6 bytes to place in the Arduino's "read/write" array and
-    // then reads it back into the public byte array "dataReceived" for verification
     private void arduinoWrite(byte newData[], byte length)
     {
         if(length > 6)

@@ -59,9 +59,9 @@ public class DriveTrain extends SHARPSubsystem
         backLeftTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
         backRightTalon.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 
-        frontLeftTalon.reverseOutput(false);
+        frontLeftTalon.reverseOutput(true);
         frontRightTalon.reverseOutput(false);
-        backLeftTalon.reverseOutput(false);
+        backLeftTalon.reverseOutput(true);
         backRightTalon.reverseOutput(false);
 
         frontLeftTalon.reverseSensor(true);
@@ -214,10 +214,10 @@ public class DriveTrain extends SHARPSubsystem
 
     public void setDriveMotors(double frontLeftOutput, double frontRightOutput, double backLeftOutput, double backRightOutput)
     {
-        frontLeftTalon.set(frontLeftOutput);
-        frontRightTalon.set(-frontRightOutput);
-        backLeftTalon.set(backLeftOutput);
-        backRightTalon.set(-backRightOutput);
+        frontLeftTalon.set(-frontLeftOutput);
+        frontRightTalon.set(frontRightOutput);
+        backLeftTalon.set(-backLeftOutput);
+        backRightTalon.set(backRightOutput);
     }
 
     public void setDriveMotors(double[] wheelSpeeds)
@@ -234,10 +234,10 @@ public class DriveTrain extends SHARPSubsystem
 
     public void tankDrive(double leftOutput, double rightOutput)
     {
-        frontLeftTalon.set(leftOutput);
-        frontRightTalon.set(-rightOutput);
-        backLeftTalon.set(leftOutput);
-        backRightTalon.set(-rightOutput);
+        frontLeftTalon.set(-leftOutput);
+        frontRightTalon.set(rightOutput);
+        backLeftTalon.set(-leftOutput);
+        backRightTalon.set(rightOutput);
     }
 
     public void mecanumDrive_Cartesian(double x, double y, double rotation, double gyroAngle, boolean useRotationPID)
@@ -266,14 +266,6 @@ public class DriveTrain extends SHARPSubsystem
         setDriveMotors(wheelSpeeds);
     }
 
-    /**
-     * Gets the corrected rotation speed based on the gyro heading and the
-     * expected rate of rotation. If the rotation rate is above a threshold, the
-     * gyro correction is turned off.
-     *
-     * @param rotationSpeed Desired rotation speed
-     * @return rotationSpeed
-     */
     private double getRotationPID(double rotationSpeed)
     {
         if(driveRotationController.getSetpoint() != rotationTarget && rotatingToTarget)
@@ -368,9 +360,9 @@ public class DriveTrain extends SHARPSubsystem
         backRightTalon.setPosition(0);
 
         frontLeftTalon.set(-frontLeftTarget);
-        frontRightTalon.set(-frontRightTarget);
+        frontRightTalon.set(frontRightTarget);
         backLeftTalon.set(-backLeftTarget);
-        backRightTalon.set(-backRightTarget);
+        backRightTalon.set(backRightTarget);
 
         log.info("Drive Encoder Targets: " + frontLeftTarget + ", " + frontRightTarget + ", " + backLeftTarget + ", " + backRightTarget);
     }
@@ -398,21 +390,6 @@ public class DriveTrain extends SHARPSubsystem
         frontRightTalon.ClearIaccum();
         backLeftTalon.ClearIaccum();
         backRightTalon.ClearIaccum();
-    }
-
-    public boolean isIMUCalibrated()
-    {
-        boolean isCalibrating = imu.isCalibrating();
-
-        if(firstIteration && !isCalibrating)
-        {
-            log.info("NavX MXP finished calibrating, zeroing yaw...");
-            Timer.delay(0.3);
-            imu.zeroYaw();
-            firstIteration = false;
-        }
-
-        return isCalibrating;
     }
 
     public static DriveTrain getInstance()
@@ -450,10 +427,5 @@ public class DriveTrain extends SHARPSubsystem
     public double getPressure()
     {
         return transducer.getPressure();
-    }
-
-    public boolean isIMUnull()
-    {
-        return imu == null;
     }
 }
