@@ -7,20 +7,16 @@ public class ElevatorToSetpointCommand extends Command
 {
     Elevator.ElevatorPosition setpoint;
 
-    public ElevatorToSetpointCommand(Elevator.ElevatorPosition setpoint, double timeout)
+    public ElevatorToSetpointCommand(Elevator.ElevatorPosition setpoint)
     {
         requires(Elevator.getInstance());
-
-        setTimeout(timeout);
 
         this.setpoint = setpoint;
     }
 
-    public ElevatorToSetpointCommand(String positionName, int positionTicks, double timeout)
+    public ElevatorToSetpointCommand(String positionName, int positionTicks)
     {
         requires(Elevator.getInstance());
-
-        setTimeout(timeout);
 
         this.setpoint = new Elevator.ElevatorPosition(positionName, positionTicks);
     }
@@ -31,6 +27,12 @@ public class ElevatorToSetpointCommand extends Command
         Elevator.getInstance().changeElevatorMode(true);
 
         Elevator.getInstance().setElevator(setpoint);
+
+        double timeout = Math.abs(Elevator.getInstance().getPosition() - setpoint.encoderValue) / 1500;
+
+        Elevator.getInstance().getLogger().info("Elevator To Setpoint Timeout: " + timeout);
+
+        setTimeout(timeout);
     }
 
     @Override
@@ -47,9 +49,9 @@ public class ElevatorToSetpointCommand extends Command
     @Override
     protected void end()
     {
-        if (isTimedOut())
+        if(isTimedOut())
         {
-            Elevator.getInstance().getLogger().severe("Elevator timed out en route to " + setpoint.positionName + ".");
+            Elevator.getInstance().getLogger().warn("Elevator timed out en route to " + setpoint.positionName + ".");
         }
         else
         {

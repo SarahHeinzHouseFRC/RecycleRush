@@ -4,15 +4,17 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
+import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 public class FieldCentricMecanumDriveCommand extends Command
 {
-    Joystick driveJoystick = OI.getInstance().getMainGamepad();
+    private static final double ROTATION_DEADBAND = 0.05;
 
-    public double ROTATION_DEADBAND = 0.1;
+    Joystick driveJoystick = OI.getInstance().getMainGamepad();
 
     public FieldCentricMecanumDriveCommand()
     {
@@ -27,7 +29,7 @@ public class FieldCentricMecanumDriveCommand extends Command
     protected void execute()
     {
         double strafe = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_X);
-        double forward = -driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
+        double forward = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y);
         double rotation = driveJoystick.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X);
 
         rotation = Math.abs(rotation) > ROTATION_DEADBAND ? rotation : 0;
@@ -40,13 +42,13 @@ public class FieldCentricMecanumDriveCommand extends Command
         SmartDashboard.putNumber("Drive Joystick Y", forward);
         SmartDashboard.putNumber("Drive Joystick Rotation", rotation);
 
-        if (DriveTrain.getInstance().getIMU() == null)
+        if(DriveTrain.getInstance().getIMU() == null)
         {
-            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, 0);
+            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, 0, false);
         }
         else
         {
-            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw());
+            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw(), true);
 
             SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
         }

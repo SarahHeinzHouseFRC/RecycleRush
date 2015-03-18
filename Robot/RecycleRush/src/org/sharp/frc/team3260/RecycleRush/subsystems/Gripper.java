@@ -1,16 +1,12 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.Solenoid;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 
 public class Gripper extends SHARPSubsystem
 {
     protected static Gripper instance;
-
-    private Solenoid outSolenoid;
-    private Solenoid inSolenoid;
 
     private DoubleSolenoid solenoid;
 
@@ -25,17 +21,16 @@ public class Gripper extends SHARPSubsystem
 
     public void closeGripper()
     {
+        getLogger().info("Closing");
+
         solenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void openGripper()
     {
-        solenoid.set(DoubleSolenoid.Value.kForward);
-    }
+        getLogger().info("Opening");
 
-    public void removePower()
-    {
-        solenoid.set(DoubleSolenoid.Value.kOff);
+        solenoid.set(DoubleSolenoid.Value.kForward);
     }
 
     @Override
@@ -45,11 +40,16 @@ public class Gripper extends SHARPSubsystem
 
     public static Gripper getInstance()
     {
-        if (instance == null)
+        if(instance == null)
         {
             Robot.getInstance().getLogger().error("Something has gone horribly wrong in " + Gripper.class.getSimpleName());
         }
 
         return instance;
+    }
+
+    public boolean isClosed()
+    {
+        return solenoid.get().equals(DoubleSolenoid.Value.kReverse);
     }
 }

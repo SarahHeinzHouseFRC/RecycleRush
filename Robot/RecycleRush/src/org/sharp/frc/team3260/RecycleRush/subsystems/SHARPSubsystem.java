@@ -28,7 +28,7 @@ public abstract class SHARPSubsystem extends Subsystem
 
         log = new Log(name, Log.ATTRIBUTE_TIME);
 
-        log.info("Created instance of " + name + ".");
+        log.info("Created instance of Subsystem " + name + ".");
     }
 
     protected abstract void initDefaultCommand();

@@ -2,9 +2,11 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
+import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
+import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 public class ElevatorWithJoystickCommand extends Command
 {
@@ -22,9 +24,9 @@ public class ElevatorWithJoystickCommand extends Command
     @Override
     protected void execute()
     {
-        if (Elevator.getInstance().getControlMode() == CANTalon.ControlMode.PercentVbus)
+        if(Elevator.getInstance().getControlMode() == CANTalon.ControlMode.PercentVbus)
         {
-            Elevator.getInstance().up((Math.abs(OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.1) ? OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y) : 0.0f);
+            Elevator.getInstance().up((Math.abs(OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.1) ? -OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y) : 0.0f);
         }
     }
 

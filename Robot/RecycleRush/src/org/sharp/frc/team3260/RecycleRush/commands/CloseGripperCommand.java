@@ -13,12 +13,12 @@ public class CloseGripperCommand extends Command
     @Override
     protected void initialize()
     {
+        Gripper.getInstance().closeGripper();
     }
 
     @Override
     protected void execute()
     {
-        Gripper.getInstance().closeGripper();
     }
 
     @Override
@@ -30,12 +30,10 @@ public class CloseGripperCommand extends Command
     @Override
     protected void end()
     {
-        Gripper.getInstance().removePower();
     }
 
     @Override
     protected void interrupted()
     {
-        end();
     }
 }

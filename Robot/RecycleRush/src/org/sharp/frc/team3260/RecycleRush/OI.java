@@ -1,17 +1,12 @@
 package org.sharp.frc.team3260.RecycleRush;
 
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.command.Scheduler;
-import org.sharp.frc.team3260.RecycleRush.commands.CloseGripperCommand;
-import org.sharp.frc.team3260.RecycleRush.commands.ElevatorToSetpointCommand;
-import org.sharp.frc.team3260.RecycleRush.commands.OpenGripperCommand;
-import org.sharp.frc.team3260.RecycleRush.commands.SwitchGamepadsCommand;
+import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.joystick.triggers.AxisButton;
+import org.sharp.frc.team3260.RecycleRush.joystick.triggers.TalonLimitSwitchButton;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
-import org.sharp.frc.team3260.RecycleRush.subsystems.SHARPSubsystem;
 
 public class OI
 {
@@ -19,14 +14,19 @@ public class OI
 
     public SHARPGamepad mainGamepad, manipulatorGamepad;
 
+    public Button elevatorTalonReverseLimitSwitchButton;
+
     public Button mainGamepadSelectButton, manipulatorGamepadSelectButton;
 
     public Button manipulatorGamepadA, manipulatorGamepadB, manipulatorGamepadX, manipulatorGamepadY;
 
+    public Button manipulatorGamepadLeftBumper, manipulatorGamepadRightBumper;
     public Button manipulatorGamepadLeftTrigger, manipulatorGamepadRightTrigger;
 
     public OI()
     {
+        elevatorTalonReverseLimitSwitchButton = new TalonLimitSwitchButton(Elevator.getInstance().getTalon(), false);
+
         mainGamepad = new SHARPGamepad(Constants.mainGamepadID.getInt());
         manipulatorGamepad = new SHARPGamepad(Constants.manipulatorGamepadID.getInt());
 
@@ -36,28 +36,36 @@ public class OI
         manipulatorGamepadLeftTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_LEFT_AXIS, 0.5);
         manipulatorGamepadRightTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_RIGHT_AXS, 0.5);
 
+        manipulatorGamepadLeftBumper = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_LEFT_BUMPER);
+        manipulatorGamepadRightBumper = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_RIGHT_BUMPER);
+
         manipulatorGamepadA = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_A);
         manipulatorGamepadB = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_B);
         manipulatorGamepadX = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_X);
         manipulatorGamepadY = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_Y);
+
+        elevatorTalonReverseLimitSwitchButton.whenPressed(new ZeroElevatorEncoderCommand());
 
         mainGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
         manipulatorGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
 
         manipulatorGamepadLeftTrigger.whenReleased(new CloseGripperCommand());
         manipulatorGamepadRightTrigger.whenReleased(new OpenGripperCommand());
+        
+        manipulatorGamepadLeftBumper.whenReleased(new RotateToHeadingCommand(135, false));
+        manipulatorGamepadRightBumper.whenReleased(new RotateToHeadingCommand(-135, false));
 
-        manipulatorGamepadA.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.GROUND, 5));
-        manipulatorGamepadB.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE, 5));
-        manipulatorGamepadX.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.RECYCLING_CAN, 5));
-        manipulatorGamepadY.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.THREE_TOTES, 5));
+        manipulatorGamepadA.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.GROUND));
+        manipulatorGamepadB.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
+        manipulatorGamepadX.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.RECYCLING_CAN));
+        manipulatorGamepadY.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.THREE_TOTES));
 
         instance = this;
     }
 
     public static OI getInstance()
     {
-        if (instance == null)
+        if(instance == null)
         {
             return new OI();
         }
@@ -77,7 +85,7 @@ public class OI
 
     public void checkControls()
     {
-        if ((Math.abs(manipulatorGamepad.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.5))
+        if((Math.abs(manipulatorGamepad.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.5))
         {
             Elevator.getInstance().changeElevatorMode(false);
         }

@@ -2,6 +2,7 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
+import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
@@ -44,8 +45,8 @@ public class SHARPDriveCommand extends Command
         double wheel;
         double throttle;
 
-        wheel = handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X), 0.05);
-        throttle = -handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y), 0.05);
+        wheel = Util.handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_X), Constants.joystickDeadband.getDouble());
+        throttle = -Util.handleDeadband(OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.JOYSTICK_LEFT_Y), Constants.joystickDeadband.getDouble());
 
         double negInertia = wheel - oldWheel;
         oldWheel = wheel;
@@ -56,13 +57,13 @@ public class SHARPDriveCommand extends Command
         wheel = Math.sin(Math.PI / 2.0 * nonLinearity * wheel) / Math.sin(Math.PI / 2.0 * nonLinearity);
         wheel = Math.sin(Math.PI / 2.0 * nonLinearity * wheel) / Math.sin(Math.PI / 2.0 * nonLinearity);
 
-        if (wheel * negInertia > 0)
+        if(wheel * negInertia > 0)
         {
             negInertiaScalar = 2.5;
         }
         else
         {
-            if (Math.abs(wheel) > 0.65)
+            if(Math.abs(wheel) > 0.65)
             {
                 negInertiaScalar = 5.0;
             }
@@ -79,11 +80,11 @@ public class SHARPDriveCommand extends Command
 
         wheel = wheel + negInertiaAccumulator;
 
-        if (negInertiaAccumulator > 1)
+        if(negInertiaAccumulator > 1)
         {
             negInertiaAccumulator -= 1;
         }
-        else if (negInertiaAccumulator < -1)
+        else if(negInertiaAccumulator < -1)
         {
             negInertiaAccumulator += 1;
         }
@@ -94,9 +95,9 @@ public class SHARPDriveCommand extends Command
 
         linearPower = throttle;
 
-        if (useQuickTurn)
+        if(useQuickTurn)
         {
-            if (Math.abs(linearPower) < 0.2)
+            if(Math.abs(linearPower) < 0.2)
             {
                 double alpha = 0.1;
 
@@ -113,11 +114,11 @@ public class SHARPDriveCommand extends Command
 
             angularPower = Math.abs(throttle) * wheel * sensitivity - quickStopAccumulator;
 
-            if (quickStopAccumulator > 1)
+            if(quickStopAccumulator > 1)
             {
                 quickStopAccumulator -= 1;
             }
-            else if (quickStopAccumulator < -1)
+            else if(quickStopAccumulator < -1)
             {
                 quickStopAccumulator += 1;
             }
@@ -131,23 +132,23 @@ public class SHARPDriveCommand extends Command
         leftOutput += angularPower;
         rightOutput -= angularPower;
 
-        if (leftOutput > 1.0)
+        if(leftOutput > 1.0)
         {
             rightOutput -= overPower * (leftOutput - 1.0);
             leftOutput = 1.0;
         }
-        else if (leftOutput < -1.0)
+        else if(leftOutput < -1.0)
         {
             rightOutput += overPower * (-1.0 - leftOutput);
             leftOutput = -1.0;
         }
 
-        if (rightOutput < -1.0)
+        if(rightOutput < -1.0)
         {
             leftOutput += overPower * (-1.0 - rightOutput);
             rightOutput = -1.0;
         }
-        else if (rightOutput > 1.0)
+        else if(rightOutput > 1.0)
         {
             leftOutput -= overPower * (rightOutput - 1.0);
             rightOutput = 1.0;
@@ -167,10 +168,5 @@ public class SHARPDriveCommand extends Command
 
     protected void interrupted()
     {
-    }
-
-    public double handleDeadband(double value, double deadband)
-    {
-        return (Math.abs(value) > Math.abs(deadband)) ? value : 0.0;
     }
 }

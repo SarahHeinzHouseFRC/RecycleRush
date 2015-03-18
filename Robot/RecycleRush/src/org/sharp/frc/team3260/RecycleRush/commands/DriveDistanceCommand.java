@@ -1,33 +1,40 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
-/**
- * This command drives the robot over a given distance with simple proportional
- * control This command will drive a given distance limiting to a maximum speed.
- */
 public class DriveDistanceCommand extends Command
 {
+    private double timeout = 5;
+
     private double distance;
 
-    public DriveDistanceCommand()
-    {
-        this(10 * 162);
-    }
-
-    public DriveDistanceCommand(double dist)
+    public DriveDistanceCommand(double distance)
     {
         requires(DriveTrain.getInstance());
 
-        distance = dist;
+        this.distance = distance;
+    }
+
+    public DriveDistanceCommand(double distance, double timeout)
+    {
+        requires(DriveTrain.getInstance());
+
+        this.distance = distance;
+
+        this.timeout = timeout;
     }
 
     protected void initialize()
     {
-        setTimeout(5);
+        setTimeout(timeout);
 
-        DriveTrain.getInstance().getLogger().info("DriveDistanceCommand initiated, distance set to " + distance + ".");
+        DriveTrain.getInstance().getLogger().info("DriveDistanceCommand initiated, distance set to " + distance + ", timeout is " + timeout + " seconds.");
+
+        DriveTrain.getInstance().zeroEncoders();
+
+        DriveTrain.getInstance().clearAccumulatedI();
 
         DriveTrain.getInstance().setDriveEncoderTargets(distance, distance, distance, distance);
     }
@@ -38,14 +45,16 @@ public class DriveDistanceCommand extends Command
 
     protected boolean isFinished()
     {
-        return DriveTrain.getInstance().atDriveTarget();
+        return isTimedOut() || DriveTrain.getInstance().atDriveTarget();
     }
 
     protected void end()
     {
-        DriveTrain.getInstance().getLogger().info("DriveDistanceCommand ended.");
+        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
 
         DriveTrain.getInstance().stop();
+
+        DriveTrain.getInstance().getLogger().info("DriveDistanceCommand ended.");
     }
 
     protected void interrupted()

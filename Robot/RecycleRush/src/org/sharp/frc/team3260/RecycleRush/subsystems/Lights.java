@@ -1,5 +1,6 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C;
 
 public class Lights extends SHARPSubsystem
@@ -17,78 +18,30 @@ public class Lights extends SHARPSubsystem
 
         instance = this;
 
-        i2c = new I2C(I2C.Port.kOnboard, 168);
+        i2c = new I2C(I2C.Port.kMXP, 168);
     }
 
     @Override
     protected void initDefaultCommand()
     {
-
     }
 
-    // This routine retrieves the incrementing counter value from the Arduino and reconstitutes
-    // it back into a 32 bit integer.  This is a rather convoluted way of doing it as JAVA does
-    // not support an unsigned single byte (bytes are signed)
-    private int arduinoCounter()
-    {
-        // Request Command #1 - Return Counter Value ("Register" 1)
-
-        i2c.write(1, 0);
-
-        // Read 5 bytes of data, with 0 bytes to send.  A false return value indicates success
-
-        if (!i2c.transaction(dataToSend, 0, dataReceived, 5))
-        {
-            // If the data returned is indeed the counter, the first byte should be a 1 - identical
-            // to the value we sent above
-
-            if (dataReceived[0] != 1)
-            {
-                log.error("Invalid data returned from Arduino.");
-            }
-            else
-            {
-                return (((int) dataReceived[4] * 16777216) + (((int) dataReceived[3] & 0x000000ff) * 65536) + (((int) dataReceived[2] & 0x000000ff) * 256) + ((int) dataReceived[1] & 0x000000ff));
-            }
-        }
-        else
-        {
-            log.error("Failure to read from Arduino.");
-        }
-
-        return 0;
-    }
-
-
-    // This routine sends up to 6 bytes to place in the Arduino's "read/write" array and
-    // then reads it back into the public byte array "dataReceived" for verification
     private void arduinoWrite(byte newData[], byte length)
     {
-        // Maximum 6 bytes to send in addition to the "command" byte.  Place all the data into
-        // the byte array.
-        if (length > 6)
+        if(length > 6)
         {
             length = 6;
         }
 
         dataToSend[0] = 2;
 
-        for (int i = 0; i < length; i++)
-        {
-            dataToSend[i + 1] = newData[i];
-        }
+        System.arraycopy(newData, 0, dataToSend, 1, length);
 
-        // Send the data to the Arduino.  Do not request any return bytes or this function
-        // will fail
-        if (!i2c.transaction(dataToSend, length + 1, dataReceived, 0))
+        if(!i2c.transaction(dataToSend, dataToSend.length, dataReceived, 0))
         {
-            // After successfully sending the data, perform a data read.  Since the last
-            // transaction was a write with a "Command" value of 2, the Arduino will assume
-            // this is the data to return.
-
-            if (!i2c.transaction(dataToSend, 0, dataReceived, 7))
+            if(!i2c.transaction(dataToSend, 0, dataReceived, 7))
             {
-                if (dataReceived[0] != 2)
+                if(dataReceived[0] != 2)
                 {
                     log.error("Invalid data returned from Arduino.");
                 }
@@ -98,9 +51,138 @@ public class Lights extends SHARPSubsystem
                 log.error("Failure to read from Arduino.");
             }
         }
-        else
+//        else
+//        {
+//            log.error("Failure to send " + Arrays.toString(dataToSend) + " to Arduino.");
+//        }
+    }
+
+    private void setLightMode(byte lightMode, byte[] additionalData)
+    {
+        byte[] writeData = concat(new byte[]{lightMode}, additionalData);
+
+        arduinoWrite(writeData, (byte) writeData.length);
+    }
+
+    public void setLightMode(LightOption lightOption)
+    {
+        setLightMode(lightOption.getID(), lightOption.getAdditionalData());
+    }
+
+    public static class LightOption
+    {
+        public static final LightOption DEFAULT = new LightOption((byte) 0, "DEFAULT");
+        public static final LightOption LOW_BATTERY = new LightOption((byte) 1, "LOW_BATTERY");
+        public static final LightOption LOW_PRESSURE = new LightOption((byte) 2, "LOW_PRESSURE");
+        public static final LightOption ELEVATOR_STATUS = new LightOption((byte) 3, "ELEVATOR_STATUS");
+        public static final LightOption ALLIANCE_COLOR = new LightOption((byte) 4, "ALLIANCE_COLOR");
+        public static final LightOption YOLO = new LightOption((byte) 5, "YOLO");
+        public static final LightOption MATCH_READY = new LightOption((byte) 6, "MATCH_READY");
+
+        private String name;
+        private byte id;
+
+        private byte[] additionalData;
+
+        public LightOption(byte id, String name)
         {
-            log.error("Failure to send data to Arduino.");
+            this.name = name;
+            this.id = id;
+
+            resetAdditionalData();
         }
+
+        public void setAdditionalData(byte... additionalData)
+        {
+            resetAdditionalData();
+
+            if(additionalData.length <= 5)
+            {
+                this.additionalData = additionalData;
+            }
+        }
+
+        public void resetAdditionalData()
+        {
+            additionalData = new byte[]{};
+        }
+
+        public byte[] getAdditionalData()
+        {
+            return additionalData;
+        }
+
+        public byte getID()
+        {
+            return id;
+        }
+
+        public String getName()
+        {
+            return name;
+        }
+    }
+
+    public byte[] concat(byte[] a, byte[] b)
+    {
+        int aLen = a.length;
+        int bLen = b.length;
+        byte[] c = new byte[aLen + bLen];
+        System.arraycopy(a, 0, c, 0, aLen);
+        System.arraycopy(b, 0, c, aLen, bLen);
+        return c;
+    }
+
+    public void updateLights()
+    {
+        Lights.LightOption lightOption = Lights.LightOption.DEFAULT;
+
+        double batteryVoltage = DriverStation.getInstance().getBatteryVoltage();
+
+        double pressure = DriveTrain.getInstance().getPressure();
+
+        byte elevatorPosition = Elevator.getInstance().getPositionAsByte();
+
+        boolean gripperClosed = Gripper.getInstance().isClosed();
+
+        double pitch = DriveTrain.getInstance().getIMU().getPitch();
+
+        if(pitch > 40 || pitch > -40)
+        {
+            lightOption = LightOption.YOLO;
+        }
+        else if(batteryVoltage < 11)
+        {
+            double batteryPercent = (batteryVoltage / 13);
+
+            byte batteryPercentByte = (byte) (batteryPercent * Byte.MAX_VALUE);
+
+            lightOption = Lights.LightOption.LOW_BATTERY;
+            lightOption.setAdditionalData(batteryPercentByte);
+        }
+        else if(pressure < 40)
+        {
+            byte pressureAsByte = (byte) ((DriverStation.getInstance().getBatteryVoltage() / 120) * Byte.MAX_VALUE);
+
+            lightOption = Lights.LightOption.LOW_PRESSURE;
+            lightOption.setAdditionalData(pressureAsByte);
+        }
+        else if(DriverStation.getInstance().isDisabled() && DriverStation.getInstance().isFMSAttached())
+        {
+            lightOption = LightOption.ALLIANCE_COLOR;
+            lightOption.setAdditionalData((byte) (DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red ? 0 : 1));
+        }
+        else if(elevatorPosition > 10 || gripperClosed)
+        {
+            lightOption = Lights.LightOption.ELEVATOR_STATUS;
+            lightOption.setAdditionalData(Elevator.getInstance().getPositionAsByte());
+        }
+
+        Lights.getInstance().setLightMode(lightOption);
+    }
+
+    public static Lights getInstance()
+    {
+        return instance;
     }
 }
