@@ -55,8 +55,7 @@ public class SHARPMecanumDriveCommand extends Command
         if(usingSecondJoystick || DriveTrain.getInstance().getIMU() == null)
         {
             DriveTrain.getInstance().stockMecanumDrive(strafe, forward, rotation, 0);
-        }
-        else
+        } else
         {
             DriveTrain.getInstance().stockMecanumDrive(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw(), true);
 

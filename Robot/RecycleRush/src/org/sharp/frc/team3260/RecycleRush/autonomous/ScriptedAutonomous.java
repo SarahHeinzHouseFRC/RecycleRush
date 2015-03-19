@@ -67,7 +67,7 @@ public class ScriptedAutonomous
             }
             numCommandsAdded++;
             int level, timeout;
-            double speed, distance, angle,time;
+            double speed, distance, angle, time;
 
             if(commandClass == null || commandClass.equals(""))
             {
@@ -84,7 +84,7 @@ public class ScriptedAutonomous
                     break;
 
                 case "DriveAtSpeedCommand":
-                    time = (new Long((long)parametersMap.get("Time").get("Value")) / (double) 1000);
+                    time = (new Long((long) parametersMap.get("Time").get("Value")) / (double) 1000);
                     speed = (double) parametersMap.get("Speed").get("Value");
 
                     addSequential(new DriveAtSpeedCommand(speed, time));
@@ -97,17 +97,17 @@ public class ScriptedAutonomous
                     addSequential(new RotateToHeadingCommand(angle, timeout, true));
                     break;
 
-                case "OpenGripperCommand":
-                    addSequential(new OpenGripperCommand());
-                    break; 
+                case "OpenElevatorArmsCommand":
+                    addSequential(new OpenElevatorArmsCommand());
+                    break;
 
-                case "CloseGripperCommand":
-                    addSequential(new CloseGripperCommand());
+                case "CloseElevatorArmsCommand":
+                    addSequential(new CloseElevatorArmsCommand());
                     break;
 
                 case "RobotIdleCommand":
                     //in milliseconds
-                    time = (new Long((long)parametersMap.get("Time").get("Value")) / (double) 1000);
+                    time = (new Long((long) parametersMap.get("Time").get("Value")) / (double) 1000);
                     addSequential(new RobotIdleCommand(time));
                     break;
 
@@ -172,8 +172,7 @@ public class ScriptedAutonomous
             commandGroup = new BasicAutonomousCommandGroup();
 
             commandsLoaded = true;
-        }
-        else
+        } else
         {
             commandsLoaded = loadJSON();
         }

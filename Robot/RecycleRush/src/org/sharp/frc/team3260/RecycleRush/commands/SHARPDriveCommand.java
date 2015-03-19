@@ -60,14 +60,12 @@ public class SHARPDriveCommand extends Command
         if(wheel * negInertia > 0)
         {
             negInertiaScalar = 2.5;
-        }
-        else
+        } else
         {
             if(Math.abs(wheel) > 0.65)
             {
                 negInertiaScalar = 5.0;
-            }
-            else
+            } else
             {
                 negInertiaScalar = 3.0;
             }
@@ -83,12 +81,10 @@ public class SHARPDriveCommand extends Command
         if(negInertiaAccumulator > 1)
         {
             negInertiaAccumulator -= 1;
-        }
-        else if(negInertiaAccumulator < -1)
+        } else if(negInertiaAccumulator < -1)
         {
             negInertiaAccumulator += 1;
-        }
-        else
+        } else
         {
             negInertiaAccumulator = 0;
         }
@@ -107,8 +103,7 @@ public class SHARPDriveCommand extends Command
             overPower = 1.0;
 
             angularPower = wheel;
-        }
-        else
+        } else
         {
             overPower = 0.0;
 
@@ -117,12 +112,10 @@ public class SHARPDriveCommand extends Command
             if(quickStopAccumulator > 1)
             {
                 quickStopAccumulator -= 1;
-            }
-            else if(quickStopAccumulator < -1)
+            } else if(quickStopAccumulator < -1)
             {
                 quickStopAccumulator += 1;
-            }
-            else
+            } else
             {
                 quickStopAccumulator = 0.0;
             }
@@ -136,8 +129,7 @@ public class SHARPDriveCommand extends Command
         {
             rightOutput -= overPower * (leftOutput - 1.0);
             leftOutput = 1.0;
-        }
-        else if(leftOutput < -1.0)
+        } else if(leftOutput < -1.0)
         {
             rightOutput += overPower * (-1.0 - leftOutput);
             leftOutput = -1.0;
@@ -147,8 +139,7 @@ public class SHARPDriveCommand extends Command
         {
             leftOutput += overPower * (-1.0 - rightOutput);
             rightOutput = -1.0;
-        }
-        else if(rightOutput > 1.0)
+        } else if(rightOutput > 1.0)
         {
             leftOutput -= overPower * (rightOutput - 1.0);
             rightOutput = 1.0;

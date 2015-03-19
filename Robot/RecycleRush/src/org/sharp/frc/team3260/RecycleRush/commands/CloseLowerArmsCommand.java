@@ -1,19 +1,19 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
+import org.sharp.frc.team3260.RecycleRush.subsystems.Arms;
 
-public class CloseGripperCommand extends Command
+public class CloseLowerArmsCommand extends Command
 {
-    public CloseGripperCommand()
+    public CloseLowerArmsCommand()
     {
-        requires(Gripper.getInstance());
+        requires(Arms.getInstance());
     }
 
     @Override
     protected void initialize()
     {
-        Gripper.getInstance().closeGripper();
+        Arms.getInstance().closeLowerArms();
     }
 
     @Override

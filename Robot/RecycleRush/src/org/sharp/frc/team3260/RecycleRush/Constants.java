@@ -35,8 +35,11 @@ public class Constants extends ConstantsBase
 
     public static final Constant joystickDeadband = new Constant("joystickDeadband", 0.05);
 
-    public static final Constant gripperSolenoidForwardChannel = new Constant("gripperSolenoidForwardChannel", 1);
-    public static final Constant gripperSolenoidReverseChannel = new Constant("gripperSolenoidReverseChannel", 0);
+    public static final Constant elevatorArmSolenoidForwardChannel = new Constant("elevatorArmSolenoidForwardChannel", 1);
+    public static final Constant elevatorArmsSolenoidReverseChannel = new Constant("elevatorArmsSolenoidReverseChannel", 0);
+
+    public static final Constant lowerArmsSolenoidForwardChannel = new Constant("lowerArmsSolenoidForwardChannel", 3);
+    public static final Constant lowerArmsSolenoidReverseChannel = new Constant("lowerArmsSolenoidReverseChannel", 2);
 
     public static final Constant elevatorTalonID = new Constant("elevatorTalonID", 5);
 
