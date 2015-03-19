@@ -74,7 +74,7 @@ public class ScriptedAutonomous
                 continue;
             }
 
-            boolean isParallel = (boolean)parametersMap.get("isParallel").get("Value");
+            boolean isParallel = (boolean) parametersMap.get("isParallel").get("Value");
 
             switch(commandClass)
             {
@@ -82,72 +82,54 @@ public class ScriptedAutonomous
                     distance = (double) parametersMap.get("Distance").get("Value");
                     timeout = new Long((long) parametersMap.get("Timeout").get("Value")).intValue();
 
-                    if(isParallel)
-                        addParallel(new DriveDistanceCommand(distance, timeout));
-                    else
-                        addSequential(new DriveDistanceCommand(distance, timeout));
+                    addCommand(new DriveDistanceCommand(distance, timeout), isParallel);
                     break;
 
                 case "DriveAtSpeedCommand":
                     time = (new Long((long) parametersMap.get("Time").get("Value")) / (double) 1000);
                     speed = (double) parametersMap.get("Speed").get("Value");
 
-                    if(isParallel)
-                        addParallel(new DriveAtSpeedCommand(speed, time));
-                    else
-                        addSequential(new DriveAtSpeedCommand(speed, time));
+                    addCommand(new DriveAtSpeedCommand(speed, time), isParallel);
                     break;
 
                 case "RotateToHeadingCommand":
                     angle = (double) parametersMap.get("Degrees to Rotate").get("Value");
                     timeout = new Long((long) parametersMap.get("Timeout").get("Value")).intValue();
 
-                    if(isParallel)
-                        addParallel(new RotateToHeadingCommand(angle, timeout, true));
-                    else
-                        addSequential(new RotateToHeadingCommand(angle, timeout, true));
+                    addCommand(new RotateToHeadingCommand(angle, timeout, true), isParallel);
                     break;
 
                 case "OpenElevatorArmsCommand":
-                    if(isParallel)
-                        addParallel(new OpenElevatorArmsCommand());
-                    else
-                        addSequential(new OpenElevatorArmsCommand());
+                    addCommand(new OpenElevatorArmsCommand(), isParallel);
                     break;
 
                 case "CloseElevatorArmsCommand":
-                    if(isParallel)
-                        addParallel(new CloseElevatorArmsCommand());
-                    else
-                        addSequential(new CloseElevatorArmsCommand());
+                    addCommand(new CloseLowerArmsCommand(), isParallel);
+                    break;
+
+                case "OpenLowerArmsCommand":
+                    addCommand(new OpenLowerArmsCommand(), isParallel);
+                    break;
+
+                case "CloseLowerArmsCommand":
+                    addCommand(new CloseLowerArmsCommand(), isParallel);
                     break;
 
                 case "RobotIdleCommand":
                     //in milliseconds
                     time = (new Long((long) parametersMap.get("Time").get("Value")) / (double) 1000);
 
-
-                    if(isParallel)
-                        addParallel(new RobotIdleCommand(time));
-                    else
-                        addSequential(new RobotIdleCommand(time));
+                    addCommand(new RobotIdleCommand(time), isParallel);
                     break;
 
                 case "ElevatorToSetpointCommand":
                     level = new Long((long) parametersMap.get("Level").get("Value")).intValue();
 
-
-                    if(isParallel)
-                        addParallel(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)));
-                    else
-                        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)));
+                    addCommand(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)), isParallel);
                     break;
 
                 case "ZeroGyroCommand":
-                    if(isParallel)
-                        addParallel(new ZeroGyroCommand());
-                    else
-                        addSequential(new ZeroGyroCommand());
+                    addCommand(new ZeroGyroCommand(), isParallel);
                     break;
 
                 default:
@@ -219,6 +201,14 @@ public class ScriptedAutonomous
         }
     }
 
+    private void addCommand(Command command, boolean isParallel)
+    {
+    }
+
+    private void addCommand(Command command, double timeout, boolean isParallel)
+    {
+    }
+
     private void addSequential(Command command)
     {
         commandGroup.addSequential(command);
@@ -229,9 +219,15 @@ public class ScriptedAutonomous
         commandGroup.addSequential(command, timeout);
     }
 
-    private void addParallel(Command command){commandGroup.addParallel(command);}
+    private void addParallel(Command command)
+    {
+        commandGroup.addParallel(command);
+    }
 
-    private void addParallel(Command command,double timeout){commandGroup.addParallel(command,timeout);}
+    private void addParallel(Command command, double timeout)
+    {
+        commandGroup.addParallel(command, timeout);
+    }
 
     public CommandGroup getCommandGroup()
     {
