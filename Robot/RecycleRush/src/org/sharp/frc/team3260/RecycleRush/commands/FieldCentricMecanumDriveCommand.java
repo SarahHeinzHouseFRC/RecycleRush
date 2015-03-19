@@ -4,11 +4,9 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
-import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 public class FieldCentricMecanumDriveCommand extends Command
 {
@@ -45,8 +43,7 @@ public class FieldCentricMecanumDriveCommand extends Command
         if(DriveTrain.getInstance().getIMU() == null)
         {
             DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, 0, false);
-        }
-        else
+        } else
         {
             DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw(), true);
 

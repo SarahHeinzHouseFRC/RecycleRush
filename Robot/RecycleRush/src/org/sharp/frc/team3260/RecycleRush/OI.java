@@ -6,6 +6,7 @@ import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.joystick.triggers.AxisButton;
 import org.sharp.frc.team3260.RecycleRush.joystick.triggers.TalonLimitSwitchButton;
+import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 
 public class OI
@@ -20,8 +21,12 @@ public class OI
 
     public Button manipulatorGamepadA, manipulatorGamepadB, manipulatorGamepadX, manipulatorGamepadY;
 
+    public Button mainGamepadLeftBumper, mainGamepadRightBumper;
+
     public Button manipulatorGamepadLeftBumper, manipulatorGamepadRightBumper;
     public Button manipulatorGamepadLeftTrigger, manipulatorGamepadRightTrigger;
+
+    public Button manipulatorGamepadHatDown;
 
     public OI()
     {
@@ -44,21 +49,28 @@ public class OI
         manipulatorGamepadX = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_X);
         manipulatorGamepadY = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_Y);
 
+        manipulatorGamepadHatDown = new JoystickButton(manipulatorGamepad, 180);
+
         elevatorTalonReverseLimitSwitchButton.whenPressed(new ZeroElevatorEncoderCommand());
 
         mainGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
         manipulatorGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
 
-        manipulatorGamepadLeftTrigger.whenReleased(new CloseGripperCommand());
-        manipulatorGamepadRightTrigger.whenReleased(new OpenGripperCommand());
-        
-        manipulatorGamepadLeftBumper.whenReleased(new RotateToHeadingCommand(135, false));
-        manipulatorGamepadRightBumper.whenReleased(new RotateToHeadingCommand(-135, false));
+        manipulatorGamepadLeftTrigger.whenReleased(new CloseElevatorArmsCommand());
+        manipulatorGamepadRightTrigger.whenReleased(new OpenElevatorArmsCommand());
+
+        mainGamepadLeftBumper.whenReleased(new RotateToHeadingCommand(135, false));
+        mainGamepadRightBumper.whenReleased(new RotateToHeadingCommand(-135, false));
+
+        manipulatorGamepadLeftBumper.whenReleased(new CloseLowerArmsCommand());
+        manipulatorGamepadRightBumper.whenReleased(new OpenLowerArmsCommand());
 
         manipulatorGamepadA.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.GROUND));
         manipulatorGamepadB.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
-        manipulatorGamepadX.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.RECYCLING_CAN));
-        manipulatorGamepadY.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.THREE_TOTES));
+        manipulatorGamepadX.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
+        manipulatorGamepadY.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.LOADING_HEIGHT));
+
+        manipulatorGamepadHatDown.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TOP));
 
         instance = this;
     }
@@ -88,6 +100,13 @@ public class OI
         if((Math.abs(manipulatorGamepad.getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.5))
         {
             Elevator.getInstance().changeElevatorMode(false);
+        }
+
+        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_Y))
+        {
+            DriveTrain.getInstance().zeroGyro();
+
+            DriveTrain.getInstance().zeroEncoders();
         }
     }
 

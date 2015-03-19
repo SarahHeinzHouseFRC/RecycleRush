@@ -205,8 +205,7 @@ public class DriveTrain extends SHARPSubsystem
         if(frontLeftTalon.getControlMode() == CANTalon.ControlMode.PercentVbus)
         {
             setDriveMotors(0, 0, 0, 0);
-        }
-        else
+        } else
         {
             setDriveMotors(frontLeftTalon.getPosition(), frontRightTalon.getPosition(), backLeftTalon.getPosition(), backRightTalon.getPosition());
         }
@@ -302,13 +301,11 @@ public class DriveTrain extends SHARPSubsystem
             if(Math.abs(rotationSpeed) >= Constants.rotationControllerThreshold.getDouble())
             {
                 driveRotationController.disable();
-            }
-            else
+            } else
             {
                 return rotationControllerOutput;
             }
-        }
-        else
+        } else
         {
             if(Math.abs(rotationSpeed) < Constants.rotationControllerThreshold.getDouble())
             {

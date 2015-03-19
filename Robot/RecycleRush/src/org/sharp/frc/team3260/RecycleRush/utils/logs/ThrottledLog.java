@@ -39,8 +39,7 @@ public class ThrottledLog extends Log
         if(ignoresTime)
         {
             log(message, INFO);
-        }
-        else
+        } else
         {
             info(message);
         }

@@ -1,28 +1,19 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Arms;
-import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
-import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 
-public class SwitchGamepadsCommand extends Command
+public class OpenLowerArmsCommand extends Command
 {
-    public SwitchGamepadsCommand()
+    public OpenLowerArmsCommand()
     {
-        requires(DriveTrain.getInstance());
-        requires(Elevator.getInstance());
         requires(Arms.getInstance());
     }
 
     @Override
     protected void initialize()
     {
-        DriveTrain.getInstance().stop();
-
-        Elevator.getInstance().stop();
-
-        OI.getInstance().switchGamepads();
+        Arms.getInstance().openLowerArms();
     }
 
     @Override

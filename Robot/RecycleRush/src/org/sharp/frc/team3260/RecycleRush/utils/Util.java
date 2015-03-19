@@ -70,8 +70,7 @@ public class Util
         if(num > 1.0)
         {
             return 1.0;
-        }
-        else if(num < -1.0)
+        } else if(num < -1.0)
         {
             return -1.0;
         }

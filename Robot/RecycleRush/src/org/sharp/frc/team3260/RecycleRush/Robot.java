@@ -14,16 +14,15 @@ import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyroCommand;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
+import org.sharp.frc.team3260.RecycleRush.subsystems.Arms;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
-import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Lights;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 import java.io.File;
 import java.io.FileWriter;
-import java.util.Date;
 
 public class Robot extends IterativeRobot
 {
@@ -51,7 +50,7 @@ public class Robot extends IterativeRobot
         log.info("Creating subsystem instances...");
         new DriveTrain();
         new Elevator();
-        new Gripper();
+        new Arms();
         new Lights();
 
         log.info("Adding SmartDashboard buttons...");
@@ -177,6 +176,13 @@ public class Robot extends IterativeRobot
 
             scriptedAutonomous.load();
         }
+
+        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_Y))
+        {
+            DriveTrain.getInstance().zeroGyro();
+
+            DriveTrain.getInstance().zeroEncoders();
+        }
     }
 
     private void loadAutonomousChooser()
@@ -209,8 +215,7 @@ public class Robot extends IterativeRobot
                         autoChooser.addObject(autoOption.getName(), autoOption.getName());
                     }
                 }
-            }
-            else
+            } else
             {
                 log.info("Found Zero Autonomous Options in " + autonDirectory + ".");
             }

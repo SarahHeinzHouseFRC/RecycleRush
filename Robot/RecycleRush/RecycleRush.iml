@@ -29,6 +29,8 @@
           <root url="jar://$MODULE_DIR$/gradle/libs/commons-csv-1.1.jar!/" />
           <root url="jar://$MODULE_DIR$/gradle/libs/commons-csv-1.1.jar!/" />
           <root url="jar://$MODULE_DIR$/gradle/libs/commons-csv-1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/gradle/libs/commons-csv-1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/gradle/libs/commons-csv-1.1.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -37,6 +39,8 @@
     <orderEntry type="module-library" exported="">
       <library name="Gradle: json-simple-1.1.1">
         <CLASSES>
+          <root url="jar://$MODULE_DIR$/gradle/libs/json-simple-1.1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/gradle/libs/json-simple-1.1.1.jar!/" />
           <root url="jar://$MODULE_DIR$/gradle/libs/json-simple-1.1.1.jar!/" />
           <root url="jar://$MODULE_DIR$/gradle/libs/json-simple-1.1.1.jar!/" />
         </CLASSES>

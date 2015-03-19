@@ -45,16 +45,15 @@ public class Lights extends SHARPSubsystem
                 {
                     log.error("Invalid data returned from Arduino.");
                 }
-            }
-            else
+            } else
             {
                 log.error("Failure to read from Arduino.");
             }
         }
-//        else
-//        {
-//            log.error("Failure to send " + Arrays.toString(dataToSend) + " to Arduino.");
-//        }
+        //        else
+        //        {
+        //            log.error("Failure to send " + Arrays.toString(dataToSend) + " to Arduino.");
+        //        }
     }
 
     private void setLightMode(byte lightMode, byte[] additionalData)
@@ -143,15 +142,14 @@ public class Lights extends SHARPSubsystem
 
         byte elevatorPosition = Elevator.getInstance().getPositionAsByte();
 
-        boolean gripperClosed = Gripper.getInstance().isClosed();
+        boolean gripperClosed = Arms.getInstance().areElevatorArmsClosed();
 
         double pitch = DriveTrain.getInstance().getIMU().getPitch();
 
         if(pitch > 40 || pitch > -40)
         {
             lightOption = LightOption.YOLO;
-        }
-        else if(batteryVoltage < 11)
+        } else if(batteryVoltage < 11)
         {
             double batteryPercent = (batteryVoltage / 13);
 
@@ -159,20 +157,17 @@ public class Lights extends SHARPSubsystem
 
             lightOption = Lights.LightOption.LOW_BATTERY;
             lightOption.setAdditionalData(batteryPercentByte);
-        }
-        else if(pressure < 40)
+        } else if(pressure < 40)
         {
             byte pressureAsByte = (byte) ((DriverStation.getInstance().getBatteryVoltage() / 120) * Byte.MAX_VALUE);
 
             lightOption = Lights.LightOption.LOW_PRESSURE;
             lightOption.setAdditionalData(pressureAsByte);
-        }
-        else if(DriverStation.getInstance().isDisabled() && DriverStation.getInstance().isFMSAttached())
+        } else if(DriverStation.getInstance().isDisabled() && DriverStation.getInstance().isFMSAttached())
         {
             lightOption = LightOption.ALLIANCE_COLOR;
             lightOption.setAdditionalData((byte) (DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red ? 0 : 1));
-        }
-        else if(elevatorPosition > 10 || gripperClosed)
+        } else if(elevatorPosition > 10 || gripperClosed)
         {
             lightOption = Lights.LightOption.ELEVATOR_STATUS;
             lightOption.setAdditionalData(Elevator.getInstance().getPositionAsByte());

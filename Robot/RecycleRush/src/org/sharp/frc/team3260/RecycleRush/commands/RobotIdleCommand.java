@@ -2,9 +2,9 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import org.sharp.frc.team3260.RecycleRush.Robot;
+import org.sharp.frc.team3260.RecycleRush.subsystems.Arms;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
-import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
 
 public class RobotIdleCommand extends Command
 {
@@ -14,7 +14,7 @@ public class RobotIdleCommand extends Command
     {
         requires(DriveTrain.getInstance());
         requires(Elevator.getInstance());
-        requires(Gripper.getInstance());
+        requires(Arms.getInstance());
 
         idleTime = timeToIdle / 1000;
 
