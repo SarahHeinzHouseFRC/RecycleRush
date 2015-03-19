@@ -74,50 +74,80 @@ public class ScriptedAutonomous
                 continue;
             }
 
+            boolean isParallel = (boolean)parametersMap.get("isParallel").get("Value");
+
             switch(commandClass)
             {
                 case "DriveDistanceCommand":
                     distance = (double) parametersMap.get("Distance").get("Value");
                     timeout = new Long((long) parametersMap.get("Timeout").get("Value")).intValue();
 
-                    addSequential(new DriveDistanceCommand(distance, timeout));
+                    if(isParallel)
+                        addParallel(new DriveDistanceCommand(distance, timeout));
+                    else
+                        addSequential(new DriveDistanceCommand(distance, timeout));
                     break;
 
                 case "DriveAtSpeedCommand":
                     time = (new Long((long) parametersMap.get("Time").get("Value")) / (double) 1000);
                     speed = (double) parametersMap.get("Speed").get("Value");
 
-                    addSequential(new DriveAtSpeedCommand(speed, time));
+                    if(isParallel)
+                        addParallel(new DriveAtSpeedCommand(speed, time));
+                    else
+                        addSequential(new DriveAtSpeedCommand(speed, time));
                     break;
 
                 case "RotateToHeadingCommand":
                     angle = (double) parametersMap.get("Degrees to Rotate").get("Value");
                     timeout = new Long((long) parametersMap.get("Timeout").get("Value")).intValue();
 
-                    addSequential(new RotateToHeadingCommand(angle, timeout, true));
+                    if(isParallel)
+                        addParallel(new RotateToHeadingCommand(angle, timeout, true));
+                    else
+                        addSequential(new RotateToHeadingCommand(angle, timeout, true));
                     break;
 
                 case "OpenElevatorArmsCommand":
-                    addSequential(new OpenElevatorArmsCommand());
+                    if(isParallel)
+                        addParallel(new OpenElevatorArmsCommand());
+                    else
+                        addSequential(new OpenElevatorArmsCommand());
                     break;
 
                 case "CloseElevatorArmsCommand":
-                    addSequential(new CloseElevatorArmsCommand());
+                    if(isParallel)
+                        addParallel(new CloseElevatorArmsCommand());
+                    else
+                        addSequential(new CloseElevatorArmsCommand());
                     break;
 
                 case "RobotIdleCommand":
                     //in milliseconds
                     time = (new Long((long) parametersMap.get("Time").get("Value")) / (double) 1000);
-                    addSequential(new RobotIdleCommand(time));
+
+
+                    if(isParallel)
+                        addParallel(new RobotIdleCommand(time));
+                    else
+                        addSequential(new RobotIdleCommand(time));
                     break;
 
                 case "ElevatorToSetpointCommand":
                     level = new Long((long) parametersMap.get("Level").get("Value")).intValue();
-                    addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)));
+
+
+                    if(isParallel)
+                        addParallel(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)));
+                    else
+                        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)));
                     break;
 
                 case "ZeroGyroCommand":
-                    addSequential(new ZeroGyroCommand());
+                    if(isParallel)
+                        addParallel(new ZeroGyroCommand());
+                    else
+                        addSequential(new ZeroGyroCommand());
                     break;
 
                 default:
@@ -198,6 +228,10 @@ public class ScriptedAutonomous
     {
         commandGroup.addSequential(command, timeout);
     }
+
+    private void addParallel(Command command){commandGroup.addParallel(command);}
+
+    private void addParallel(Command command,double timeout){commandGroup.addParallel(command,timeout);}
 
     public CommandGroup getCommandGroup()
     {
