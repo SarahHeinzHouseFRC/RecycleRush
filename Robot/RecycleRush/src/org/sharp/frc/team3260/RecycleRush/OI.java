@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.joystick.triggers.AxisButton;
+import org.sharp.frc.team3260.RecycleRush.joystick.triggers.HatButton;
 import org.sharp.frc.team3260.RecycleRush.joystick.triggers.TalonLimitSwitchButton;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
@@ -41,6 +42,9 @@ public class OI
         manipulatorGamepadLeftTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_LEFT_AXIS, 0.5);
         manipulatorGamepadRightTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_RIGHT_AXS, 0.5);
 
+        mainGamepadLeftBumper = new JoystickButton(mainGamepad, SHARPGamepad.BUTTON_LEFT_BUMPER);
+        mainGamepadRightBumper = new JoystickButton(mainGamepad, SHARPGamepad.BUTTON_RIGHT_BUMPER);
+
         manipulatorGamepadLeftBumper = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_LEFT_BUMPER);
         manipulatorGamepadRightBumper = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_RIGHT_BUMPER);
 
@@ -49,7 +53,7 @@ public class OI
         manipulatorGamepadX = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_X);
         manipulatorGamepadY = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_Y);
 
-        manipulatorGamepadHatDown = new JoystickButton(manipulatorGamepad, 180);
+        manipulatorGamepadHatDown = new HatButton(manipulatorGamepad, 180);
 
         elevatorTalonReverseLimitSwitchButton.whenPressed(new ZeroElevatorEncoderCommand());
 

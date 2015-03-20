@@ -48,7 +48,7 @@ public class Arms extends SHARPSubsystem
     {
         getLogger().info("Opening Lower Arms");
 
-        lowerArmsSolenoid.set(DoubleSolenoid.Value.kReverse);
+        lowerArmsSolenoid.set(DoubleSolenoid.Value.kForward);
     }
 
     @Override

@@ -57,7 +57,7 @@ public class SHARPMecanumDriveCommand extends Command
             DriveTrain.getInstance().stockMecanumDrive(strafe, forward, rotation, 0);
         } else
         {
-            DriveTrain.getInstance().stockMecanumDrive(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw(), true);
+            DriveTrain.getInstance().stockMecanumDrive(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw());
 
             SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
         }
