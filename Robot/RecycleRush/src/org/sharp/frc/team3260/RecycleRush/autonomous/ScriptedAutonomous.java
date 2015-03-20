@@ -184,7 +184,8 @@ public class ScriptedAutonomous
             commandGroup = new BasicAutonomousCommandGroup();
 
             commandsLoaded = true;
-        } else
+        }
+        else
         {
             commandsLoaded = loadJSON();
         }

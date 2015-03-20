@@ -43,11 +43,10 @@ public class FieldCentricMecanumDriveCommand extends Command
         if(DriveTrain.getInstance().getIMU() == null)
         {
             DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, 0, false);
-        } else
+        }
+        else
         {
             DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw(), true);
-
-            SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
         }
     }
 

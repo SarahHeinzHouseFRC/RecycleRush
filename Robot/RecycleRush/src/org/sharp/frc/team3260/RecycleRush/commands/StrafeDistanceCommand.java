@@ -31,7 +31,7 @@ public class StrafeDistanceCommand extends Command
         DriveTrain.getInstance().zeroEncoders();
 
         DriveTrain.getInstance().clearAccumulatedI();
-        
+
         if(strafeRight)
         {
             DriveTrain.getInstance().setDriveEncoderTargets(ticks, -ticks, -ticks, ticks);

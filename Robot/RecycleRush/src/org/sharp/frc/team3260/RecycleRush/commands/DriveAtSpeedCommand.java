@@ -35,7 +35,8 @@ public class DriveAtSpeedCommand extends Command
         if(DriveTrain.getInstance().getIMU() == null || OI.getInstance().getMainGamepad().getRawButton(SHARPGamepad.BUTTON_LEFT_JOYSTICK))
         {
             DriveTrain.getInstance().stockMecanumDrive(0, -speed, 0, 0);
-        } else
+        }
+        else
         {
             DriveTrain.getInstance().stockMecanumDrive(0, -speed, 0, DriveTrain.getInstance().getIMU().getYaw());
         }

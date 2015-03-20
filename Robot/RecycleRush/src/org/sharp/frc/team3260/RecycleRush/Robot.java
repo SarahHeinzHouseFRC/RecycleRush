@@ -81,9 +81,7 @@ public class Robot extends IterativeRobot
         {
             String elevatorPositionString = Util.getFile("//U//Elevator Position.txt").replace(" ", "").replace("\n", "".replace("\r", ""));
 
-            //int elevatorPosition = Integer.parseInt(elevatorPositionString);
-
-            int elevatorPosition = 0;
+            int elevatorPosition = Integer.parseInt(elevatorPositionString);
 
             if(elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
             {
@@ -155,7 +153,7 @@ public class Robot extends IterativeRobot
             File elevatorPositionFile = new File("//U//Elevator Position.txt");
 
             FileWriter fileWriter = new FileWriter(elevatorPositionFile, false);
-            fileWriter.write(elevatorPosition + "     ");
+            fileWriter.write(elevatorPosition);
             fileWriter.close();
         }
         catch(Exception e)
@@ -215,7 +213,8 @@ public class Robot extends IterativeRobot
                         autoChooser.addObject(autoOption.getName(), autoOption.getName());
                     }
                 }
-            } else
+            }
+            else
             {
                 log.info("Found Zero Autonomous Options in " + autonDirectory + ".");
             }

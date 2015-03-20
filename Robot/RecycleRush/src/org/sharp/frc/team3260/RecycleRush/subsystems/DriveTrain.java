@@ -22,8 +22,6 @@ public class DriveTrain extends SHARPSubsystem
 
     private AHRS imu;
 
-    private boolean firstIteration;
-
     protected double gyroOffset = 0.0;
 
     protected double rotationControllerOutput = 0.0;
@@ -96,8 +94,6 @@ public class DriveTrain extends SHARPSubsystem
 
             driveRotationController.setInputRange(-180, 180);
         }
-
-        firstIteration = true;
     }
 
     public void changeControlMode(CANTalon.ControlMode controlMode)
@@ -205,7 +201,8 @@ public class DriveTrain extends SHARPSubsystem
         if(frontLeftTalon.getControlMode() == CANTalon.ControlMode.PercentVbus)
         {
             setDriveMotors(0, 0, 0, 0);
-        } else
+        }
+        else
         {
             setDriveMotors(frontLeftTalon.getPosition(), frontRightTalon.getPosition(), backLeftTalon.getPosition(), backRightTalon.getPosition());
         }
@@ -301,11 +298,13 @@ public class DriveTrain extends SHARPSubsystem
             if(Math.abs(rotationSpeed) >= Constants.rotationControllerThreshold.getDouble())
             {
                 driveRotationController.disable();
-            } else
+            }
+            else
             {
                 return rotationControllerOutput;
             }
-        } else
+        }
+        else
         {
             if(Math.abs(rotationSpeed) < Constants.rotationControllerThreshold.getDouble())
             {

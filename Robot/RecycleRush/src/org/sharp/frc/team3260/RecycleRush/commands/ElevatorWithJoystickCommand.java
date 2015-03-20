@@ -28,7 +28,8 @@ public class ElevatorWithJoystickCommand extends Command
             {
                 Elevator.getInstance().up((Math.abs(OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.1) ? -(OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y) * 0.5) : 0.0f);
 
-            } else
+            }
+            else
             {
                 Elevator.getInstance().up((Math.abs(OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y)) > 0.1) ? -OI.getInstance().getManipulatorGamepad().getRawAxis(SHARPGamepad.JOYSTICK_RIGHT_Y) : 0.0f);
             }

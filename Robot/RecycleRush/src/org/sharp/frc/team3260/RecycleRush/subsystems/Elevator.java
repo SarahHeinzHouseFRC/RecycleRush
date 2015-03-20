@@ -60,7 +60,8 @@ public class Elevator extends SHARPSubsystem
             elevatorTalon.set(0.0);
 
             elevatorTalon.enableControl();
-        } else
+        }
+        else
         {
             log.info("Enabling Elevator PID controller.");
 
@@ -92,7 +93,8 @@ public class Elevator extends SHARPSubsystem
         if(setpoint < ElevatorPosition.GROUND.encoderValue)
         {
             setpoint = ElevatorPosition.GROUND.encoderValue;
-        } else if(setpoint > ElevatorPosition.TOP.encoderValue)
+        }
+        else if(setpoint > ElevatorPosition.TOP.encoderValue)
         {
             setpoint = ElevatorPosition.TOP.encoderValue;
         }
@@ -117,7 +119,8 @@ public class Elevator extends SHARPSubsystem
         if(getControlMode() == CANTalon.ControlMode.PercentVbus)
         {
             up(0.0);
-        } else
+        }
+        else
         {
             setElevator(elevatorTalon.getPosition());
         }
@@ -156,7 +159,8 @@ public class Elevator extends SHARPSubsystem
         if(percentOfMax < 0)
         {
             percentOfMax = 0;
-        } else if(percentOfMax > 1)
+        }
+        else if(percentOfMax > 1)
         {
             percentOfMax = 1;
         }
