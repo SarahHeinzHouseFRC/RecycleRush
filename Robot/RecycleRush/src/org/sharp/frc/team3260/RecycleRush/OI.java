@@ -57,8 +57,8 @@ public class OI
 
         elevatorTalonReverseLimitSwitchButton.whenPressed(new ZeroElevatorEncoderCommand());
 
-        mainGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
-        manipulatorGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
+        mainGamepadSelectButton.whenReleased(new ZeroGyroCommand());
+        manipulatorGamepadSelectButton.whenReleased(new ZeroGyroCommand());
 
         manipulatorGamepadLeftTrigger.whenReleased(new CloseElevatorArmsCommand());
         manipulatorGamepadRightTrigger.whenReleased(new OpenElevatorArmsCommand());
@@ -112,14 +112,5 @@ public class OI
 
             DriveTrain.getInstance().zeroEncoders();
         }
-    }
-
-    public void switchGamepads()
-    {
-        SHARPGamepad temp = mainGamepad;
-
-        mainGamepad = manipulatorGamepad;
-
-        manipulatorGamepad = temp;
     }
 }
