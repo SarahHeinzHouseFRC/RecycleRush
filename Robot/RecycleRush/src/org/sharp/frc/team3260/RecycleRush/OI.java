@@ -27,7 +27,7 @@ public class OI
     public Button manipulatorGamepadLeftBumper, manipulatorGamepadRightBumper;
     public Button manipulatorGamepadLeftTrigger, manipulatorGamepadRightTrigger;
 
-    public Button manipulatorGamepadHatDown;
+    public Button manipulatorGamepadHatRight, manipulatorGamepadHatDown;
 
     public OI()
     {
@@ -53,6 +53,7 @@ public class OI
         manipulatorGamepadX = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_X);
         manipulatorGamepadY = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_Y);
 
+        manipulatorGamepadHatRight = new HatButton(manipulatorGamepad, 90);
         manipulatorGamepadHatDown = new HatButton(manipulatorGamepad, 180);
 
         elevatorTalonReverseLimitSwitchButton.whenPressed(new ZeroElevatorEncoderCommand());
@@ -74,6 +75,7 @@ public class OI
         manipulatorGamepadX.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
         manipulatorGamepadY.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.LOADING_HEIGHT));
 
+        manipulatorGamepadHatRight.whenReleased(new HumanPlayerLoadCommand());
         manipulatorGamepadHatDown.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TOP));
 
         instance = this;
