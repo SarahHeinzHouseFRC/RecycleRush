@@ -175,7 +175,7 @@ public class Robot extends IterativeRobot
             scriptedAutonomous.load();
         }
 
-        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_Y))
+        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_SELECT))
         {
             DriveTrain.getInstance().zeroGyro();
 
