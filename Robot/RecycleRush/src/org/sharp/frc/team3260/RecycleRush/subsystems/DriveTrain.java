@@ -210,10 +210,10 @@ public class DriveTrain extends SHARPSubsystem
 
     public void setDriveMotors(double frontLeftOutput, double frontRightOutput, double backLeftOutput, double backRightOutput)
     {
-        frontLeftTalon.set(-frontLeftOutput);
-        frontRightTalon.set(frontRightOutput);
-        backLeftTalon.set(-backLeftOutput);
-        backRightTalon.set(backRightOutput);
+        frontLeftTalon.set(frontLeftOutput);
+        frontRightTalon.set(-frontRightOutput);
+        backLeftTalon.set(backLeftOutput);
+        backRightTalon.set(-backRightOutput);
     }
 
     public void setDriveMotors(double[] wheelSpeeds)

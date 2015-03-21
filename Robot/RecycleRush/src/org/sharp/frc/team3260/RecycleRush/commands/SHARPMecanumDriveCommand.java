@@ -44,7 +44,7 @@ public class SHARPMecanumDriveCommand extends Command
             usingSecondJoystick = true;
 
             forward = secondJoystickForward * 0.3;
-            strafe = secondJoystickStrafe * 0.3;
+            strafe = secondJoystickStrafe * 0.5;
         }
 
         rotation = Math.abs(rotation) > ROTATION_DEADBAND ? rotation : 0;

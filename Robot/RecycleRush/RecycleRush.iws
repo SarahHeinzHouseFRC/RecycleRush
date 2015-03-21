@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac96d07b-8552-4f2b-8890-a8124bd3a0fb" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/SHARPIRRangeFinder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/Arms.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/Arms.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/Constants.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/HumanPlayerLoadCommand.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/HumanPlayerLoadCommand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RecycleRush.iml" afterPath="$PROJECT_DIR$/RecycleRush.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/DriveTrain.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/DriveTrain.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RecycleRush.iws" afterPath="$PROJECT_DIR$/RecycleRush.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/Robot.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/Robot.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java" />
     </list>
     <ignored path="RecycleRush.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -71,16 +67,34 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="HumanPlayerLoadCommand.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="HumanPlayerLoadCommand.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/HumanPlayerLoadCommand.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9337121" vertical-offset="0" max-vertical-offset="1785">
+            <state vertical-scroll-proportion="0.0" vertical-offset="493" max-vertical-offset="1734">
               <caret line="29" column="9" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2586#2587#0" expanded="true" />
-                <element signature="e#2676#2677#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DriveTrain.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/DriveTrain.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="3157" max-vertical-offset="7004">
+              <caret line="215" column="28" selection-start-line="215" selection-start-column="28" selection-end-line="215" selection-end-column="28" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SHARPMecanumDriveCommand.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.3398058" vertical-offset="420" max-vertical-offset="1139">
+              <caret line="46" column="47" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -108,7 +122,7 @@
       <file leaf-file-name="CameraServer.class" pinned="false" current-in-tab="false">
         <entry file="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib.jar!/edu/wpi/first/wpilibj/CameraServer.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.04" vertical-offset="2238" max-vertical-offset="4845">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2482" max-vertical-offset="4913">
               <caret line="173" column="29" selection-start-line="173" selection-start-column="29" selection-end-line="173" selection-end-column="29" />
               <folding />
             </state>
@@ -579,7 +593,6 @@
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/FIRSTMecanumDriveCommand.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/Lights.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/BasicAutonomousCommandGroup.java" />
-        <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/DriveTrain.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/Elevator.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/ElevatorWithJoystickCommand.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/Gripper.java" />
@@ -589,7 +602,6 @@
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/OpenLowerArmsCommand.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/ScriptedAutonomous.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/joystick/SHARPGamepad.java" />
-        <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/OI.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/Constants.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/utils/SHARPIRRangeFinder.java" />
@@ -597,6 +609,8 @@
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/Arms.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/Robot.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/HumanPlayerLoadCommand.java" />
+        <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/DriveTrain.java" />
+        <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java" />
       </list>
     </option>
   </component>
@@ -643,6 +657,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -857,7 +872,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
     </panes>
   </component>
@@ -1266,7 +1280,8 @@
       <workItem from="1426808215551" duration="4323000" />
       <workItem from="1426892417274" duration="6263000" />
       <workItem from="1426903078900" duration="63000" />
-      <workItem from="1426948822735" duration="3757000" />
+      <workItem from="1426948822735" duration="4180000" />
+      <workItem from="1426956820806" duration="1930000" />
     </task>
     <task id="LOCAL-00001" summary="Reformatting with IntelliJ">
       <created>1425511896347</created>
@@ -1316,11 +1331,17 @@
       <option name="project" value="LOCAL" />
       <updated>1426895410457</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Added two IR range finders">
+      <created>1426953365790</created>
+      <option name="number" value="00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1426953365790</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="49993000" />
+    <option name="totallyTimeSpent" value="52346000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1344,7 +1365,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1723" height="976" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32942432" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -1359,10 +1380,10 @@
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3202934" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21467228" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21707757" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.11184606" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="true" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.11184606" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1431,7 +1452,8 @@
     <MESSAGE value="Undid the issues that Lucas introduced" />
     <MESSAGE value="PID Mecanum broken, fixed second arm control" />
     <MESSAGE value="Automatic human player loading command" />
-    <option name="LAST_COMMIT_MESSAGE" value="Automatic human player loading command" />
+    <MESSAGE value="Added two IR range finders" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added two IR range finders" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1589,25 +1611,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3281">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#803#804#0" expanded="true" />
-            <element signature="e#825#826#0" expanded="true" />
-            <element signature="e#5082#5083#0" expanded="true" />
-            <element signature="e#5115#5116#0" expanded="true" />
-            <element signature="e#6759#6760#0" expanded="true" />
-            <element signature="e#6810#6811#0" expanded="true" />
-            <element signature="e#6881#6882#0" expanded="true" />
-            <element signature="e#6941#6942#0" expanded="true" />
-            <element signature="e#6994#6995#0" expanded="true" />
-            <element signature="e#7043#7044#0" expanded="true" />
-            <element signature="e#7112#7113#0" expanded="true" />
-            <element signature="e#7170#7171#0" expanded="true" />
-            <element signature="e#7449#7450#0" expanded="true" />
-            <element signature="e#7486#7487#0" expanded="true" />
-            <element signature="e#7524#7525#0" expanded="true" />
-            <element signature="e#7550#7551#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1675,14 +1678,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/DriveTrain.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="82" max-vertical-offset="7072">
-          <caret line="17" column="84" selection-start-line="17" selection-start-column="84" selection-end-line="17" selection-end-column="84" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/BasicAutonomousCommandGroup.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.125" vertical-offset="0" max-vertical-offset="816">
@@ -1722,7 +1717,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="578">
           <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1730,7 +1724,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="595">
           <caret line="22" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1738,25 +1731,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1139" max-vertical-offset="4318">
           <caret line="84" column="88" selection-start-line="84" selection-start-column="88" selection-end-line="84" selection-end-column="88" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#803#804#0" expanded="true" />
-            <element signature="e#825#826#0" expanded="true" />
-            <element signature="e#5082#5083#0" expanded="true" />
-            <element signature="e#5115#5116#0" expanded="true" />
-            <element signature="e#6759#6760#0" expanded="true" />
-            <element signature="e#6810#6811#0" expanded="true" />
-            <element signature="e#6881#6882#0" expanded="true" />
-            <element signature="e#6941#6942#0" expanded="true" />
-            <element signature="e#6994#6995#0" expanded="true" />
-            <element signature="e#7043#7044#0" expanded="true" />
-            <element signature="e#7112#7113#0" expanded="true" />
-            <element signature="e#7170#7171#0" expanded="true" />
-            <element signature="e#7449#7450#0" expanded="true" />
-            <element signature="e#7486#7487#0" expanded="true" />
-            <element signature="e#7524#7525#0" expanded="true" />
-            <element signature="e#7550#7551#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1771,14 +1745,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38636363" vertical-offset="0" max-vertical-offset="528">
           <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6038835" vertical-offset="556" max-vertical-offset="1275">
-          <caret line="54" column="9" selection-start-line="54" selection-start-column="9" selection-end-line="54" selection-end-column="9" />
         </state>
       </provider>
     </entry>
@@ -1786,7 +1752,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.16287878" vertical-offset="67" max-vertical-offset="595">
           <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1808,7 +1773,7 @@
     </entry>
     <entry file="jar://$USER_HOME$/wpilib/java/extracted/library/lib/WPILib.jar!/edu/wpi/first/wpilibj/CameraServer.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.04" vertical-offset="2238" max-vertical-offset="4845">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2482" max-vertical-offset="4913">
           <caret line="173" column="29" selection-start-line="173" selection-start-column="29" selection-end-line="173" selection-end-column="29" />
           <folding />
         </state>
@@ -1866,13 +1831,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/HumanPlayerLoadCommand.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9337121" vertical-offset="0" max-vertical-offset="1785">
+        <state vertical-scroll-proportion="0.0" vertical-offset="493" max-vertical-offset="1734">
           <caret line="29" column="9" selection-start-line="29" selection-start-column="9" selection-end-line="29" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2586#2587#0" expanded="true" />
-            <element signature="e#2676#2677#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/DriveTrain.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3157" max-vertical-offset="7004">
+          <caret line="215" column="28" selection-start-line="215" selection-start-column="28" selection-end-line="215" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3398058" vertical-offset="420" max-vertical-offset="1139">
+          <caret line="46" column="47" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
+          <folding />
         </state>
       </provider>
     </entry>
