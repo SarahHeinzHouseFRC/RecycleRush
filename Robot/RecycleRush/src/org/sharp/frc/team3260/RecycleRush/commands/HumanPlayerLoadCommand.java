@@ -1,12 +1,13 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Arms;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 
 public class HumanPlayerLoadCommand extends Command
 {
-    protected static final int STAGE_BEGIN = 0, STAGE_GRIPPED = 1, STAGE_LIFTING = 3, STAGE_FINISHED = 4;
+    protected static final int STAGE_BEGIN = 0, STAGE_READY = 1, STAGE_GRIPPED = 2, STAGE_LIFTING = 3, STAGE_FINISHED = 4;
 
     protected int currentStage;
 
@@ -23,7 +24,7 @@ public class HumanPlayerLoadCommand extends Command
     @Override
     protected void initialize()
     {
-        setTimeout(1.0);
+        setTimeout(5.0);
 
         if(!Arms.getInstance().areLowerArmsClosed())
         {
@@ -34,6 +35,8 @@ public class HumanPlayerLoadCommand extends Command
 
         currentStage = STAGE_BEGIN;
 
+        Elevator.getInstance().changeElevatorMode(true);
+
         stageStartTime = System.currentTimeMillis();
     }
 
@@ -43,6 +46,15 @@ public class HumanPlayerLoadCommand extends Command
         switch(currentStage)
         {
             case STAGE_BEGIN:
+                Elevator.getInstance().setElevator(Elevator.ElevatorPosition.TWO_TOTE);
+
+                if(Elevator.getInstance().atSetpoint())
+                {
+                    currentStage++;
+                }
+                break;
+
+            case STAGE_READY:
                 Arms.getInstance().closeElevatorArms();
 
                 if(System.currentTimeMillis() - stageStartTime > 300)
@@ -75,10 +87,16 @@ public class HumanPlayerLoadCommand extends Command
     @Override
     protected void end()
     {
+        Arms.getInstance().openElevatorArms();
+
+        Elevator.getInstance().changeElevatorMode(false);
+
+        Robot.getInstance().getLogger().warn("HumanPlayerLoadCommand Ended");
     }
 
     @Override
     protected void interrupted()
     {
+        Robot.getInstance().getLogger().warn("HumanPlayerLoadCommand Interrupted");
     }
 }

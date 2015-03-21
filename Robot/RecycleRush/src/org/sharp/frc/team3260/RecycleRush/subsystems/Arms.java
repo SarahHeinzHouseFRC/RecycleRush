@@ -1,8 +1,11 @@
 package org.sharp.frc.team3260.RecycleRush.subsystems;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
+import org.sharp.frc.team3260.RecycleRush.SHARPIRRangeFinder;
+import org.sharp.frc.team3260.RecycleRush.utils.ConstantsBase;
 
 public class Arms extends SHARPSubsystem
 {
@@ -11,6 +14,9 @@ public class Arms extends SHARPSubsystem
     private DoubleSolenoid elevatorArmsSolenoid;
 
     private DoubleSolenoid lowerArmsSolenoid;
+
+    private SHARPIRRangeFinder liftRangeFinder;
+    private SHARPIRRangeFinder groundRangeFinder;
 
     public Arms()
     {
@@ -21,6 +27,9 @@ public class Arms extends SHARPSubsystem
         elevatorArmsSolenoid = new DoubleSolenoid(Constants.elevatorArmSolenoidForwardChannel.getInt(), Constants.elevatorArmsSolenoidReverseChannel.getInt());
 
         lowerArmsSolenoid = new DoubleSolenoid(Constants.lowerArmsSolenoidForwardChannel.getInt(), Constants.lowerArmsSolenoidReverseChannel.getInt());
+
+        liftRangeFinder = new SHARPIRRangeFinder(Constants.liftInfraredSensorPort.getInt());
+        groundRangeFinder = new SHARPIRRangeFinder(Constants.groundInfraredSensorPort.getInt());
     }
 
     public void closeElevatorArms()
@@ -54,6 +63,13 @@ public class Arms extends SHARPSubsystem
     @Override
     protected void initDefaultCommand()
     {
+    }
+
+    public void postRangeFinderValues()
+    {
+        SmartDashboard.putNumber("Lift Range Finder Inches", liftRangeFinder.getDistanceIn());
+
+        SmartDashboard.putNumber("Ground Range Finder Inches", groundRangeFinder.getDistanceIn());
     }
 
     public static Arms getInstance()

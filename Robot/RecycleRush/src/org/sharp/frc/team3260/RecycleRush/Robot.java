@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import javafx.scene.Camera;
 import org.sharp.frc.team3260.RecycleRush.autonomous.BasicAutonomousCommandGroup;
 import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
@@ -62,15 +63,35 @@ public class Robot extends IterativeRobot
         log.info("Indexing Autonomous Options...");
         loadAutonomousChooser();
 
+        boolean hasCamera = true;
+
         log.info("Attempting to start Camera Server...");
         try
         {
-            CameraServer.getInstance().setQuality(30);
+            CameraServer.getInstance().setQuality(15);
+            CameraServer.getInstance().setSize(1);
             CameraServer.getInstance().startAutomaticCapture("cam0");
         }
         catch(Exception e)
         {
             log.error("Starting Camera Server failed with exception " + e.getMessage());
+
+            hasCamera = false;
+        }
+
+        if(!hasCamera)
+        {
+            log.info("Attempting to start Camera Server with cam1...");
+            try
+            {
+                CameraServer.getInstance().setQuality(15);
+                CameraServer.getInstance().setSize(1);
+                CameraServer.getInstance().startAutomaticCapture("cam1");
+            }
+            catch(Exception e)
+            {
+                log.error("Starting Camera Server failed with exception " + e.getMessage());
+            }
         }
 
         log.info("Creating instance of ScriptedAutonomous...");
@@ -80,6 +101,8 @@ public class Robot extends IterativeRobot
         try
         {
             String elevatorPositionString = Util.getFile("//U//Elevator Position.txt").replace(" ", "").replace("\n", "".replace("\r", ""));
+
+            System.out.println(elevatorPositionString);
 
             int elevatorPosition = Integer.parseInt(elevatorPositionString);
 
@@ -239,6 +262,8 @@ public class Robot extends IterativeRobot
                 double pressure = DriveTrain.getInstance().getPressure();
 
                 SmartDashboard.putNumber("Pressure", pressure);
+
+                Arms.getInstance().postRangeFinderValues();
 
                 Lights.getInstance().updateLights();
 

@@ -49,6 +49,9 @@ public class Constants extends ConstantsBase
 
     public static final Constant elevatorControllerOnTargetThreshold = new Constant("elevatorControllerOnTargetThreshold", 200);
 
+    public static final Constant liftInfraredSensorPort = new Constant("liftInfraredSensorPort", 2);
+    public static final Constant groundInfraredSensorPort = new Constant("groundInfraredSensorPort", 1);
+
     static
     {
         readConstantsFromFile();
