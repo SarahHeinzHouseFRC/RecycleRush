@@ -8,9 +8,6 @@ import java.util.Date;
 
 public class Log
 {
-    private static FileLog flashDriveLog;
-    private static boolean failedToCreateFlashDriveLog = false;
-
     public static final int ATTRIBUTE_TIME = 1;
     public static final int ATTRIBUTE_THREAD = 2;
     public static final PriorityLevel INFO = new PriorityLevel("INFO");
@@ -26,98 +23,14 @@ public class Log
 
     public Log(String name, int attributes)
     {
-        try
-        {
-            createFlashDriveLog();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
         this.attr = attributes;
         this.name = name;
     }
 
     public Log(String name)
     {
-        try
-        {
-            createFlashDriveLog();
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-
         this.attr = ATTRIBUTE_DEFAULT;
         this.name = name;
-    }
-
-    public static void deleteOldLogFiles()
-    {
-        try
-        {
-            long curTime = new Date().getTime();
-
-            File logDirectory = new File("/U/Logs/");
-
-            if(logDirectory.isDirectory())
-            {
-                File[] logs = logDirectory.listFiles();
-
-                if(logs != null && logs.length > 0)
-                {
-                    for(File curLog : logs)
-                    {
-                        long diff = curTime - curLog.lastModified();
-
-                        if(diff > 3 * 24 * 60 * 60 * 1000)
-                        {
-                            if(!curLog.delete())
-                            {
-                                System.out.println("Unable to delete log file " + curLog.getName());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    private static void createFlashDriveLog()
-    {
-        if(!failedToCreateFlashDriveLog && flashDriveLog == null)
-        {
-            try
-            {
-                File flashDriveLogFile = new File("/U/Logs/" + getFileDate() + ".log.txt");
-
-                if(!flashDriveLogFile.exists())
-                {
-                    if(!flashDriveLogFile.createNewFile())
-                    {
-                        System.out.println("Failed to create flash drive log file.");
-
-                        failedToCreateFlashDriveLog = true;
-
-                        return;
-                    }
-                }
-
-                flashDriveLog = FileLog.getInstance(flashDriveLogFile);
-            }
-            catch(Exception e)
-            {
-                failedToCreateFlashDriveLog = true;
-
-                e.printStackTrace();
-            }
-        }
     }
 
     private static String getFileDate()
@@ -156,13 +69,6 @@ public class Log
     public void log(String message, PriorityLevel level)
     {
         log(message, level.getName().toUpperCase(), System.out);
-
-        if(!failedToCreateFlashDriveLog)
-        {
-            log(message, level.getName().toLowerCase(), flashDriveLog);
-
-            flashDriveLog.flush();
-        }
     }
 
     public void info(String message)
