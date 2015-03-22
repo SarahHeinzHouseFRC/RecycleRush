@@ -12,7 +12,6 @@ public class SHARPMecanumDriveCommand extends Command
     private static final double ROTATION_DEADBAND = 0.05;
 
     Joystick driveJoystick = OI.getInstance().getMainGamepad();
-    Joystick secondJoystick = OI.getInstance().getManipulatorGamepad();
 
     boolean usingSecondJoystick;
 
