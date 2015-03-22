@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ac96d07b-8552-4f2b-8890-a8124bd3a0fb" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/ThreeToteAutonomousCommandGroup.java" />
-      <change type="MOVED" beforePath="C:\Users\Edward\Desktop\FRC\RecycleRush\Robot\RecycleRush\src\org\sharp\frc\team3260\RecycleRush\autonomous\BasicAutonomousCommandGroup.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/DefaultAutonomousCommandGroup.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/CloseElevatorArmsCommand.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/CloseElevatorArmsCommand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/CloseLowerArmsCommand.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/CloseLowerArmsCommand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/Lights.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/Lights.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/OI.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/OI.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/OpenElevatorArmsCommand.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/OpenElevatorArmsCommand.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/OpenLowerArmsCommand.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/OpenLowerArmsCommand.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RecycleRush.iws" afterPath="$PROJECT_DIR$/RecycleRush.iws" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/Robot.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/Robot.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/SHARPIRRangeFinder.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/SHARPIRRangeFinder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/SHARPPressureTransducer.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/SHARPPressureTransducer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/ScriptedAutonomous.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/ScriptedAutonomous.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/ThreeToteAutonomousCommandGroup.java" afterPath="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/ThreeToteAutonomousCommandGroup.java" />
     </list>
     <ignored path="RecycleRush.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -77,13 +67,53 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ThreeToteAutonomousCommandGroup.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="ThreeToteAutonomousCommandGroup.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/ThreeToteAutonomousCommandGroup.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.95696205" vertical-offset="349" max-vertical-offset="1207">
-              <caret line="65" column="1" selection-start-line="65" selection-start-column="1" selection-end-line="65" selection-end-column="1" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="332" max-vertical-offset="1190">
+              <caret line="35" column="7" selection-start-line="35" selection-start-column="7" selection-end-line="35" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="OI.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/OI.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="502" max-vertical-offset="1870">
+              <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SHARPMecanumDriveCommand.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.56241953" vertical-offset="685" max-vertical-offset="1768">
+              <caret line="77" column="29" selection-start-line="77" selection-start-column="29" selection-end-line="77" selection-end-column="29" />
+              <folding>
+                <element signature="e#2801#2802#0" expanded="true" />
+                <element signature="e#2829#2830#0" expanded="true" />
+                <element signature="e#2875#2876#0" expanded="true" />
+                <element signature="e#2922#2923#0" expanded="true" />
+                <element signature="e#2976#2977#0" expanded="true" />
+                <element signature="e#2997#2998#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FieldCentricMecanumDriveCommand.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/FieldCentricMecanumDriveCommand.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="59" max-vertical-offset="918">
+              <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="49" selection-end-column="9" />
+              <folding>
+                <element signature="e#651#652#0" expanded="true" />
+                <element signature="e#701#702#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -532,7 +562,6 @@
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/Arms.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/HumanPlayerLoadCommand.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/DriveTrain.java" />
-        <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/utils/logs/Log.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/subsystems/Lights.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/Robot.java" />
@@ -547,6 +576,7 @@
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/OpenElevatorArmsCommand.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/OpenLowerArmsCommand.java" />
         <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/ThreeToteAutonomousCommandGroup.java" />
+        <option value="$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java" />
       </list>
     </option>
   </component>
@@ -1244,7 +1274,7 @@
       <workItem from="1426903078900" duration="63000" />
       <workItem from="1426948822735" duration="4180000" />
       <workItem from="1426956820806" duration="2098000" />
-      <workItem from="1427038289898" duration="3876000" />
+      <workItem from="1427038289898" duration="4249000" />
     </task>
     <task id="LOCAL-00001" summary="Reformatting with IntelliJ">
       <created>1425511896347</created>
@@ -1312,11 +1342,17 @@
       <option name="project" value="LOCAL" />
       <updated>1427038451016</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Three tote auto, control changes">
+      <created>1427046993338</created>
+      <option name="number" value="00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1427046993338</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56390000" />
+    <option name="totallyTimeSpent" value="56763000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -1430,7 +1466,8 @@
     <MESSAGE value="Added two IR range finders" />
     <MESSAGE value="Practice robot fixes" />
     <MESSAGE value="Removed logging to file (Wasn't used)" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed logging to file (Wasn't used)" />
+    <MESSAGE value="Three tote auto, control changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Three tote auto, control changes" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="true" />
   </component>
   <component name="XDebuggerManager">
@@ -1657,13 +1694,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/FieldCentricMecanumDriveCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16176471" vertical-offset="21" max-vertical-offset="901">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/gradle/libs/json-simple-1.1.1.jar!/org/json/simple/JSONArray.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.4" vertical-offset="0" max-vertical-offset="1394">
@@ -1785,14 +1815,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34620336" vertical-offset="326" max-vertical-offset="1139">
-          <caret line="46" column="47" selection-start-line="46" selection-start-column="47" selection-end-line="46" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/utils/logs/Log.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.95696205" vertical-offset="706" max-vertical-offset="1564">
@@ -1884,14 +1906,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/OI.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5164557" vertical-offset="0" max-vertical-offset="1870">
-          <caret line="32" column="5" selection-start-line="32" selection-start-column="5" selection-end-line="32" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/CloseElevatorArmsCommand.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38734177" vertical-offset="0" max-vertical-offset="790">
@@ -1921,10 +1935,44 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/autonomous/ThreeToteAutonomousCommandGroup.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.95696205" vertical-offset="349" max-vertical-offset="1207">
-          <caret line="65" column="1" selection-start-line="65" selection-start-column="1" selection-end-line="65" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="332" max-vertical-offset="1190">
+          <caret line="35" column="7" selection-start-line="35" selection-start-column="7" selection-end-line="35" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/OI.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="502" max-vertical-offset="1870">
+          <caret line="82" column="0" selection-start-line="82" selection-start-column="0" selection-end-line="82" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/FieldCentricMecanumDriveCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="59" max-vertical-offset="918">
+          <caret line="42" column="0" selection-start-line="42" selection-start-column="0" selection-end-line="49" selection-end-column="9" />
+          <folding>
+            <element signature="e#651#652#0" expanded="true" />
+            <element signature="e#701#702#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/sharp/frc/team3260/RecycleRush/commands/SHARPMecanumDriveCommand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.56241953" vertical-offset="685" max-vertical-offset="1768">
+          <caret line="77" column="29" selection-start-line="77" selection-start-column="29" selection-end-line="77" selection-end-column="29" />
+          <folding>
+            <element signature="e#2801#2802#0" expanded="true" />
+            <element signature="e#2829#2830#0" expanded="true" />
+            <element signature="e#2875#2876#0" expanded="true" />
+            <element signature="e#2922#2923#0" expanded="true" />
+            <element signature="e#2976#2977#0" expanded="true" />
+            <element signature="e#2997#2998#0" expanded="true" />
           </folding>
         </state>
       </provider>

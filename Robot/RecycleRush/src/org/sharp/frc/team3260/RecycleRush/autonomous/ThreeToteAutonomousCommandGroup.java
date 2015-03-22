@@ -34,7 +34,6 @@ public class ThreeToteAutonomousCommandGroup extends CommandGroup
      * Drive backward 450 ticks
      * Zero gyro
      */
-
     public ThreeToteAutonomousCommandGroup()
     {
         addSequential(new ZeroGyroCommand());
