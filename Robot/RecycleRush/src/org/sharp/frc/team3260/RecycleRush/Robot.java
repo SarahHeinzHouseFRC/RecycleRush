@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import javafx.scene.Camera;
-import org.sharp.frc.team3260.RecycleRush.autonomous.BasicAutonomousCommandGroup;
+import org.sharp.frc.team3260.RecycleRush.autonomous.DefaultAutonomousCommandGroup;
 import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
@@ -125,9 +124,6 @@ public class Robot extends IterativeRobot
             log.error("Failed to load Elevator state, exception: " + e.toString());
         }
 
-        log.info("Deleting old log files...");
-        Log.deleteOldLogFiles();
-
         log.info("Creating status updater...");
         new Thread(new StatusUpdater()).start();
     }
@@ -209,7 +205,7 @@ public class Robot extends IterativeRobot
     private void loadAutonomousChooser()
     {
         autoChooser = new SendableChooser();
-        autoChooser.addDefault(BasicAutonomousCommandGroup.class.getSimpleName(), BasicAutonomousCommandGroup.class.getSimpleName());
+        autoChooser.addDefault(DefaultAutonomousCommandGroup.class.getSimpleName(), DefaultAutonomousCommandGroup.class.getSimpleName());
 
         try
         {
@@ -259,9 +255,7 @@ public class Robot extends IterativeRobot
             {
                 SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
 
-                double pressure = DriveTrain.getInstance().getPressure();
-
-                SmartDashboard.putNumber("Pressure", pressure);
+                SmartDashboard.putNumber("Pressure", DriveTrain.getInstance().getPressure());
 
                 Arms.getInstance().postRangeFinderValues();
 

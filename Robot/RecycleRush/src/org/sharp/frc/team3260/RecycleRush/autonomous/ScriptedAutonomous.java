@@ -158,30 +158,20 @@ public class ScriptedAutonomous
         }
     }
 
-    public void setPathToCSV(String path, boolean forced)
-    {
-        if(!pathToJSON.equals(path) || forced)
-        {
-            pathToJSON = path;
-
-            load();
-        }
-    }
-
     public void load()
     {
         if(pathToJSON == null)
         {
-            log.warn("pathToJSON is null, setting Autonomous to BasicAutonomousCommandGroup.");
+            log.warn("pathToJSON is null, setting Autonomous to DefaultAutonomousCommandGroup.");
 
-            pathToJSON = BasicAutonomousCommandGroup.class.getSimpleName();
+            pathToJSON = DefaultAutonomousCommandGroup.class.getSimpleName();
         }
 
-        if(pathToJSON.equals(BasicAutonomousCommandGroup.class.getSimpleName()))
+        if(pathToJSON.equals(DefaultAutonomousCommandGroup.class.getSimpleName()))
         {
-            log.warn("User asked for BasicAutonomousCommandGroup.");
+            log.warn("User asked for DefaultAutonomousCommandGroup.");
 
-            commandGroup = new BasicAutonomousCommandGroup();
+            commandGroup = new DefaultAutonomousCommandGroup();
 
             commandsLoaded = true;
         }
@@ -196,18 +186,34 @@ public class ScriptedAutonomous
 
         if(!commandsLoaded)
         {
-            getLog().info("Set command group to " + BasicAutonomousCommandGroup.class.getSimpleName() + ".");
+            getLog().info("Set command group to " + DefaultAutonomousCommandGroup.class.getSimpleName() + ".");
 
-            commandGroup = new BasicAutonomousCommandGroup();
+            commandGroup = new DefaultAutonomousCommandGroup();
         }
     }
 
     private void addCommand(Command command, boolean isParallel)
     {
+        if(isParallel)
+        {
+            addParallel(command);
+        }
+        else
+        {
+            addSequential(command);
+        }
     }
 
     private void addCommand(Command command, double timeout, boolean isParallel)
     {
+        if(isParallel)
+        {
+            addParallel(command, timeout);
+        }
+        else
+        {
+            addSequential(command, timeout);
+        }
     }
 
     private void addSequential(Command command)

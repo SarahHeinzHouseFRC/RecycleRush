@@ -9,19 +9,15 @@ import edu.wpi.first.wpilibj.tables.ITable;
 /**
  * Honeywell PX2AN2XX150PAAAX
  */
-public class SHARPPressureTransducer extends SensorBase implements LiveWindowSendable
+public class SHARPPressureTransducer extends SensorBase
 {
     protected AnalogInput analog;
-
-    private ITable table;
 
     public SHARPPressureTransducer(int port)
     {
         analog = new AnalogInput(port);
 
         analog.setAverageBits(12);
-
-        LiveWindow.addSensor("Pressure Transducer", analog.getChannel(), this);
     }
 
     public double getVoltage()
@@ -39,39 +35,5 @@ public class SHARPPressureTransducer extends SensorBase implements LiveWindowSen
         }
 
         return curPSI;
-    }
-
-    public void updateTable()
-    {
-        if(table != null)
-        {
-            table.putNumber("Voltage", getVoltage());
-            table.putNumber("PSI", getPressure());
-        }
-    }
-
-    public void startLiveWindowMode()
-    {
-    }
-
-    public void stopLiveWindowMode()
-    {
-    }
-
-    public void initTable(ITable table)
-    {
-        this.table = table;
-
-        updateTable();
-    }
-
-    public ITable getTable()
-    {
-        return table;
-    }
-
-    public String getSmartDashboardType()
-    {
-        return "Pressure Transducer";
     }
 }
