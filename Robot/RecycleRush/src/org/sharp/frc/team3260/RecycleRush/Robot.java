@@ -1,15 +1,12 @@
 package org.sharp.frc.team3260.RecycleRush;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.autonomous.DefaultAutonomousCommandGroup;
 import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
-import org.sharp.frc.team3260.RecycleRush.autonomous.ThreeToteAutonomous;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPMecanumDriveCommand;
@@ -23,7 +20,6 @@ import org.sharp.frc.team3260.RecycleRush.utils.Util;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 import java.io.File;
-import java.io.FileWriter;
 
 public class Robot extends IterativeRobot
 {

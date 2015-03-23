@@ -26,35 +26,25 @@ down to bottom reapt
 
     public ThreeToteAutonomous()
     {
-        addSequential(new ZeroGyroCommand());
         addSequential(new CloseElevatorArmsCommand());
-        addSequential(new CloseLowerArmsCommand());
-        addSequential(new RobotIdleCommand(500));
-        addSequential(new RotateToHeadingCommand(-90, true));
-        addSequential(new OpenLowerArmsCommand());
-        addSequential(new RobotIdleCommand(250));
-        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(4)));
-        addSequential(new ZeroGyroCommand());
-        addSequential(new RobotIdleCommand(250));
+        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(2)));
         addSequential(new RotateToHeadingCommand(-90, true));
         addSequential(new ZeroGyroCommand());
-        addSequential(new RobotIdleCommand(500));
-        addSequential(new DriveAtSpeedCommand(0.35, 2.5));
+        addSequential(new RotateToHeadingCommand(-90, true));
+        addSequential(new DriveAtSpeedCommand(.4, .5));
         addSequential(new CloseLowerArmsCommand());
         addSequential(new OpenElevatorArmsCommand());
         addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(0)));
         addSequential(new OpenLowerArmsCommand());
         addSequential(new CloseElevatorArmsCommand());
-        addSequential(new RobotIdleCommand(500));
-        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(4)));
-        addSequential(new DriveAtSpeedCommand(0.35, 1.5));
+        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(2)));
+        addSequential(new DriveAtSpeedCommand(.4, 1));
         addSequential(new CloseLowerArmsCommand());
-        /*addSequential(new RotateToHeadingCommand(-90, true));
-        addSequential(new ZeroGyroCommand());
-        addSequential(new DriveAtSpeedCommand(0.5, 4));
+        addSequential(new RotateToHeadingCommand(-90, true));
+        addSequential(new DriveAtSpeedCommand(.3, 4000));
         addSequential(new OpenElevatorArmsCommand());
         addSequential(new OpenLowerArmsCommand());
-        addSequential(new DriveAtSpeedCommand(-.5, 1.0));*/
+        addSequential(new DriveAtSpeedCommand(-.3, .5));
 
     }
 }

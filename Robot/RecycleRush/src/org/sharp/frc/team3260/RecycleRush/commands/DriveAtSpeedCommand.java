@@ -2,8 +2,6 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
-import org.sharp.frc.team3260.RecycleRush.OI;
-import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
 public class DriveAtSpeedCommand extends Command

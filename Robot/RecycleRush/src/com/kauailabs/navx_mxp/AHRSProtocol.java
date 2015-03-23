@@ -28,7 +28,7 @@ import com.kauailabs.nav6.IMUProtocol;
 
 public class AHRSProtocol extends IMUProtocol
 {
-	/* NAVX_CAL_STATUS */
+    /* NAVX_CAL_STATUS */
     static final byte NAVX_CAL_STATUS_IMU_CAL_STATE_MASK = 0x03;
     static final byte NAVX_CAL_STATUS_IMU_CAL_INPROGRESS = 0x00;
     static final byte NAVX_CAL_STATUS_IMU_CAL_ACCUMULATE = 0x01;
@@ -37,7 +37,7 @@ public class AHRSProtocol extends IMUProtocol
     static final byte NAVX_CAL_STATUS_MAG_CAL_COMPLETE = 0x04;
     static final byte NAVX_CAL_STATUS_BARO_CAL_COMPLETE = 0x08;
 
-	/* NAVX_SELFTEST_STATUS */
+    /* NAVX_SELFTEST_STATUS */
     static final byte NAVX_SELFTEST_STATUS_COMPLETE = (byte) 0x80;
 
     static final byte NAVX_SELFTEST_RESULT_GYRO_PASSED = 0x01;
@@ -45,7 +45,7 @@ public class AHRSProtocol extends IMUProtocol
     static final byte NAVX_SELFTEST_RESULT_MAG_PASSED = 0x04;
     static final byte NAVX_SELFTEST_RESULT_BARO_PASSED = 0x08;
 
-	/* NAVX_OP_STATUS */
+    /* NAVX_OP_STATUS */
     static final byte NAVX_OP_STATUS_INITIALIZING = 0x00;
     static final byte NAVX_OP_STATUS_SELFTEST_IN_PROGRESS = 0x01;
     static final byte NAVX_OP_STATUS_ERROR = 0x02;
@@ -68,7 +68,7 @@ public class AHRSProtocol extends IMUProtocol
         public static final byte MAG_DISTURBANCE_THRESHOLD = 3;  /* Ratio */
         public static final byte SEA_LEVEL_PRESSURE = 4;         /* Millibars */
     }
-    
+
     public class AHRS_DATA_TYPE
     {
         public static final byte TUNING_VARIABLE = 0;
@@ -251,7 +251,7 @@ public class AHRSProtocol extends IMUProtocol
             mag_xform = new float[3][3];
         }
     }
-    
+
     static public class TuningVar
     {
         public byte action;
@@ -281,9 +281,9 @@ public class AHRSProtocol extends IMUProtocol
             return 0;
         }
         if((buffer[offset] == PACKET_START_CHAR) &&
-                (buffer[offset + 1] == BINARY_PACKET_INDICATOR_CHAR) &&
-                (buffer[offset + 2] == AHRS_UPDATE_MESSAGE_LENGTH - 2) &&
-                (buffer[offset + 3] == MSGID_AHRS_UPDATE))
+           (buffer[offset + 1] == BINARY_PACKET_INDICATOR_CHAR) &&
+           (buffer[offset + 2] == AHRS_UPDATE_MESSAGE_LENGTH - 2) &&
+           (buffer[offset + 3] == MSGID_AHRS_UPDATE))
         {
 
             if(!verifyChecksum(buffer, offset + AHRS_UPDATE_MESSAGE_CHECKSUM_INDEX))
@@ -353,14 +353,14 @@ public class AHRSProtocol extends IMUProtocol
         for(int i = 0; i < 3; i++)
         {
             encodeBinaryInt16(d.mag_bias[i],
-                    buffer, MAG_X_BIAS_VALUE_INDEX + (i * 2));
+                              buffer, MAG_X_BIAS_VALUE_INDEX + (i * 2));
         }
         for(int i = 0; i < 3; i++)
         {
             for(int j = 0; j < 3; j++)
             {
                 encodeProtocol1616Float(d.mag_xform[i][j],
-                        buffer, MAG_XFORM_1_1_VALUE_INDEX + (i * 6) + (j * 2));
+                                        buffer, MAG_XFORM_1_1_VALUE_INDEX + (i * 6) + (j * 2));
             }
         }
         encodeProtocol1616Float(d.earth_mag_field_norm, buffer, MAG_CAL_EARTH_MAG_FIELD_NORM_VALUE_INDEX);
@@ -377,9 +377,9 @@ public class AHRSProtocol extends IMUProtocol
             return 0;
         }
         if((buffer[0] == PACKET_START_CHAR) &&
-                (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
-                (buffer[2] == MAG_CAL_CMD_MESSAGE_LENGTH - 2) &&
-                (buffer[3] == MSGID_MAG_CAL_CMD))
+           (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+           (buffer[2] == MAG_CAL_CMD_MESSAGE_LENGTH - 2) &&
+           (buffer[3] == MSGID_MAG_CAL_CMD))
         {
             if(!verifyChecksum(buffer, MAG_CAL_CMD_MESSAGE_CHECKSUM_INDEX))
             {
@@ -429,9 +429,9 @@ public class AHRSProtocol extends IMUProtocol
             return 0;
         }
         if((buffer[0] == PACKET_START_CHAR) &&
-                (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
-                (buffer[2] == FUSION_TUNING_CMD_MESSAGE_LENGTH - 2) &&
-                (buffer[3] == MSGID_FUSION_TUNING_CMD))
+           (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+           (buffer[2] == FUSION_TUNING_CMD_MESSAGE_LENGTH - 2) &&
+           (buffer[3] == MSGID_FUSION_TUNING_CMD))
         {
             if(!verifyChecksum(buffer, FUSION_TUNING_CMD_MESSAGE_CHECKSUM_INDEX))
             {
@@ -454,11 +454,11 @@ public class AHRSProtocol extends IMUProtocol
         {
             return 0;
         }
-        
+
         if((buffer[0] == PACKET_START_CHAR) &&
-                (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
-                (buffer[2] == DATA_SET_RESPONSE_MESSAGE_LENGTH - 2) &&
-                (buffer[3] == MSGID_DATA_SET_RESPONSE))
+           (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+           (buffer[2] == DATA_SET_RESPONSE_MESSAGE_LENGTH - 2) &&
+           (buffer[3] == MSGID_DATA_SET_RESPONSE))
         {
             if(!verifyChecksum(buffer, DATA_SET_RESPONSE_MESSAGE_CHECKSUM_INDEX))
             {
@@ -481,9 +481,9 @@ public class AHRSProtocol extends IMUProtocol
             return 0;
         }
         if((buffer[0] == PACKET_START_CHAR) &&
-                (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
-                (buffer[2] == BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH - 2) &&
-                (buffer[3] == MSGID_BOARD_IDENTITY_RESPONSE))
+           (buffer[1] == BINARY_PACKET_INDICATOR_CHAR) &&
+           (buffer[2] == BOARD_IDENTITY_RESPONSE_MESSAGE_LENGTH - 2) &&
+           (buffer[3] == MSGID_BOARD_IDENTITY_RESPONSE))
         {
             if(!verifyChecksum(buffer, BOARD_IDENTITY_RESPONSE_CHECKSUM_INDEX))
             {

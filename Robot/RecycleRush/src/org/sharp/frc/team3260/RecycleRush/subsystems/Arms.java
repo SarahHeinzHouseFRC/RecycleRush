@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.SHARPIRRangeFinder;
-import org.sharp.frc.team3260.RecycleRush.utils.ConstantsBase;
 
 public class Arms extends SHARPSubsystem
 {

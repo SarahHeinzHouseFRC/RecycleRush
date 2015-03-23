@@ -1,6 +1,5 @@
 package org.sharp.frc.team3260.RecycleRush.utils.logs;
 
-import java.io.File;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

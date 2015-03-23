@@ -2,7 +2,6 @@ package org.sharp.frc.team3260.RecycleRush.joystick.triggers;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
-import org.sharp.frc.team3260.RecycleRush.Robot;
 
 public class HatButton extends Button
 {

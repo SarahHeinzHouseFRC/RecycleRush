@@ -470,9 +470,9 @@ public class IMU extends SensorBase implements PIDSource, LiveWindowSendable, Ru
                         else
                         {
                             if((bytes_remaining > 2) &&
-                                    (received_data[i + 1] == (byte) '#'))
+                               (received_data[i + 1] == (byte) '#'))
                             {
-                    			/* Binary packet received; next byte is packet length-2 */
+                                /* Binary packet received; next byte is packet length-2 */
                                 byte total_expected_binary_data_bytes = received_data[i + 2];
                                 total_expected_binary_data_bytes += 2;
                                 while(bytes_remaining < total_expected_binary_data_bytes)
