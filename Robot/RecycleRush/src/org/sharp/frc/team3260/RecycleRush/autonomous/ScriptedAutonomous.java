@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.omg.PortableServer.THREAD_POLICY_ID;
 import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
@@ -74,7 +75,7 @@ public class ScriptedAutonomous
                 continue;
             }
 
-            boolean isParallel = (boolean) parametersMap.get("isParallel").get("Value");
+            boolean isParallel = false;
 
             switch(commandClass)
             {
@@ -183,6 +184,11 @@ public class ScriptedAutonomous
 
             commandGroup = new BasicAutonomousCommandGroup();
 
+            commandsLoaded = true;
+        }
+        else if(pathToJSON.equals(ThreeToteAutonomous.class.getSimpleName())){
+
+            commandGroup = new ThreeToteAutonomous();
             commandsLoaded = true;
         }
         else

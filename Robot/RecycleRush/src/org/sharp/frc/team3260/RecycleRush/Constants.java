@@ -26,9 +26,9 @@ public class Constants extends ConstantsBase
 
     public static final Constant driveControllerOnTargetThreshold = new Constant("driveControllerOnTargetThreshold", 200);
 
-    public static final Constant rotationControllerP = new Constant("rotationControllerP", 0.00573);
-    public static final Constant rotationControllerI = new Constant("rotationControllerI", 0.0001);
-    public static final Constant rotationControllerD = new Constant("rotationControllerD", 0.0);
+    public static final Constant rotationControllerP = new Constant("rotationControllerP", 0.00585);
+    public static final Constant rotationControllerI = new Constant("rotationControllerI", 0.0002);
+    public static final Constant rotationControllerD = new Constant("rotationControllerD", 0.0001);
     public static final Constant rotationControllerF = new Constant("rotationControllerF", 0.0);
 
     public static final Constant rotationControllerThreshold = new Constant("rotationControllerThreshold", 0.05);
@@ -38,8 +38,8 @@ public class Constants extends ConstantsBase
     public static final Constant elevatorArmSolenoidForwardChannel = new Constant("elevatorArmSolenoidForwardChannel", 1);
     public static final Constant elevatorArmsSolenoidReverseChannel = new Constant("elevatorArmsSolenoidReverseChannel", 0);
 
-    public static final Constant lowerArmsSolenoidForwardChannel = new Constant("lowerArmsSolenoidForwardChannel", 3);
-    public static final Constant lowerArmsSolenoidReverseChannel = new Constant("lowerArmsSolenoidReverseChannel", 2);
+    public static final Constant lowerArmsSolenoidForwardChannel = new Constant("lowerArmsSolenoidForwardChannel", 2);
+    public static final Constant lowerArmsSolenoidReverseChannel = new Constant("lowerArmsSolenoidReverseChannel", 3);
 
     public static final Constant elevatorTalonID = new Constant("elevatorTalonID", 5);
 
@@ -47,7 +47,7 @@ public class Constants extends ConstantsBase
     public static final Constant elevatorPositionControllerI = new Constant("elevatorPositionControllerI", 0.0);
     public static final Constant elevatorPositionControllerD = new Constant("elevatorPositionControllerD", 0.001);
 
-    public static final Constant elevatorControllerOnTargetThreshold = new Constant("elevatorControllerOnTargetThreshold", 200);
+    public static final Constant elevatorControllerOnTargetThreshold = new Constant("elevatorControllerOnTargetThreshold", 100);
 
     public static final Constant liftInfraredSensorPort = new Constant("liftInfraredSensorPort", 2);
     public static final Constant groundInfraredSensorPort = new Constant("groundInfraredSensorPort", 1);

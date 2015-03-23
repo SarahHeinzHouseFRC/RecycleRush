@@ -32,7 +32,7 @@ public class DriveAtSpeedCommand extends Command
     @Override
     protected void execute()
     {
-        if(DriveTrain.getInstance().getIMU() == null || OI.getInstance().getMainGamepad().getRawButton(SHARPGamepad.BUTTON_LEFT_JOYSTICK))
+        if(DriveTrain.getInstance().getIMU() == null)
         {
             DriveTrain.getInstance().stockMecanumDrive(0, -speed, 0, 0);
         }

@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.Robot;
 import org.sharp.frc.team3260.RecycleRush.SHARPPressureTransducer;
+import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
@@ -180,7 +181,7 @@ public class DriveTrain extends SHARPSubsystem
 
     public void initDefaultCommand()
     {
-        setDefaultCommand(new SHARPMecanumDriveCommand());
+        setDefaultCommand(new FieldCentricMecanumDriveCommand());
     }
 
     public void zeroGyro()

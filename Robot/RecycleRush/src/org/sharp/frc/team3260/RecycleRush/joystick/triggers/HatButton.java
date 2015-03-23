@@ -10,27 +10,16 @@ public class HatButton extends Button
 
     private int targetPos;
 
-    private int prevPos;
-
     public HatButton(Joystick joystick, int targetPos)
     {
         this.joystick = joystick;
 
         this.targetPos = targetPos;
-
-        prevPos = targetPos;
     }
 
     @Override
     public boolean get()
     {
-        if(prevPos != joystick.getPOV())
-        {
-            Robot.getInstance().getLogger().info("POV " + joystick.getPOV());
-        }
-
-        prevPos = joystick.getPOV();
-
         return joystick.getPOV() == targetPos;
     }
 }

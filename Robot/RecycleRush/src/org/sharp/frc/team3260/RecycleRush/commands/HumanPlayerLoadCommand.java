@@ -7,7 +7,7 @@ import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 
 public class HumanPlayerLoadCommand extends Command
 {
-    protected static final int STAGE_BEGIN = 0, STAGE_READY = 1, STAGE_GRIPPED = 2, STAGE_LIFTING = 3, STAGE_FINISHED = 4;
+    protected static final int STAGE_BEGIN = 0, STAGE_MOVINGTOREADY = 1, STAGE_READY = 2, STAGE_GRIPPED = 3, STAGE_LIFTING = 4, STAGE_FINISHED = 5;
 
     protected int currentStage;
 
@@ -48,6 +48,10 @@ public class HumanPlayerLoadCommand extends Command
             case STAGE_BEGIN:
                 Elevator.getInstance().setElevator(Elevator.ElevatorPosition.TWO_TOTE);
 
+                currentStage++;
+                break;
+
+            case STAGE_MOVINGTOREADY:
                 if(Elevator.getInstance().atSetpoint())
                 {
                     currentStage++;

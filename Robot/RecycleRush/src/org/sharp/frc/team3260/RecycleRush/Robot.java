@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import javafx.scene.Camera;
 import org.sharp.frc.team3260.RecycleRush.autonomous.BasicAutonomousCommandGroup;
 import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
+import org.sharp.frc.team3260.RecycleRush.autonomous.ThreeToteAutonomous;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPMecanumDriveCommand;
@@ -65,68 +66,37 @@ public class Robot extends IterativeRobot
 
         boolean hasCamera = true;
 
-        log.info("Attempting to start Camera Server...");
-        try
-        {
-            CameraServer.getInstance().setQuality(15);
-            CameraServer.getInstance().setSize(1);
-            CameraServer.getInstance().startAutomaticCapture("cam0");
-        }
-        catch(Exception e)
-        {
-            log.error("Starting Camera Server failed with exception " + e.getMessage());
-
-            hasCamera = false;
-        }
-
-        if(!hasCamera)
-        {
-            log.info("Attempting to start Camera Server with cam1...");
-            try
-            {
-                CameraServer.getInstance().setQuality(15);
-                CameraServer.getInstance().setSize(1);
-                CameraServer.getInstance().startAutomaticCapture("cam1");
-            }
-            catch(Exception e)
-            {
-                log.error("Starting Camera Server failed with exception " + e.getMessage());
-            }
-        }
+//        log.info("Attempting to start Camera Server...");
+//        try
+//        {
+//            CameraServer.getInstance().setQuality(15);
+//            CameraServer.getInstance().setSize(1);
+//            CameraServer.getInstance().startAutomaticCapture("cam0");
+//        }
+//        catch(Exception e)
+//        {
+//            log.error("Starting Camera Server failed with exception " + e.getMessage());
+//
+//            hasCamera = false;
+//        }
+//
+//        if(!hasCamera)
+//        {
+//            log.info("Attempting to start Camera Server with cam1...");
+//            try
+//            {
+//                CameraServer.getInstance().setQuality(15);
+//                CameraServer.getInstance().setSize(1);
+//                CameraServer.getInstance().startAutomaticCapture("cam1");
+//            }
+//            catch(Exception e)
+//            {
+//                log.error("Starting Camera Server failed with exception " + e.getMessage());
+//            }
+//        }
 
         log.info("Creating instance of ScriptedAutonomous...");
         scriptedAutonomous = new ScriptedAutonomous();
-
-        log.info("Attempting to load Elevator state from previous run...");
-        try
-        {
-            String elevatorPositionString = Util.getFile("//U//Elevator Position.txt").replace(" ", "").replace("\n", "".replace("\r", ""));
-
-            System.out.println(elevatorPositionString);
-
-            int elevatorPosition = Integer.parseInt(elevatorPositionString);
-
-            if(elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
-            {
-                log.info("Elevator position set to " + elevatorPosition + ".");
-
-                Elevator.getInstance().setElevatorPosition(elevatorPosition);
-            }
-
-            if(Elevator.getInstance().getTalon().isRevLimitSwitchClosed())
-            {
-                log.info("Limit switch currently held, setting Elevator position to 0.");
-
-                Elevator.getInstance().setElevatorPosition(0);
-            }
-        }
-        catch(Exception e)
-        {
-            log.error("Failed to load Elevator state, exception: " + e.toString());
-        }
-
-        log.info("Deleting old log files...");
-        Log.deleteOldLogFiles();
 
         log.info("Creating status updater...");
         new Thread(new StatusUpdater()).start();
@@ -159,30 +129,6 @@ public class Robot extends IterativeRobot
         {
             scriptedAutonomous.getCommandGroup().cancel();
         }
-
-        int elevatorPosition = Elevator.getInstance().getPosition();
-
-        log.info("Attempting to save Elevator position of " + elevatorPosition + " to flash drive");
-
-        if(elevatorPosition < 0)
-        {
-            log.warn("Not saving Elevator position, value less than zero.");
-        }
-
-        elevatorPosition = 0;
-
-        try
-        {
-            File elevatorPositionFile = new File("//U//Elevator Position.txt");
-
-            FileWriter fileWriter = new FileWriter(elevatorPositionFile, false);
-            fileWriter.write(elevatorPosition);
-            fileWriter.close();
-        }
-        catch(Exception e)
-        {
-            log.error("Saving /media/sda1/Elevator Position.txt failed, exception: " + e.toString());
-        }
     }
 
     public void disabledPeriodic()
@@ -197,19 +143,20 @@ public class Robot extends IterativeRobot
 
             scriptedAutonomous.load();
         }
-
-        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_SELECT))
-        {
-            DriveTrain.getInstance().zeroGyro();
-
-            DriveTrain.getInstance().zeroEncoders();
-        }
+//
+//        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_SELECT))
+//        {
+//            DriveTrain.getInstance().zeroGyro();
+//
+//            DriveTrain.getInstance().zeroEncoders();
+//        }
     }
 
     private void loadAutonomousChooser()
     {
         autoChooser = new SendableChooser();
         autoChooser.addDefault(BasicAutonomousCommandGroup.class.getSimpleName(), BasicAutonomousCommandGroup.class.getSimpleName());
+        autoChooser.addObject(ThreeToteAutonomous.class.getSimpleName(), ThreeToteAutonomous.class.getSimpleName());
 
         try
         {
@@ -259,11 +206,9 @@ public class Robot extends IterativeRobot
             {
                 SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
 
-                double pressure = DriveTrain.getInstance().getPressure();
-
-                SmartDashboard.putNumber("Pressure", pressure);
-
-                Arms.getInstance().postRangeFinderValues();
+//                double pressure = DriveTrain.getInstance().getPressure();
+//
+//                SmartDashboard.putNumber("Pressure", pressure);
 
                 Lights.getInstance().updateLights();
 
