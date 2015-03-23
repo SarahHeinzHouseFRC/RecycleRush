@@ -61,22 +61,22 @@ public class OI
         mainGamepadSelectButton.whenReleased(new ZeroGyroCommand());
         manipulatorGamepadSelectButton.whenReleased(new ZeroGyroCommand());
 
-        manipulatorGamepadLeftTrigger.whenReleased(new CloseElevatorArmsCommand());
-        manipulatorGamepadRightTrigger.whenReleased(new OpenElevatorArmsCommand());
+        manipulatorGamepadLeftTrigger.whenPressed(new CloseElevatorArmsCommand());
+        manipulatorGamepadRightTrigger.whenPressed(new OpenElevatorArmsCommand());
 
         mainGamepadLeftBumper.whenReleased(new RotateToHeadingCommand(135, false));
         mainGamepadRightBumper.whenReleased(new RotateToHeadingCommand(-135, false));
 
-        manipulatorGamepadLeftBumper.whenReleased(new CloseLowerArmsCommand());
-        manipulatorGamepadRightBumper.whenReleased(new OpenLowerArmsCommand());
+        manipulatorGamepadLeftBumper.whenPressed(new CloseLowerArmsCommand());
+        manipulatorGamepadRightBumper.whenPressed(new OpenLowerArmsCommand());
 
-        manipulatorGamepadA.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.GROUND));
-        manipulatorGamepadB.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
-        manipulatorGamepadX.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
-        manipulatorGamepadY.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.LOADING_HEIGHT));
+        manipulatorGamepadA.whenPressed(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.GROUND));
+        manipulatorGamepadB.whenPressed(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
+        manipulatorGamepadX.whenPressed(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
+        manipulatorGamepadY.whenPressed(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.LOADING_HEIGHT));
 
-        manipulatorGamepadHatRight.whenReleased(new HumanPlayerLoadCommand());
-        manipulatorGamepadHatDown.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TOP));
+        manipulatorGamepadHatRight.whenPressed(new HumanPlayerLoadCommand());
+        manipulatorGamepadHatDown.whenPressed(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TOP));
 
         instance = this;
     }

@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import javafx.scene.Camera;
-import org.sharp.frc.team3260.RecycleRush.autonomous.BasicAutonomousCommandGroup;
+import org.sharp.frc.team3260.RecycleRush.autonomous.DefaultAutonomousCommandGroup;
 import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
 import org.sharp.frc.team3260.RecycleRush.autonomous.ThreeToteAutonomous;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
@@ -98,6 +97,37 @@ public class Robot extends IterativeRobot
         log.info("Creating instance of ScriptedAutonomous...");
         scriptedAutonomous = new ScriptedAutonomous();
 
+        log.info("Attempting to load Elevator state from previous run...");
+        try
+        {
+            String elevatorPositionString = Util.getFile("//U//Elevator Position.txt").replace(" ", "").replace("\n", "".replace("\r", ""));
+
+            System.out.println(elevatorPositionString);
+
+            int elevatorPosition = Integer.parseInt(elevatorPositionString);
+
+            if(elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
+            {
+                log.info("Elevator position set to " + elevatorPosition + ".");
+
+                Elevator.getInstance().setElevatorPosition(elevatorPosition);
+            }
+
+            if(Elevator.getInstance().getTalon().isRevLimitSwitchClosed())
+            {
+                log.info("Limit switch currently held, setting Elevator position to 0.");
+
+                Elevator.getInstance().setElevatorPosition(0);
+            }
+        }
+        catch(Exception e)
+        {
+            log.error("Failed to load Elevator state, exception: " + e.toString());
+        }
+
+        log.info("Deleting old log files...");
+        Log.deleteOldLogFiles();
+
         log.info("Creating status updater...");
         new Thread(new StatusUpdater()).start();
     }
@@ -156,7 +186,6 @@ public class Robot extends IterativeRobot
     {
         autoChooser = new SendableChooser();
         autoChooser.addDefault(BasicAutonomousCommandGroup.class.getSimpleName(), BasicAutonomousCommandGroup.class.getSimpleName());
-        autoChooser.addObject(ThreeToteAutonomous.class.getSimpleName(), ThreeToteAutonomous.class.getSimpleName());
 
         try
         {
@@ -206,9 +235,11 @@ public class Robot extends IterativeRobot
             {
                 SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
 
-//                double pressure = DriveTrain.getInstance().getPressure();
-//
-//                SmartDashboard.putNumber("Pressure", pressure);
+                double pressure = DriveTrain.getInstance().getPressure();
+
+                SmartDashboard.putNumber("Pressure", pressure);
+
+                Arms.getInstance().postRangeFinderValues();
 
                 Lights.getInstance().updateLights();
 

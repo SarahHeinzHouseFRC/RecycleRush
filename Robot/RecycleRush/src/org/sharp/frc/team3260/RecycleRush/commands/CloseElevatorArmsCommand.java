@@ -19,12 +19,13 @@ public class CloseElevatorArmsCommand extends Command
     @Override
     protected void execute()
     {
+        setTimeout(0.25);
     }
 
     @Override
     protected boolean isFinished()
     {
-        return true;
+        return isTimedOut();
     }
 
     @Override

@@ -145,13 +145,7 @@ public class Lights extends SHARPSubsystem
 
         boolean gripperClosed = Arms.getInstance().areElevatorArmsClosed();
 
-        double pitch = DriveTrain.getInstance().getIMU().getPitch();
-
-        if(pitch > 40 || pitch < -40)
-        {
-            lightOption = LightOption.YOLO;
-        }
-        else if(batteryVoltage < 11)
+        if(batteryVoltage < 11)
         {
             double batteryPercent = (batteryVoltage / 13);
 

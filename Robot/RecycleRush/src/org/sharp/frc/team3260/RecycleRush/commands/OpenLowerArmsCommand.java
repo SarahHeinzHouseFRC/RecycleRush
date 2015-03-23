@@ -13,6 +13,8 @@ public class OpenLowerArmsCommand extends Command
     @Override
     protected void initialize()
     {
+        setTimeout(0.25);
+
         Arms.getInstance().openLowerArms();
     }
 
@@ -24,7 +26,7 @@ public class OpenLowerArmsCommand extends Command
     @Override
     protected boolean isFinished()
     {
-        return true;
+        return isTimedOut();
     }
 
     @Override

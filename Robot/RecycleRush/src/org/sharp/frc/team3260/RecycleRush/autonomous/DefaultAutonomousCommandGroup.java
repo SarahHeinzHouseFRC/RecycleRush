@@ -3,9 +3,9 @@ package org.sharp.frc.team3260.RecycleRush.autonomous;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyroCommand;
 
-public class BasicAutonomousCommandGroup extends CommandGroup
+public class DefaultAutonomousCommandGroup extends CommandGroup
 {
-    public BasicAutonomousCommandGroup()
+    public DefaultAutonomousCommandGroup()
     {
         addSequential(new ZeroGyroCommand());
     }
