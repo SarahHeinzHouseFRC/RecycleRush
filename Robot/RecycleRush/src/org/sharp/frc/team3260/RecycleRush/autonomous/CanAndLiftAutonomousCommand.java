@@ -17,7 +17,7 @@ public class CanAndLiftAutonomousCommand extends CommandGroup
         addSequential(new RobotIdleCommand(250));
         addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.RECYCLING_CAN));
         addSequential(new RobotIdleCommand(250));
-        addSequential(new DriveAtSpeedCommand(-.45,3));
+        addSequential(new DriveAtSpeedCommand(-.45, 2.5));
 
 
     }

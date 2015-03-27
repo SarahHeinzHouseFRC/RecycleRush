@@ -181,7 +181,7 @@ public class Robot extends IterativeRobot
         autoChooser = new SendableChooser();
         autoChooser.addDefault(DefaultAutonomousCommandGroup.class.getSimpleName(), DefaultAutonomousCommandGroup.class.getSimpleName());
         autoChooser.addObject(ThreeToteAutonomousCommandGroup.class.getSimpleName(), ThreeToteAutonomousCommandGroup.class.getSimpleName());
-        autoChooser.addObject(CanAndLiftAutonomousCommand.class.getSimpleName(), ThreeToteAutonomous.class.getSimpleName());
+        autoChooser.addObject(CanAndLiftAutonomousCommand.class.getSimpleName(), CanAndLiftAutonomousCommand.class.getSimpleName());
 
         try
         {
