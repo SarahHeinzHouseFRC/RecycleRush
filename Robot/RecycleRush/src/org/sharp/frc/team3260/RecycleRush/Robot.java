@@ -1,12 +1,13 @@
 package org.sharp.frc.team3260.RecycleRush;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
+import org.sharp.frc.team3260.RecycleRush.autonomous.*;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPMecanumDriveCommand;
@@ -61,34 +62,34 @@ public class Robot extends IterativeRobot
 
         boolean hasCamera = true;
 
-//        log.info("Attempting to start Camera Server...");
-//        try
-//        {
-//            CameraServer.getInstance().setQuality(15);
-//            CameraServer.getInstance().setSize(1);
-//            CameraServer.getInstance().startAutomaticCapture("cam0");
-//        }
-//        catch(Exception e)
-//        {
-//            log.error("Starting Camera Server failed with exception " + e.getMessage());
-//
-//            hasCamera = false;
-//        }
-//
-//        if(!hasCamera)
-//        {
-//            log.info("Attempting to start Camera Server with cam1...");
-//            try
-//            {
-//                CameraServer.getInstance().setQuality(15);
-//                CameraServer.getInstance().setSize(1);
-//                CameraServer.getInstance().startAutomaticCapture("cam1");
-//            }
-//            catch(Exception e)
-//            {
-//                log.error("Starting Camera Server failed with exception " + e.getMessage());
-//            }
-//        }
+        log.info("Attempting to start Camera Server...");
+        try
+        {
+            CameraServer.getInstance().setQuality(15);
+            CameraServer.getInstance().setSize(1);
+            CameraServer.getInstance().startAutomaticCapture("cam0");
+        }
+        catch(Exception e)
+        {
+            log.error("Starting Camera Server failed with exception " + e.getMessage());
+
+            hasCamera = false;
+        }
+
+        if(!hasCamera)
+        {
+            log.info("Attempting to start Camera Server with cam1...");
+            try
+            {
+                CameraServer.getInstance().setQuality(15);
+                CameraServer.getInstance().setSize(1);
+                CameraServer.getInstance().startAutomaticCapture("cam1");
+            }
+            catch(Exception e)
+            {
+                log.error("Starting Camera Server failed with exception " + e.getMessage());
+            }
+        }
 
         log.info("Creating instance of ScriptedAutonomous...");
         scriptedAutonomous = new ScriptedAutonomous();
@@ -120,9 +121,6 @@ public class Robot extends IterativeRobot
         {
             log.error("Failed to load Elevator state, exception: " + e.toString());
         }
-
-        log.info("Deleting old log files...");
-        Log.deleteOldLogFiles();
 
         log.info("Creating status updater...");
         new Thread(new StatusUpdater()).start();
@@ -181,7 +179,9 @@ public class Robot extends IterativeRobot
     private void loadAutonomousChooser()
     {
         autoChooser = new SendableChooser();
-        autoChooser.addDefault(BasicAutonomousCommandGroup.class.getSimpleName(), BasicAutonomousCommandGroup.class.getSimpleName());
+        autoChooser.addDefault(DefaultAutonomousCommandGroup.class.getSimpleName(), DefaultAutonomousCommandGroup.class.getSimpleName());
+        autoChooser.addObject(ThreeToteAutonomousCommandGroup.class.getSimpleName(), ThreeToteAutonomousCommandGroup.class.getSimpleName());
+        autoChooser.addObject(CanAndLiftAutonomousCommand.class.getSimpleName(), ThreeToteAutonomous.class.getSimpleName());
 
         try
         {
@@ -234,8 +234,6 @@ public class Robot extends IterativeRobot
                 double pressure = DriveTrain.getInstance().getPressure();
 
                 SmartDashboard.putNumber("Pressure", pressure);
-
-                Arms.getInstance().postRangeFinderValues();
 
                 Lights.getInstance().updateLights();
 

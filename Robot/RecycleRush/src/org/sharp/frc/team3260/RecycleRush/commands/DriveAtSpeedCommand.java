@@ -22,7 +22,7 @@ public class DriveAtSpeedCommand extends Command
     @Override
     protected void initialize()
     {
-        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
+        DriveTrain.getInstance().changeControlProfile(-1);
 
         setTimeout(time);
     }

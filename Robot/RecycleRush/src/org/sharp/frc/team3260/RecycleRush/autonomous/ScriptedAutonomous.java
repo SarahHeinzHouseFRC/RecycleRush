@@ -104,7 +104,7 @@ public class ScriptedAutonomous
                     break;
 
                 case "CloseElevatorArmsCommand":
-                    addCommand(new CloseLowerArmsCommand(), isParallel);
+                    addCommand(new CloseElevatorArmsCommand(), isParallel);
                     break;
 
                 case "OpenLowerArmsCommand":
@@ -177,8 +177,13 @@ public class ScriptedAutonomous
         }
         else if(pathToJSON.equals(ThreeToteAutonomousCommandGroup.class.getSimpleName()))
         {
-
             commandGroup = new ThreeToteAutonomousCommandGroup();
+            commandsLoaded = true;
+        }
+        else if (pathToJSON.equals(CanAndLiftAutonomousCommand.class.getSimpleName()))
+        {
+
+            commandGroup = new CanAndLiftAutonomousCommand();
             commandsLoaded = true;
         }
         else

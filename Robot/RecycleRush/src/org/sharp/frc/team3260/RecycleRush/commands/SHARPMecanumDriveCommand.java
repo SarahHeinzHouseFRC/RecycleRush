@@ -23,7 +23,7 @@ public class SHARPMecanumDriveCommand extends Command
     @Override
     protected void initialize()
     {
-        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
+        DriveTrain.getInstance().changeControlProfile(-1);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class SHARPMecanumDriveCommand extends Command
             {
                 case 0:
                     x = 0.0;
-                    y = 1.0;
+                    y = -1.0;
                     break;
 
                 case 90:
@@ -57,7 +57,7 @@ public class SHARPMecanumDriveCommand extends Command
 
                 case 180:
                     x = 0.0;
-                    y = -1.0;
+                    y = 1.0;
                     break;
 
                 case 270:

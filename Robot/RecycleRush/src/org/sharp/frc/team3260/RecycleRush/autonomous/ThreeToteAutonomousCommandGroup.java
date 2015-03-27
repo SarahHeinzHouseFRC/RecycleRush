@@ -37,22 +37,25 @@ public class ThreeToteAutonomousCommandGroup extends CommandGroup
     public ThreeToteAutonomousCommandGroup()
     {
         addSequential(new ZeroGyroCommand());
+        addSequential(new RobotIdleCommand(250));
         addSequential(new CloseLowerArmsCommand());
         addSequential(new CloseElevatorArmsCommand());
         addSequential(new RotateToHeadingCommand(-90, true));
         addSequential(new ZeroGyroCommand());
+        addSequential(new RobotIdleCommand(250));
         addSequential(new OpenLowerArmsCommand());
-        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
+        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.THREE_TOTES));
         addSequential(new RotateToHeadingCommand(-90, true));
         addSequential(new ZeroGyroCommand());
-        addSequential(new DriveDistanceCommand(200, 1.0)); // TODO: Correct value for forward to second tote
+        addSequential(new RobotIdleCommand(250));
+        addSequential(new DriveDistanceCommand(1000, 1.0)); // TODO: Correct value for forward to second tote
         addSequential(new CloseLowerArmsCommand());
         addSequential(new OpenElevatorArmsCommand());
         addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.GROUND));
         addSequential(new CloseElevatorArmsCommand());
         addSequential(new OpenLowerArmsCommand());
-        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
-        addSequential(new DriveDistanceCommand(200, 1.0)); // TODO: Correct value for forward to third tote
+        addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.THREE_TOTES));
+        addSequential(new DriveDistanceCommand(1000, 1.0)); // TODO: Correct value for forward to third tote
         addSequential(new CloseLowerArmsCommand());
         addSequential(new RotateToHeadingCommand(-90, true));
         addSequential(new ZeroGyroCommand());

@@ -34,11 +34,11 @@ public class StrafeDistanceCommand extends Command
 
         if(strafeRight)
         {
-            DriveTrain.getInstance().setDriveEncoderTargets(ticks, -ticks, -ticks, ticks);
+            DriveTrain.getInstance().setDriveEncoderTargets(ticks, -ticks, -ticks, ticks, 0);
         }
         else
         {
-            DriveTrain.getInstance().setDriveEncoderTargets(-ticks, ticks, ticks, -ticks);
+            DriveTrain.getInstance().setDriveEncoderTargets(-ticks, ticks, ticks, -ticks, 0);
         }
     }
 
@@ -57,7 +57,7 @@ public class StrafeDistanceCommand extends Command
     @Override
     protected void end()
     {
-        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
+        DriveTrain.getInstance().changeControlProfile(-1);
 
         DriveTrain.getInstance().stop();
 

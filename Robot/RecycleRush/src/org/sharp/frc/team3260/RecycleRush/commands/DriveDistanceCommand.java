@@ -36,7 +36,7 @@ public class DriveDistanceCommand extends Command
 
         DriveTrain.getInstance().clearAccumulatedI();
 
-        DriveTrain.getInstance().setDriveEncoderTargets(distance, distance, distance, distance);
+        DriveTrain.getInstance().setDriveEncoderTargets(distance, distance, distance, distance, 0);
     }
 
     protected void execute()
@@ -50,7 +50,7 @@ public class DriveDistanceCommand extends Command
 
     protected void end()
     {
-        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
+        DriveTrain.getInstance().changeControlProfile(-1);
 
         DriveTrain.getInstance().stop();
 

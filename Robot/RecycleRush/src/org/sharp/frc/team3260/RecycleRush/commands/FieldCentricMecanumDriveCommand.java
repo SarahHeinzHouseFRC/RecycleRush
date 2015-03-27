@@ -21,7 +21,7 @@ public class FieldCentricMecanumDriveCommand extends Command
 
     protected void initialize()
     {
-        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
+        DriveTrain.getInstance().changeControlProfile(-1);
     }
 
     protected void execute()
