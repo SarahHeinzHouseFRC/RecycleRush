@@ -7,23 +7,20 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.autonomous.BasicAutonomousCommandGroup;
-import org.sharp.frc.team3260.RecycleRush.autonomous.ScriptedAutonomous;
+import org.sharp.frc.team3260.RecycleRush.autonomous.*;
 import org.sharp.frc.team3260.RecycleRush.commands.FieldCentricMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.SHARPMecanumDriveCommand;
 import org.sharp.frc.team3260.RecycleRush.commands.ZeroGyroCommand;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
+import org.sharp.frc.team3260.RecycleRush.subsystems.Arms;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
-import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Lights;
 import org.sharp.frc.team3260.RecycleRush.utils.Util;
 import org.sharp.frc.team3260.RecycleRush.utils.logs.Log;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.util.Date;
 
 public class Robot extends IterativeRobot
 {
@@ -51,7 +48,7 @@ public class Robot extends IterativeRobot
         log.info("Creating subsystem instances...");
         new DriveTrain();
         new Elevator();
-        new Gripper();
+        new Arms();
         new Lights();
 
         log.info("Adding SmartDashboard buttons...");
@@ -63,15 +60,35 @@ public class Robot extends IterativeRobot
         log.info("Indexing Autonomous Options...");
         loadAutonomousChooser();
 
+        boolean hasCamera = true;
+
         log.info("Attempting to start Camera Server...");
         try
         {
-            CameraServer.getInstance().setQuality(30);
+            CameraServer.getInstance().setQuality(15);
+            CameraServer.getInstance().setSize(1);
             CameraServer.getInstance().startAutomaticCapture("cam0");
         }
         catch(Exception e)
         {
             log.error("Starting Camera Server failed with exception " + e.getMessage());
+
+            hasCamera = false;
+        }
+
+        if(!hasCamera)
+        {
+            log.info("Attempting to start Camera Server with cam1...");
+            try
+            {
+                CameraServer.getInstance().setQuality(15);
+                CameraServer.getInstance().setSize(1);
+                CameraServer.getInstance().startAutomaticCapture("cam1");
+            }
+            catch(Exception e)
+            {
+                log.error("Starting Camera Server failed with exception " + e.getMessage());
+            }
         }
 
         log.info("Creating instance of ScriptedAutonomous...");
@@ -82,9 +99,9 @@ public class Robot extends IterativeRobot
         {
             String elevatorPositionString = Util.getFile("//U//Elevator Position.txt").replace(" ", "").replace("\n", "".replace("\r", ""));
 
-            //int elevatorPosition = Integer.parseInt(elevatorPositionString);
+            System.out.println(elevatorPositionString);
 
-            int elevatorPosition = 0;
+            int elevatorPosition = Integer.parseInt(elevatorPositionString);
 
             if(elevatorPosition > Elevator.ElevatorPosition.GROUND.encoderValue && elevatorPosition < Elevator.ElevatorPosition.TOP.encoderValue)
             {
@@ -104,9 +121,6 @@ public class Robot extends IterativeRobot
         {
             log.error("Failed to load Elevator state, exception: " + e.toString());
         }
-
-        log.info("Deleting old log files...");
-        Log.deleteOldLogFiles();
 
         log.info("Creating status updater...");
         new Thread(new StatusUpdater()).start();
@@ -139,30 +153,6 @@ public class Robot extends IterativeRobot
         {
             scriptedAutonomous.getCommandGroup().cancel();
         }
-
-        int elevatorPosition = Elevator.getInstance().getPosition();
-
-        log.info("Attempting to save Elevator position of " + elevatorPosition + " to flash drive");
-
-        if(elevatorPosition < 0)
-        {
-            log.warn("Not saving Elevator position, value less than zero.");
-        }
-
-        elevatorPosition = 0;
-
-        try
-        {
-            File elevatorPositionFile = new File("//U//Elevator Position.txt");
-
-            FileWriter fileWriter = new FileWriter(elevatorPositionFile, false);
-            fileWriter.write(elevatorPosition + "     ");
-            fileWriter.close();
-        }
-        catch(Exception e)
-        {
-            log.error("Saving /media/sda1/Elevator Position.txt failed, exception: " + e.toString());
-        }
     }
 
     public void disabledPeriodic()
@@ -177,12 +167,21 @@ public class Robot extends IterativeRobot
 
             scriptedAutonomous.load();
         }
+//
+//        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_SELECT))
+//        {
+//            DriveTrain.getInstance().zeroGyro();
+//
+//            DriveTrain.getInstance().zeroEncoders();
+//        }
     }
 
     private void loadAutonomousChooser()
     {
         autoChooser = new SendableChooser();
-        autoChooser.addDefault(BasicAutonomousCommandGroup.class.getSimpleName(), BasicAutonomousCommandGroup.class.getSimpleName());
+        autoChooser.addDefault(DefaultAutonomousCommandGroup.class.getSimpleName(), DefaultAutonomousCommandGroup.class.getSimpleName());
+        autoChooser.addObject(ThreeToteAutonomousCommandGroup.class.getSimpleName(), ThreeToteAutonomousCommandGroup.class.getSimpleName());
+        autoChooser.addObject(CanAndLiftAutonomousCommand.class.getSimpleName(), CanAndLiftAutonomousCommand.class.getSimpleName());
 
         try
         {

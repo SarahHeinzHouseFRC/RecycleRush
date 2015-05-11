@@ -67,12 +67,14 @@ public class ScriptedAutonomous
             }
             numCommandsAdded++;
             int level, timeout;
-            double speed, distance, angle,time;
+            double speed, distance, angle, time;
 
             if(commandClass == null || commandClass.equals(""))
             {
                 continue;
             }
+
+            boolean isParallel = false;
 
             switch(commandClass)
             {
@@ -80,44 +82,54 @@ public class ScriptedAutonomous
                     distance = (double) parametersMap.get("Distance").get("Value");
                     timeout = new Long((long) parametersMap.get("Timeout").get("Value")).intValue();
 
-                    addSequential(new DriveDistanceCommand(distance, timeout));
+                    addCommand(new DriveDistanceCommand(distance, timeout), isParallel);
                     break;
 
                 case "DriveAtSpeedCommand":
-                    time = (new Long((long)parametersMap.get("Time").get("Value")) / (double) 1000);
+                    time = (new Long((long) parametersMap.get("Time").get("Value")) / (double) 1000);
                     speed = (double) parametersMap.get("Speed").get("Value");
 
-                    addSequential(new DriveAtSpeedCommand(speed, time));
+                    addCommand(new DriveAtSpeedCommand(speed, time), isParallel);
                     break;
 
                 case "RotateToHeadingCommand":
                     angle = (double) parametersMap.get("Degrees to Rotate").get("Value");
                     timeout = new Long((long) parametersMap.get("Timeout").get("Value")).intValue();
 
-                    addSequential(new RotateToHeadingCommand(angle, timeout, true));
+                    addCommand(new RotateToHeadingCommand(angle, timeout, true), isParallel);
                     break;
 
-                case "OpenGripperCommand":
-                    addSequential(new OpenGripperCommand());
-                    break; 
+                case "OpenElevatorArmsCommand":
+                    addCommand(new OpenElevatorArmsCommand(), isParallel);
+                    break;
 
-                case "CloseGripperCommand":
-                    addSequential(new CloseGripperCommand());
+                case "CloseElevatorArmsCommand":
+                    addCommand(new CloseElevatorArmsCommand(), isParallel);
+                    break;
+
+                case "OpenLowerArmsCommand":
+                    addCommand(new OpenLowerArmsCommand(), isParallel);
+                    break;
+
+                case "CloseLowerArmsCommand":
+                    addCommand(new CloseLowerArmsCommand(), isParallel);
                     break;
 
                 case "RobotIdleCommand":
                     //in milliseconds
-                    time = (new Long((long)parametersMap.get("Time").get("Value")) / (double) 1000);
-                    addSequential(new RobotIdleCommand(time));
+                    time = (new Long((long) parametersMap.get("Time").get("Value")) / (double) 1000);
+
+                    addCommand(new RobotIdleCommand(time), isParallel);
                     break;
 
                 case "ElevatorToSetpointCommand":
                     level = new Long((long) parametersMap.get("Level").get("Value")).intValue();
-                    addSequential(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)));
+
+                    addCommand(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.getPositionByIndex(level)), isParallel);
                     break;
 
                 case "ZeroGyroCommand":
-                    addSequential(new ZeroGyroCommand());
+                    addCommand(new ZeroGyroCommand(), isParallel);
                     break;
 
                 default:
@@ -146,31 +158,32 @@ public class ScriptedAutonomous
         }
     }
 
-    public void setPathToCSV(String path, boolean forced)
-    {
-        if(!pathToJSON.equals(path) || forced)
-        {
-            pathToJSON = path;
-
-            load();
-        }
-    }
-
     public void load()
     {
         if(pathToJSON == null)
         {
-            log.warn("pathToJSON is null, setting Autonomous to BasicAutonomousCommandGroup.");
+            log.warn("pathToJSON is null, setting Autonomous to DefaultAutonomousCommandGroup.");
 
-            pathToJSON = BasicAutonomousCommandGroup.class.getSimpleName();
+            pathToJSON = DefaultAutonomousCommandGroup.class.getSimpleName();
         }
 
-        if(pathToJSON.equals(BasicAutonomousCommandGroup.class.getSimpleName()))
+        if(pathToJSON.equals(DefaultAutonomousCommandGroup.class.getSimpleName()))
         {
-            log.warn("User asked for BasicAutonomousCommandGroup.");
+            log.warn("User asked for DefaultAutonomousCommandGroup.");
 
-            commandGroup = new BasicAutonomousCommandGroup();
+            commandGroup = new DefaultAutonomousCommandGroup();
 
+            commandsLoaded = true;
+        }
+        else if(pathToJSON.equals(ThreeToteAutonomousCommandGroup.class.getSimpleName()))
+        {
+            commandGroup = new ThreeToteAutonomousCommandGroup();
+            commandsLoaded = true;
+        }
+        else if (pathToJSON.equals(CanAndLiftAutonomousCommand.class.getSimpleName()))
+        {
+
+            commandGroup = new CanAndLiftAutonomousCommand();
             commandsLoaded = true;
         }
         else
@@ -184,9 +197,33 @@ public class ScriptedAutonomous
 
         if(!commandsLoaded)
         {
-            getLog().info("Set command group to " + BasicAutonomousCommandGroup.class.getSimpleName() + ".");
+            getLog().info("Set command group to " + DefaultAutonomousCommandGroup.class.getSimpleName() + ".");
 
-            commandGroup = new BasicAutonomousCommandGroup();
+            commandGroup = new DefaultAutonomousCommandGroup();
+        }
+    }
+
+    private void addCommand(Command command, boolean isParallel)
+    {
+        if(isParallel)
+        {
+            addParallel(command);
+        }
+        else
+        {
+            addSequential(command);
+        }
+    }
+
+    private void addCommand(Command command, double timeout, boolean isParallel)
+    {
+        if(isParallel)
+        {
+            addParallel(command, timeout);
+        }
+        else
+        {
+            addSequential(command, timeout);
         }
     }
 
@@ -198,6 +235,16 @@ public class ScriptedAutonomous
     private void addSequential(Command command, double timeout)
     {
         commandGroup.addSequential(command, timeout);
+    }
+
+    private void addParallel(Command command)
+    {
+        commandGroup.addParallel(command);
+    }
+
+    private void addParallel(Command command, double timeout)
+    {
+        commandGroup.addParallel(command, timeout);
     }
 
     public CommandGroup getCommandGroup()

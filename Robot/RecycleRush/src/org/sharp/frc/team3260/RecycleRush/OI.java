@@ -5,7 +5,9 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.sharp.frc.team3260.RecycleRush.commands.*;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.joystick.triggers.AxisButton;
+import org.sharp.frc.team3260.RecycleRush.joystick.triggers.HatButton;
 import org.sharp.frc.team3260.RecycleRush.joystick.triggers.TalonLimitSwitchButton;
+import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 import org.sharp.frc.team3260.RecycleRush.subsystems.Elevator;
 
 public class OI
@@ -20,8 +22,12 @@ public class OI
 
     public Button manipulatorGamepadA, manipulatorGamepadB, manipulatorGamepadX, manipulatorGamepadY;
 
+    public Button mainGamepadLeftBumper, mainGamepadRightBumper;
+
     public Button manipulatorGamepadLeftBumper, manipulatorGamepadRightBumper;
     public Button manipulatorGamepadLeftTrigger, manipulatorGamepadRightTrigger;
+
+    public Button manipulatorGamepadHatRight, manipulatorGamepadHatDown;
 
     public OI()
     {
@@ -36,6 +42,9 @@ public class OI
         manipulatorGamepadLeftTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_LEFT_AXIS, 0.5);
         manipulatorGamepadRightTrigger = new AxisButton(manipulatorGamepad, SHARPGamepad.TRIGGER_RIGHT_AXS, 0.5);
 
+        mainGamepadLeftBumper = new JoystickButton(mainGamepad, SHARPGamepad.BUTTON_LEFT_BUMPER);
+        mainGamepadRightBumper = new JoystickButton(mainGamepad, SHARPGamepad.BUTTON_RIGHT_BUMPER);
+
         manipulatorGamepadLeftBumper = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_LEFT_BUMPER);
         manipulatorGamepadRightBumper = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_RIGHT_BUMPER);
 
@@ -44,21 +53,30 @@ public class OI
         manipulatorGamepadX = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_X);
         manipulatorGamepadY = new JoystickButton(manipulatorGamepad, SHARPGamepad.BUTTON_Y);
 
+        manipulatorGamepadHatRight = new HatButton(manipulatorGamepad, 90);
+        manipulatorGamepadHatDown = new HatButton(manipulatorGamepad, 180);
+
         elevatorTalonReverseLimitSwitchButton.whenPressed(new ZeroElevatorEncoderCommand());
 
-        mainGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
-        manipulatorGamepadSelectButton.whenReleased(new SwitchGamepadsCommand());
+        mainGamepadSelectButton.whenReleased(new ZeroGyroCommand());
+        manipulatorGamepadSelectButton.whenReleased(new ZeroGyroCommand());
 
-        manipulatorGamepadLeftTrigger.whenReleased(new CloseGripperCommand());
-        manipulatorGamepadRightTrigger.whenReleased(new OpenGripperCommand());
-        
-        manipulatorGamepadLeftBumper.whenReleased(new RotateToHeadingCommand(135, false));
-        manipulatorGamepadRightBumper.whenReleased(new RotateToHeadingCommand(-135, false));
+        manipulatorGamepadLeftTrigger.whenPressed(new CloseElevatorArmsCommand());
+        manipulatorGamepadRightTrigger.whenPressed(new OpenElevatorArmsCommand());
 
-        manipulatorGamepadA.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.GROUND));
-        manipulatorGamepadB.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
-        manipulatorGamepadX.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.RECYCLING_CAN));
-        manipulatorGamepadY.whenReleased(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.THREE_TOTES));
+        mainGamepadLeftBumper.whenReleased(new RotateToHeadingCommand(135, false));
+        mainGamepadRightBumper.whenReleased(new RotateToHeadingCommand(-135, false));
+
+        manipulatorGamepadLeftBumper.whenPressed(new CloseLowerArmsCommand());
+        manipulatorGamepadRightBumper.whenPressed(new OpenLowerArmsCommand());
+
+        manipulatorGamepadA.whenPressed(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.GROUND));
+        manipulatorGamepadB.whenPressed(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
+        manipulatorGamepadX.whenPressed(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TWO_TOTE));
+        manipulatorGamepadY.whenPressed(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.LOADING_HEIGHT));
+
+        manipulatorGamepadHatRight.whenPressed(new HumanPlayerLoadCommand());
+        manipulatorGamepadHatDown.whenPressed(new ElevatorToSetpointCommand(Elevator.ElevatorPosition.TOP));
 
         instance = this;
     }
@@ -89,14 +107,12 @@ public class OI
         {
             Elevator.getInstance().changeElevatorMode(false);
         }
-    }
 
-    public void switchGamepads()
-    {
-        SHARPGamepad temp = mainGamepad;
+        if(OI.getInstance().mainGamepad.getRawButton(SHARPGamepad.BUTTON_Y))
+        {
+            DriveTrain.getInstance().zeroGyro();
 
-        mainGamepad = manipulatorGamepad;
-
-        manipulatorGamepad = temp;
+            DriveTrain.getInstance().zeroEncoders();
+        }
     }
 }

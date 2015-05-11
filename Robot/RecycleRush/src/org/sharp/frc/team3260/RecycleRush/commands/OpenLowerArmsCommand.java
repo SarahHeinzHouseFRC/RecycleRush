@@ -1,19 +1,21 @@
 package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import org.sharp.frc.team3260.RecycleRush.subsystems.Gripper;
+import org.sharp.frc.team3260.RecycleRush.subsystems.Arms;
 
-public class CloseGripperCommand extends Command
+public class OpenLowerArmsCommand extends Command
 {
-    public CloseGripperCommand()
+    public OpenLowerArmsCommand()
     {
-        requires(Gripper.getInstance());
+        requires(Arms.getInstance());
     }
 
     @Override
     protected void initialize()
     {
-        Gripper.getInstance().closeGripper();
+        setTimeout(0.25);
+
+        Arms.getInstance().openLowerArms();
     }
 
     @Override
@@ -24,7 +26,7 @@ public class CloseGripperCommand extends Command
     @Override
     protected boolean isFinished()
     {
-        return true;
+        return isTimedOut();
     }
 
     @Override

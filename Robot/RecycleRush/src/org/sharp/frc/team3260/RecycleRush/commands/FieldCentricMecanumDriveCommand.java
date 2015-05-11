@@ -4,11 +4,9 @@ import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.sharp.frc.team3260.RecycleRush.Constants;
 import org.sharp.frc.team3260.RecycleRush.OI;
 import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
-import org.sharp.frc.team3260.RecycleRush.utils.Util;
 
 public class FieldCentricMecanumDriveCommand extends Command
 {
@@ -23,7 +21,7 @@ public class FieldCentricMecanumDriveCommand extends Command
 
     protected void initialize()
     {
-        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
+        DriveTrain.getInstance().changeControlProfile(-1);
     }
 
     protected void execute()
@@ -42,15 +40,13 @@ public class FieldCentricMecanumDriveCommand extends Command
         SmartDashboard.putNumber("Drive Joystick Y", forward);
         SmartDashboard.putNumber("Drive Joystick Rotation", rotation);
 
-        if(DriveTrain.getInstance().getIMU() == null)
+        if(DriveTrain.getInstance().getIMU() == null || OI.getInstance().getMainGamepad().getRawAxis(SHARPGamepad.TRIGGER_LEFT_AXIS) > 0.5)
         {
             DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, 0, false);
         }
         else
         {
-            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw(), true);
-
-            SmartDashboard.putNumber("Gyro Yaw", DriveTrain.getInstance().getIMU().getYaw());
+            DriveTrain.getInstance().mecanumDrive_Cartesian(strafe, forward, rotation, DriveTrain.getInstance().getIMU().getYaw(), false);
         }
     }
 

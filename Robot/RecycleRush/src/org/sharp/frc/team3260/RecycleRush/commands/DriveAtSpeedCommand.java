@@ -2,8 +2,6 @@ package org.sharp.frc.team3260.RecycleRush.commands;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.command.Command;
-import org.sharp.frc.team3260.RecycleRush.OI;
-import org.sharp.frc.team3260.RecycleRush.joystick.SHARPGamepad;
 import org.sharp.frc.team3260.RecycleRush.subsystems.DriveTrain;
 
 public class DriveAtSpeedCommand extends Command
@@ -24,7 +22,7 @@ public class DriveAtSpeedCommand extends Command
     @Override
     protected void initialize()
     {
-        DriveTrain.getInstance().changeControlMode(CANTalon.ControlMode.PercentVbus);
+        DriveTrain.getInstance().changeControlProfile(-1);
 
         setTimeout(time);
     }
@@ -32,7 +30,7 @@ public class DriveAtSpeedCommand extends Command
     @Override
     protected void execute()
     {
-        if(DriveTrain.getInstance().getIMU() == null || OI.getInstance().getMainGamepad().getRawButton(SHARPGamepad.BUTTON_LEFT_JOYSTICK))
+        if(DriveTrain.getInstance().getIMU() == null)
         {
             DriveTrain.getInstance().stockMecanumDrive(0, -speed, 0, 0);
         }

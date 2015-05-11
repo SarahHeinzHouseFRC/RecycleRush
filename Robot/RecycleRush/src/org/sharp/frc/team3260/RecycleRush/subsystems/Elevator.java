@@ -205,6 +205,7 @@ public class Elevator extends SHARPSubsystem
         public static final ElevatorPosition CAN_ON_TOTE = new ElevatorPosition(6, "CAN_ON_TOTE", 2260);
         public static final ElevatorPosition CAN_ABOVE_TOTE = new ElevatorPosition(7, "CAN_ABOVE_TOTE", 3000);
         public static final ElevatorPosition DRIVING_HEIGHT = new ElevatorPosition(8, "DRIVING_HEIGHT", 500);
+        public static final ElevatorPosition LOADING_HEIGHT = new ElevatorPosition(9, "LOADING_HEIGHT", 2850);
 
         public ElevatorPosition(int index, String positionName, int encoderValue)
         {

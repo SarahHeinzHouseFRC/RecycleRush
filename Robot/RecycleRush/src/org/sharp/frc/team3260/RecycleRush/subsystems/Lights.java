@@ -51,10 +51,10 @@ public class Lights extends SHARPSubsystem
                 log.error("Failure to read from Arduino.");
             }
         }
-//        else
-//        {
-//            log.error("Failure to send " + Arrays.toString(dataToSend) + " to Arduino.");
-//        }
+        //        else
+        //        {
+        //            log.error("Failure to send " + Arrays.toString(dataToSend) + " to Arduino.");
+        //        }
     }
 
     private void setLightMode(byte lightMode, byte[] additionalData)
@@ -143,15 +143,9 @@ public class Lights extends SHARPSubsystem
 
         byte elevatorPosition = Elevator.getInstance().getPositionAsByte();
 
-        boolean gripperClosed = Gripper.getInstance().isClosed();
+        boolean gripperClosed = Arms.getInstance().areElevatorArmsClosed();
 
-        double pitch = DriveTrain.getInstance().getIMU().getPitch();
-
-        if(pitch > 40 || pitch > -40)
-        {
-            lightOption = LightOption.YOLO;
-        }
-        else if(batteryVoltage < 11)
+        if(batteryVoltage < 11)
         {
             double batteryPercent = (batteryVoltage / 13);
 

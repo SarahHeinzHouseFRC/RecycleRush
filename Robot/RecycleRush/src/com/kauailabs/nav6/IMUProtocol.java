@@ -278,7 +278,7 @@ public class IMUProtocol
             u.mag_y = decodeProtocolUint16(buffer, offset + QUATERNION_UPDATE_MAG_Y_VALUE_INDEX);
             u.mag_z = decodeProtocolUint16(buffer, offset + QUATERNION_UPDATE_MAG_Z_VALUE_INDEX);
             u.temp_c = decodeProtocolFloat(buffer, offset + QUATERNION_UPDATE_TEMP_VALUE_INDEX);
-            
+
             return QUATERNION_UPDATE_MESSAGE_LENGTH;
         }
         return 0;
@@ -309,7 +309,7 @@ public class IMUProtocol
             u.temp_c = decodeProtocolFloat(buffer, offset + GYRO_UPDATE_TEMP_VALUE_INDEX);
             return GYRO_UPDATE_MESSAGE_LENGTH;
         }
-        
+
         return 0;
     }
 
@@ -334,9 +334,9 @@ public class IMUProtocol
 
     final protected static byte[] hexArray
             = new byte[]{(byte) '0', (byte) '1', (byte) '2', (byte) '3',
-            (byte) '4', (byte) '5', (byte) '6', (byte) '7',
-            (byte) '8', (byte) '9', (byte) 'A', (byte) 'B',
-            (byte) 'C', (byte) 'D', (byte) 'E', (byte) 'F'};
+                         (byte) '4', (byte) '5', (byte) '6', (byte) '7',
+                         (byte) '8', (byte) '9', (byte) 'A', (byte) 'B',
+                         (byte) 'C', (byte) 'D', (byte) 'E', (byte) 'F'};
 
     public static void byteToHex(byte thebyte, byte[] dest, int offset)
     {
